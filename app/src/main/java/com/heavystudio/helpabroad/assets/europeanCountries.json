@@ -1,0 +1,176 @@
+[
+  {
+    "countryCode": "AT",
+    "countryNameResName": "country_name_AT",
+    "flagEmoji": "🇦🇹",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "BE",
+    "countryNameResName": "country_name_BE",
+    "flagEmoji": "🇧🇪",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "BG",
+    "countryNameResName": "country_name_BG",
+    "flagEmoji": "🇧🇬",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "HR",
+    "countryNameResName": "country_name_HR",
+    "flagEmoji": "🇭🇷",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "CY",
+    "countryNameResName": "country_name_CY",
+    "flagEmoji": "🇨🇾",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "CZ",
+    "countryNameResName": "country_name_CZ",
+    "flagEmoji": "🇨🇿",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "DK",
+    "countryNameResName": "country_name_DK",
+    "flagEmoji": "🇩🇰",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "EE",
+    "countryNameResName": "country_name_EE",
+    "flagEmoji": "🇪🇪",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "FI",
+    "countryNameResName": "country_name_FI",
+    "flagEmoji": "🇫🇮",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "FR",
+    "countryNameResName": "country_name_FR",
+    "flagEmoji": "🇫🇷",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "DE",
+    "countryNameResName": "country_name_DE",
+    "flagEmoji": "🇩🇪",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "GR",
+    "countryNameResName": "country_name_GR",
+    "flagEmoji": "🇬🇷",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "HU",
+    "countryNameResName": "country_name_HU",
+    "flagEmoji": "🇭🇺",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "IE",
+    "countryNameResName": "country_name_IE",
+    "flagEmoji": "🇮🇪",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "IT",
+    "countryNameResName": "country_name_IT",
+    "flagEmoji": "🇮🇹",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "LV",
+    "countryNameResName": "country_name_LV",
+    "flagEmoji": "🇱🇻",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "LT",
+    "countryNameResName": "country_name_LT",
+    "flagEmoji": "🇱🇹",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "LU",
+    "countryNameResName": "country_name_LU",
+    "flagEmoji": "🇱🇺",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "MT",
+    "countryNameResName": "country_name_MT",
+    "flagEmoji": "🇲🇹",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "NL",
+    "countryNameResName": "country_name_NL",
+    "flagEmoji": "🇳🇱",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "PL",
+    "countryNameResName": "country_name_PL",
+    "flagEmoji": "🇵🇱",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "PT",
+    "countryNameResName": "country_name_PT",
+    "flagEmoji": "🇵🇹",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "RO",
+    "countryNameResName": "country_name_RO",
+    "flagEmoji": "🇷🇴",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "SK",
+    "countryNameResName": "country_name_SK",
+    "flagEmoji": "🇸🇰",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "SI",
+    "countryNameResName": "country_name_SI",
+    "flagEmoji": "🇸🇮",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "ES",
+    "countryNameResName": "country_name_ES",
+    "flagEmoji": "🇪🇸",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "SE",
+    "countryNameResName": "country_name_SE",
+    "flagEmoji": "🇸🇪",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "GB",
+    "countryNameResName": "country_name_GB",
+    "flagEmoji": "🇬🇧",
+    "internationalEmergencyNumber": "112"
+  },
+  {
+    "countryCode": "CH",
+    "countryNameResName": "country_name_CH",
+    "flagEmoji": "🇨🇭",
+    "internationalEmergencyNumber": "112"
+  }
+]

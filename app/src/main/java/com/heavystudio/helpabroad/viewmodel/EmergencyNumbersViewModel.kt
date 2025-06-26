@@ -3,10 +3,11 @@ package com.heavystudio.helpabroad.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.heavystudio.helpabroad.BuildConfig
 import com.heavystudio.helpabroad.dao.EmergencyNumberDao
 import com.heavystudio.helpabroad.data.Country
 import com.heavystudio.helpabroad.data.EmergencyNumber
-import com.heavystudio.helpabroad.data.source.EuropeanCountriesData
+import com.heavystudio.helpabroad.data.source.AssetDataReader
 import com.heavystudio.helpabroad.database.AppDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -14,13 +15,15 @@ import kotlinx.coroutines.launch
 class EmergencyNumbersViewModel(application: Application) : AndroidViewModel(application) {
 
     private val emergencyNumberDao: EmergencyNumberDao
+    private val assetDataReader: AssetDataReader
 
     init {
         val database = AppDatabase.getDatabase(application)
         emergencyNumberDao = database.emergencyNumberDao()
+        assetDataReader = AssetDataReader(application)
 
         viewModelScope.launch {
-            initializeCountriesIfEmpty()
+            initializeCountriesIfEmpty(BuildConfig.INITIAL_COUNTRY_ASSET_FILE)
         }
     }
 
@@ -70,11 +73,13 @@ class EmergencyNumbersViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
-    private suspend fun initializeCountriesIfEmpty() {
+    suspend fun initializeCountriesIfEmpty(fileName: String) {
         val count = emergencyNumberDao.countAllCountries()
         if (count == 0) {
-            val countriesToInsert = EuropeanCountriesData.getEuropeanCountriesForInitialLoad()
-            emergencyNumberDao.insertCountries(countriesToInsert)
+            val countriesToInsert = assetDataReader.readCountriesFromJson(fileName)
+            if (countriesToInsert.isNotEmpty()) {
+                emergencyNumberDao.insertCountries(countriesToInsert)
+            }
         }
     }
 }

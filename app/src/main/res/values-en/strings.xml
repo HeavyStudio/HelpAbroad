@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Help Abroad</string>
+    <string name="international_emergency_number_name">International Emergency Number</string>
+
+    <string name="country_name_AT">Austria</string>
+    <string name="country_name_BE">Belgium</string>
+    <string name="country_name_BG">Bulgaria</string>
+    <string name="country_name_HR">Croatia</string>
+    <string name="country_name_CY">Cyprus</string>
+    <string name="country_name_CZ">Czechia</string>
+    <string name="country_name_DK">Denmark</string>
+    <string name="country_name_EE">Estonia</string>
+    <string name="country_name_FI">Finland</string>
+    <string name="country_name_FR">France</string>
+    <string name="country_name_DE">Germany</string>
+    <string name="country_name_GR">Greece</string>
+    <string name="country_name_HU">Hungary</string>
+    <string name="country_name_IE">Ireland</string>
+    <string name="country_name_IT">Italy</string>
+    <string name="country_name_LV">Latvia</string>
+    <string name="country_name_LT">Lithuania</string>
+    <string name="country_name_LU">Luxembourg</string>
+    <string name="country_name_MT">Malta</string>
+    <string name="country_name_NL">Netherlands</string>
+    <string name="country_name_PL">Poland</string>
+    <string name="country_name_PT">Portugal</string>
+    <string name="country_name_RO">Romania</string>
+    <string name="country_name_SK">Slovakia</string>
+    <string name="country_name_SI">Slovenia</string>
+    <string name="country_name_ES">Spain</string>
+    <string name="country_name_SE">Sweden</string>
+    <string name="country_name_GB">United Kingdom</string>
+    <string name="country_name_CH">Switzerland</string>
+</resources>
