@@ -17,16 +17,16 @@ interface EmergencyNumberDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCountries(countries: List<Country>)
 
-    @Query("SELECT * FROM countries ORDER BY countryName ASC")
+    @Query("SELECT * FROM countries ORDER BY countryNameResId ASC")
     fun getAllCountries(): Flow<List<Country>>
 
-    @Query("SELECT * FROM countries WHERE isDownloaded = 1 ORDER BY countryName ASC")
+    @Query("SELECT * FROM countries WHERE isDownloaded = 1 ORDER BY countryNameResId ASC")
     fun getDownloadedCountries(): Flow<List<Country>>
 
     @Query("UPDATE countries SET isDownloaded = :isDownloaded WHERE countryCode = :countryCode")
     suspend fun updateCountryDownloadedStatus(countryCode: String, isDownloaded: Boolean)
 
-    @Query("SELECT countryName FROM countries WHERE countryCode = :countryCode")
+    @Query("SELECT countryNameResId FROM countries WHERE countryCode = :countryCode")
     suspend fun getCountryNameByCode(countryCode: String): String?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -43,7 +43,7 @@ interface EmergencyNumberDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEmergencyNumbers(numbers: List<EmergencyNumber>)
 
-    @Query("SELECT * FROM emergency_numbers WHERE countryCode = :countryCode ORDER BY serviceName ASC")
+    @Query("SELECT * FROM emergency_numbers WHERE countryCode = :countryCode ORDER BY serviceNameResId ASC")
     fun getEmergencyNumbersByCountryCode(countryCode: String): Flow<List<EmergencyNumber>>
 
     @Query("DELETE FROM emergency_numbers WHERE countryCode = :countryCode")

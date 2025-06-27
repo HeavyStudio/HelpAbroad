@@ -21,10 +21,10 @@ import androidx.room.PrimaryKey
 )
 data class EmergencyNumber(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val countryCode: String, // Foreign key referencing the Country entity
-    val serviceName: String, // Name of the emergency service (e.g. "Police", "Ambulance")
-    val phoneNumber: String, // Phone number of the emergency service (e.g. "17", "18", "112")
-    val description: String? = null, // Optional description of the emergency service
-    val iconResName: String? = null, // Optional: name of the drawable resource for the icon
-    val category: String? = null // Optional: category of the emergency service
+    val countryCode: String,            // Foreign key referencing the Country entity
+    val serviceNameResId: Int,          // Name of the emergency service (e.g. "Police", "Ambulance")
+    val phoneNumber: String,            // Phone number of the emergency service (e.g. "17", "18", "112")
+    val descriptionResId: Int? = null,  // Optional description of the emergency service
+    val iconResName: String? = null,    // Optional: name of the drawable resource for the icon
+    val categoryResId: Int? = null      // Optional: category of the emergency service
 )

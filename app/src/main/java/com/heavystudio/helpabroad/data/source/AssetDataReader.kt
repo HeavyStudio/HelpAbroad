@@ -39,7 +39,7 @@ class AssetDataReader(private val context: Context) {
             )
             Country(
                 countryCode = countryJson.countryCode,
-                countryName = resourceId,
+                countryNameResId = resourceId,
                 flagEmoji = countryJson.flagEmoji,
                 internationalEmergencyNumber = countryJson.internationalEmergencyNumber
             )

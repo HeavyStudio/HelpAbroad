@@ -76,6 +76,8 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.google.gson)
     testImplementation(libs.junit)
