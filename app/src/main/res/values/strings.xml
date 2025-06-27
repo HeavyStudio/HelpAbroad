@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Help Abroad</string>
     <string name="international_emergency_number_name">Numéro d\'urgence international</string>
+    <string name="emergency_type_police">Police</string>
+    <string name="emergency_type_fire">Pompiers</string>
+    <string name="emergency_type_medical">Ambulance</string>
+    <string name="emergency_type_general">Urgence Générale</string>
+    <string name="emergency_cat_security">Sécurité</string>
+    <string name="emergency_cat_safety">Sécurité (Incendie/Sauvetage)</string>
+    <string name="emergency_cat_health">Santé</string>
+    <string name="emergency_cat_general">Général</string>
 
     <string name="country_name_AT">Autriche</string>
     <string name="country_name_BE">Belgique</string>
