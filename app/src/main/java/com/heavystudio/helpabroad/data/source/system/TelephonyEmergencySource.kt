@@ -15,21 +15,11 @@ import javax.inject.Singleton
 @Singleton
 class TelephonyEmergencySource @Inject constructor(
     private val telephonyManager: TelephonyManager,
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
 
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
-    fun getEmergencyNumbers(
-        // ***** TEST PARAMETER *****
-        forceCountryForTesting: String? = null
-    ): List<String> {
-        // ----- Block for Forced Country Testing -----
-        if (forceCountryForTesting != null) {
-            Log.w(TAG, "FORCED TEST MODE ACTIVE for country: $forceCountryForTesting")
-            return getFallbackEmergencyNumbers(forceCountryForTesting)
-        }
-        // ----- End Forced Country Testing Block -----
-
+    fun getEmergencyNumbers(): List<String> {
         if (ContextCompat.checkSelfPermission(context, READ_PHONE_STATE) != PERMISSION_GRANTED) {
             Log.w(TAG, "READ_PHONE_STATE permission not granted for getEmergencyNumberList.")
             // Fallback to common emergency numbers if permission is denied
@@ -63,7 +53,7 @@ class TelephonyEmergencySource @Inject constructor(
         }
     }
 
-    private fun getFallbackEmergencyNumbers(forcedIsoForTesting: String? = null): List<String> {
+    private fun getFallbackEmergencyNumbers(): List<String> {
         val numbers = mutableListOf<String>()
         numbers.add("112") // EU
 
