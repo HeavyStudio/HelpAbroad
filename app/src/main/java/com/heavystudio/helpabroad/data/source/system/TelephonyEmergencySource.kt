@@ -26,28 +26,72 @@ class TelephonyEmergencySource @Inject constructor(
         }
 
         if (ContextCompat.checkSelfPermission(context, READ_PHONE_STATE) != PERMISSION_GRANTED) {
-            Log.w(TAG, "READ_PHONE_STATE permission not granted for getEmergencyNumberList." +
-                    "Returning fallback.")
+            Log.w(TAG, "READ_PHONE_STATE permission not granted for getDetailedEmergencyContacts." +
+                    "Returning fallback emergency contacts.")
             return getFallbackEmergencyContacts()
         }
 
         val emergencyContactsResult = mutableListOf<EmergencyContact>()
 
         try {
-            val emergencyNumbersMap: Map<Int, List<EmergencyNumber>> = telephonyManager.emergencyNumberList
+            // Log the raw map for debugging.
+            Log.d(TAG, "Raw emergencyNumbersMap from TelephonyManager: ${telephonyManager.emergencyNumberList}")
 
+            val emergencyNumbersMap: Map<Int, List<EmergencyNumber>> = telephonyManager.emergencyNumberList
             if (emergencyNumbersMap.isEmpty()) {
                 Log.w(TAG, "TelephonyManager.emergencyNumberList returned empty or null." +
                         "Attempting fallback.")
                 return getFallbackEmergencyContacts(useNetworkCountryIso = true)
             }
 
-            emergencyNumbersMap.forEach { (category, numberList) ->
-                val type = mapCategoryToTypeString(category)
-                numberList.forEach { emergencyNumber ->
+            // Iterate through the map (outer grouping)
+            emergencyNumbersMap.forEach { (mapGroupCategory, numberObjectList) ->
+                // Iterate through each EmergencyNumber object in the list
+                numberObjectList.forEach { emergencyNumberObject ->
+                    val specificCategoriesList = emergencyNumberObject.emergencyServiceCategories
+                    var type = "Urgences (non spécifié)"
+
+                    if (specificCategoriesList.isNotEmpty()) {
+                        var foundPreferredType = false
+                        for (cat in specificCategoriesList) {
+                            val mappedType = mapCategoryToTypeString(cat)
+                            if (cat != EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_UNSPECIFIED &&
+                                !mappedType.startsWith("Urgences(catégorie:")) {
+                                type = mappedType
+                                foundPreferredType = true
+                                break
+                            }
+                        }
+                        if (!foundPreferredType) {
+                            type = mapCategoryToTypeString(specificCategoriesList[0])
+                        }
+                    } else {
+                        Log.w(TAG, "Number ${emergencyNumberObject.number} has empty " +
+                                "specificCategoriesList. Map group was $mapGroupCategory")
+                    }
+
+                    // --- SPECIAL HANDLING FOR INTERNATIONAL NUMBERS ---
+                    if (type == "Urgences (non spécifié)" || type.startsWith("Urgences (catégorie:")) {
+                        when (emergencyNumberObject.number) {
+                            "112" -> type = "Urgences (Europe)"
+                            "911" -> type = "Urgences (Amérique du Nord)"
+                            "999" -> type = "Urgences (Royaume-Uni)"
+                            "000" -> type = "Urgences (Australie)"
+                        }
+                    }
+                    // --- END OF SPECIAL HANDLING ---
+
+                    // Log details for each number object
+                    Log.d(TAG, "Processing Number: ${emergencyNumberObject.number}, \n" +
+                            "Map Group Category: $mapGroupCategory, \n" +
+                            "Specific Categories List: $specificCategoriesList, \n" +
+                            "Mapped Type: $type, \n" +
+                            "URNs: ${emergencyNumberObject.emergencyUrns}, \n" +
+                            "Sources: ${emergencyNumberObject.emergencyNumberSources}")
+
                     emergencyContactsResult.add(
                         EmergencyContact(
-                            number = emergencyNumber.number,
+                            number = emergencyNumberObject.number,
                             type = type
                         )
                     )
@@ -75,7 +119,9 @@ class TelephonyEmergencySource @Inject constructor(
             EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_POLICE -> "Police"
             EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_AMBULANCE -> "Ambulance"
             EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_FIRE_BRIGADE -> "Pompiers"
-            else -> "Urgences (autre catégorie : $category)"
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_MIEC -> "eCall (MIeC)"
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_AIEC -> "eCall (AIeC)"
+            else -> "Urgences (catégorie : $category)"
         }
     }
 
