@@ -77,6 +77,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.hilt.android.lib)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.material.icons)
+    implementation(libs.material.icons.extended)
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

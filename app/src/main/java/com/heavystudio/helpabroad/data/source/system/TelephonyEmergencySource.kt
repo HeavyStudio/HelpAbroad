@@ -18,12 +18,17 @@ class TelephonyEmergencySource @Inject constructor(
     private val telephonyManager: TelephonyManager,
     @param:ApplicationContext private val context: Context
 ) {
+    val currentNetworkCountryIso: String? by lazy {
+        try {
+            telephonyManager.networkCountryIso?.uppercase()
+        } catch (e: Exception) {
+            Log.e(TAG, "Could not get networkCountryIso", e)
+            null
+        }
+    }
+
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     fun getDetailedEmergencyContacts(): List<EmergencyContact> {
-        if (telephonyManager == null) {
-            Log.w(TAG, "TelephonyManager is null. Returning fallback emergency contacts.")
-            return getFallbackEmergencyContacts()
-        }
 
         if (ContextCompat.checkSelfPermission(context, READ_PHONE_STATE) != PERMISSION_GRANTED) {
             Log.w(TAG, "READ_PHONE_STATE permission not granted for getDetailedEmergencyContacts." +
@@ -31,7 +36,8 @@ class TelephonyEmergencySource @Inject constructor(
             return getFallbackEmergencyContacts()
         }
 
-        val emergencyContactsResult = mutableListOf<EmergencyContact>()
+        // This list will be populated with ALL numbers found and categorized by TelephonyManager
+        val allCategorizedContacts = mutableListOf<EmergencyContact>()
 
         try {
             // Log the raw map for debugging.
@@ -89,7 +95,7 @@ class TelephonyEmergencySource @Inject constructor(
                             "URNs: ${emergencyNumberObject.emergencyUrns}, \n" +
                             "Sources: ${emergencyNumberObject.emergencyNumberSources}")
 
-                    emergencyContactsResult.add(
+                    allCategorizedContacts.add(
                         EmergencyContact(
                             number = emergencyNumberObject.number,
                             type = type
@@ -98,11 +104,34 @@ class TelephonyEmergencySource @Inject constructor(
                 }
             }
 
-            return if (emergencyContactsResult.isNotEmpty()) {
-                emergencyContactsResult.distinctBy { it.number }
+            val uniqueCategorizedContacts = if (allCategorizedContacts.isNotEmpty()) {
+                allCategorizedContacts.distinctBy { it.number }
             } else {
-                Log.w(TAG, "Processed emergencyNumberList but result is empty. Using fallback.")
+                emptyList()
+            }
+
+            if (uniqueCategorizedContacts.isEmpty()) {
+                Log.w(TAG, "Processed emergencyNumberList but result is empty " +
+                        "(before geographic filtering). Attempting fallback.")
                 getFallbackEmergencyContacts(useNetworkCountryIso = true)
+            }
+
+            // --- FILTER BY GEOGRAPHIC RELEVANCE ---
+            Log.d(TAG, "Before geographic filtering, contacts: " +
+                    uniqueCategorizedContacts.joinToString { it.number })
+            val geographicallyFilteredContacts = filterEmergencyContactsByRelevance(
+                uniqueCategorizedContacts,
+                currentNetworkCountryIso
+            )
+            Log.d(TAG, "After geographic filtering, contacts: ")
+
+            return geographicallyFilteredContacts.ifEmpty {
+                Log.w(
+                    TAG, "Geographic filtering resulted in an empty list. " +
+                            "Returning original unique categorized contacts to ensure something " +
+                            "is shown."
+                )
+                uniqueCategorizedContacts
             }
         } catch (se: SecurityException) {
             Log.e(TAG, "SecurityException in getDetailedEmergencyContacts", se)
@@ -131,7 +160,7 @@ class TelephonyEmergencySource @Inject constructor(
         // Add a general EU fallback first
         contacts.add(EmergencyContact(number = "112", type = "Emergency (General EU)"))
 
-        if (useNetworkCountryIso && telephonyManager != null) {
+        if (useNetworkCountryIso) {
             try {
                 // Note: telephonyManager.getNetworkCountryIso() can sometimes return empty or null.
                 val countryIso = telephonyManager.networkCountryIso?.uppercase()
@@ -152,69 +181,37 @@ class TelephonyEmergencySource @Inject constructor(
             } catch (e: Exception) {
                 Log.e(TAG, "Unknown Exception getting networkCountryIso in fallback", e)
             }
-        } else if (!useNetworkCountryIso) {
+        } else {
             // If not using network ISO, add a very common global number
             contacts.add(EmergencyContact(number = "911", type = "Emergency (general global)"))
         }
         return contacts.distinctBy { it.number }
     }
 
-// ----- OLD METHODS, KEEPING THEM FOR NOW -----
-//    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
-//    fun getEmergencyNumbers(): List<String> {
-//        if (ContextCompat.checkSelfPermission(context, READ_PHONE_STATE) != PERMISSION_GRANTED) {
-//            Log.w(TAG, "READ_PHONE_STATE permission not granted for getEmergencyNumberList.")
-//            // Fallback to common emergency numbers if permission is denied
-//            return listOf("112", "911")
-//        }
-//
-//        try {
-//            // The map can contain different categories of emergency numbers
-//            val emergencyNumbersMap = telephonyManager.emergencyNumberList
-//
-//            // Flatten the lists of EmergencyNumber objects from all categories
-//            val allEmergencyNumbersAsObjects: List<EmergencyNumber> = emergencyNumbersMap.values.flatten()
-//
-//            // Map each EmergencyNumber object to its String representation (the number itself)
-//            val emergencyNumberStrings: List<String> = allEmergencyNumbersAsObjects.map { emergencyNumber ->
-//                emergencyNumber.number
-//            }
-//
-//            // Get distinct numbers and then handle the ifEmpty case
-//            return emergencyNumberStrings.distinct().ifEmpty {
-//                Log.w(TAG, "TelephonyManager.emergencyNumberList returned empty or null." +
-//                        "Falling back.")
-//                getFallbackEmergencyNumbers()
-//            }
-//        } catch (se: SecurityException) {
-//            Log.e(TAG, "SecurityException in getEmergencyNumbers", se)
-//            return getFallbackEmergencyNumbers()
-//        } catch (e: Exception) {
-//            Log.e(TAG, "Unknown Exception in getEmergencyNumbers", e)
-//            return getFallbackEmergencyNumbers()
-//        }
-//    }
-//
-//    private fun getFallbackEmergencyNumbers(): List<String> {
-//        val numbers = mutableListOf<String>()
-//        numbers.add("112") // EU
-//
-//        // Try to get country-specific numbers if possible
-//        try {
-//            val countryIso = telephonyManager.networkCountryIso?.uppercase()
-//            Log.d(TAG, "Network Country ISO: $countryIso")
-//            when (countryIso) {
-//                "US", "CA" -> numbers.add("911") // US, Canada, US territories
-//                "GB" -> numbers.add("999") // UK
-//                "AU" -> numbers.add("000") // Australia
-//            }
-//        } catch (se: SecurityException) {
-//            Log.e(TAG, "SecurityException getting networkCountryIso", se)
-//        } catch (e: Exception) {
-//            Log.e(TAG, "Unknown Exception getting networkCountryIso", e)
-//        }
-//        return numbers.distinct()
-//    }
+    private fun filterEmergencyContactsByRelevance(
+        contacts: List<EmergencyContact>,
+        currentCountryIso: String?
+    ): List<EmergencyContact> {
+        if (currentCountryIso.isNullOrBlank()) {
+            Log.w(TAG, "Current country ISO is unknown for filtering, return all contacts.")
+            return contacts
+        }
+
+        Log.d(TAG, "Filtering contacts for country $currentCountryIso. " +
+                "Origin count: ${contacts.size}")
+
+        val filteredList = contacts.filter { contact ->
+            when (contact.number) {
+                "911" -> currentCountryIso in listOf("US", "CA")
+                "000" -> currentCountryIso == "AU"
+                "999" -> currentCountryIso == "GB"
+                "112" -> true
+                else -> true
+            }
+        }
+        Log.d(TAG, "Filtered list count: ${filteredList.size}")
+        return filteredList
+    }
 
     companion object {
         private const val TAG = "SystemEmergencySource"

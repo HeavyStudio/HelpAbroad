@@ -36,6 +36,17 @@ class EmergencyRepositoryImpl @Inject constructor(
             Log.e(TAG, "Unhandled error in getEmergencyContacts flow: ${throwable.message}", throwable)
         }
 
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
+    override fun getCurrentNetworkCountryIso(): String? {
+        Log.d(TAG, "Fetching current network country ISO.")
+        try {
+            return systemSource.currentNetworkCountryIso
+        } catch (e: Exception) {
+            Log.e(TAG, "Error fetching current network country ISO: ${e.message}", e)
+            return null
+        }
+    }
+
     companion object {
         private const val TAG = "EmergencyRepositoryImpl"
     }

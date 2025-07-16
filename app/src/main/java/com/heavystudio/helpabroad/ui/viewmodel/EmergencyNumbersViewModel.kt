@@ -14,13 +14,16 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 data class EmergencyNumbersUiState(
     val isLoading: Boolean = true,
     val emergencyContacts: List<EmergencyContact> = emptyList(),
     val errorMessage: String? = null,
-    val permissionRequiredMessage: String? = null
+    val permissionRequiredMessage: String? = null,
+    val detectedCountry: String? = null,
+    val detectedCountryIso: String? = null
 )
 
 @HiltViewModel
@@ -65,7 +68,8 @@ class EmergencyNumbersViewModel @Inject constructor(
                             it.copy(
                                 isLoading = true,
                                 errorMessage = null,
-                                permissionRequiredMessage = null
+                                permissionRequiredMessage = null,
+                                detectedCountry = null
                             )
                         }
                     }
@@ -74,12 +78,21 @@ class EmergencyNumbersViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                errorMessage = "Failed to load numbers: ${exception.localizedMessage ?: "Unknown error"}"
+                                errorMessage = "Failed to load numbers: ${exception.localizedMessage ?: "Unknown error"}",
+                                detectedCountry = _uiState.value.detectedCountry
                             )
                         }
                     }
                     .collect { contacts ->
                         Log.d(TAG, "Collected emergency contacts: Count = ${contacts.size}")
+
+                        val currentCountryIso = emergencyRepository.getCurrentNetworkCountryIso()
+                        val displayCountryName = if (currentCountryIso != null) {
+                            mapIsoToDisplayName(currentCountryIso)
+                        } else {
+                            if (contacts.isNotEmpty()) "Using general fallback numbers" else null
+                        }
+
                         val finalErrorMessage = if (
                             contacts.isEmpty() &&
                             _uiState.value.errorMessage == null &&
@@ -94,7 +107,9 @@ class EmergencyNumbersViewModel @Inject constructor(
                             it.copy(
                                 isLoading = false,
                                 emergencyContacts = contacts,
-                                errorMessage = finalErrorMessage
+                                errorMessage = finalErrorMessage,
+                                detectedCountry = displayCountryName,
+                                detectedCountryIso = currentCountryIso
                             )
                         }
                     }
@@ -105,10 +120,19 @@ class EmergencyNumbersViewModel @Inject constructor(
                         isLoading = false,
                         permissionRequiredMessage = "Permission wa denied or revoked",
                         errorMessage = null,
-                        emergencyContacts = emptyList()
+                        emergencyContacts = emptyList(),
+                        detectedCountry = null
                     )
                 }
             }
+        }
+    }
+
+    private fun mapIsoToDisplayName(isoCode: String): String {
+        return try {
+            Locale("", isoCode).displayCountry
+        } catch (e: Exception) {
+            isoCode
         }
     }
 
