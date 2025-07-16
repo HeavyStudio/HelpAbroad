@@ -8,6 +8,7 @@ import android.telephony.emergency.EmergencyNumber
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
+import com.heavystudio.helpabroad.data.model.EmergencyCategoryKeys
 import com.heavystudio.helpabroad.data.model.EmergencyContact
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -55,21 +56,22 @@ class TelephonyEmergencySource @Inject constructor(
                 // Iterate through each EmergencyNumber object in the list
                 numberObjectList.forEach { emergencyNumberObject ->
                     val specificCategoriesList = emergencyNumberObject.emergencyServiceCategories
-                    var type = "Urgences (non spécifié)"
+                    var typeKey = EmergencyCategoryKeys.UNSPECIFIED
 
                     if (specificCategoriesList.isNotEmpty()) {
                         var foundPreferredType = false
                         for (cat in specificCategoriesList) {
-                            val mappedType = mapCategoryToTypeString(cat)
+                            val mappedKey = mapCategoryToTypeKey(cat)
                             if (cat != EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_UNSPECIFIED &&
-                                !mappedType.startsWith("Urgences(catégorie:")) {
-                                type = mappedType
+                                mappedKey != EmergencyCategoryKeys.UNSPECIFIED &&
+                                !mappedKey.startsWith(EmergencyCategoryKeys.UNKNOWN_CATEGORY_PREFIX)) {
+                                typeKey = mappedKey
                                 foundPreferredType = true
                                 break
                             }
                         }
                         if (!foundPreferredType) {
-                            type = mapCategoryToTypeString(specificCategoriesList[0])
+                            typeKey = mapCategoryToTypeKey(specificCategoriesList[0])
                         }
                     } else {
                         Log.w(TAG, "Number ${emergencyNumberObject.number} has empty " +
@@ -77,12 +79,12 @@ class TelephonyEmergencySource @Inject constructor(
                     }
 
                     // --- SPECIAL HANDLING FOR INTERNATIONAL NUMBERS ---
-                    if (type == "Urgences (non spécifié)" || type.startsWith("Urgences (catégorie:")) {
+                    if (typeKey == "Urgences (non spécifié)" || typeKey.startsWith("Urgences (catégorie:")) {
                         when (emergencyNumberObject.number) {
-                            "112" -> type = "Urgences (Europe)"
-                            "911" -> type = "Urgences (Amérique du Nord)"
-                            "999" -> type = "Urgences (Royaume-Uni)"
-                            "000" -> type = "Urgences (Australie)"
+                            "112" -> typeKey = EmergencyCategoryKeys.EUROPE_GENERAL
+                            "911" -> typeKey = EmergencyCategoryKeys.NORTH_AMERICA_GENERAL
+                            "999" -> typeKey = EmergencyCategoryKeys.UK_GENERAL
+                            "000" -> typeKey = EmergencyCategoryKeys.AUSTRALIA_GENERAL
                         }
                     }
                     // --- END OF SPECIAL HANDLING ---
@@ -91,14 +93,14 @@ class TelephonyEmergencySource @Inject constructor(
                     Log.d(TAG, "Processing Number: ${emergencyNumberObject.number}, \n" +
                             "Map Group Category: $mapGroupCategory, \n" +
                             "Specific Categories List: $specificCategoriesList, \n" +
-                            "Mapped Type: $type, \n" +
+                            "Mapped Type: $typeKey, \n" +
                             "URNs: ${emergencyNumberObject.emergencyUrns}, \n" +
                             "Sources: ${emergencyNumberObject.emergencyNumberSources}")
 
                     allCategorizedContacts.add(
                         EmergencyContact(
                             number = emergencyNumberObject.number,
-                            type = type
+                            typeKey = typeKey
                         )
                     )
                 }
@@ -142,15 +144,15 @@ class TelephonyEmergencySource @Inject constructor(
         }
     }
 
-    private fun mapCategoryToTypeString(category: Int): String {
+    private fun mapCategoryToTypeKey(category: Int): String {
         return when (category) {
-            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_UNSPECIFIED -> "Urgences (non spécifié)"
-            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_POLICE -> "Police"
-            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_AMBULANCE -> "Ambulance"
-            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_FIRE_BRIGADE -> "Pompiers"
-            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_MIEC -> "eCall (MIeC)"
-            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_AIEC -> "eCall (AIeC)"
-            else -> "Urgences (catégorie : $category)"
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_UNSPECIFIED -> EmergencyCategoryKeys.UNSPECIFIED
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_POLICE -> EmergencyCategoryKeys.POLICE
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_AMBULANCE -> EmergencyCategoryKeys.AMBULANCE
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_FIRE_BRIGADE -> EmergencyCategoryKeys.FIRE_DEPT
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_MIEC -> EmergencyCategoryKeys.MIEC
+            EmergencyNumber.EMERGENCY_SERVICE_CATEGORY_AIEC -> EmergencyCategoryKeys.AIEC
+            else -> "${EmergencyCategoryKeys.UNKNOWN_CATEGORY_PREFIX}$category"
         }
     }
 
@@ -158,7 +160,7 @@ class TelephonyEmergencySource @Inject constructor(
     private fun getFallbackEmergencyContacts(useNetworkCountryIso: Boolean = false): List<EmergencyContact> {
         val contacts = mutableListOf<EmergencyContact>()
         // Add a general EU fallback first
-        contacts.add(EmergencyContact(number = "112", type = "Emergency (General EU)"))
+        contacts.add(EmergencyContact(number = "112", typeKey = "Emergency (General EU)"))
 
         if (useNetworkCountryIso) {
             try {
@@ -167,13 +169,13 @@ class TelephonyEmergencySource @Inject constructor(
                 Log.d(TAG, "Fallback using Network Country ISO: $countryIso")
                 when (countryIso) {
                     "US", "CA" -> contacts.add(
-                        EmergencyContact(number = "911", type = "Emergency (USA/Canada)")
+                        EmergencyContact(number = "911", typeKey = "Emergency (USA/Canada)")
                     )
                     "GB" -> contacts.add(
-                        EmergencyContact(number = "999", type = "Emergency (UK)")
+                        EmergencyContact(number = "999", typeKey = "Emergency (UK)")
                     )
                     "AU" -> contacts.add(
-                        EmergencyContact(number = "000", type = "Emergency (Australia)")
+                        EmergencyContact(number = "000", typeKey = "Emergency (Australia)")
                     )
                 }
             } catch (se: SecurityException) {
@@ -183,7 +185,7 @@ class TelephonyEmergencySource @Inject constructor(
             }
         } else {
             // If not using network ISO, add a very common global number
-            contacts.add(EmergencyContact(number = "911", type = "Emergency (general global)"))
+            contacts.add(EmergencyContact(number = "911", typeKey = "Emergency (general global)"))
         }
         return contacts.distinctBy { it.number }
     }

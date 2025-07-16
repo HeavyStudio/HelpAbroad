@@ -1,11 +1,14 @@
 package com.heavystudio.helpabroad.ui.viewmodel
 
 import android.util.Log
+import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.data.model.EmergencyContact
+import com.heavystudio.helpabroad.data.model.ErrorKeys
 import com.heavystudio.helpabroad.data.repository.EmergencyRepository
-import com.heavystudio.helpabroad.data.source.system.TelephonyEmergencySource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +23,8 @@ import javax.inject.Inject
 data class EmergencyNumbersUiState(
     val isLoading: Boolean = true,
     val emergencyContacts: List<EmergencyContact> = emptyList(),
-    val errorMessage: String? = null,
+    val errorKey: String? = null,
+    val errorDetails: String? = null,
     val permissionRequiredMessage: String? = null,
     val detectedCountry: String? = null,
     val detectedCountryIso: String? = null
@@ -40,9 +44,9 @@ class EmergencyNumbersViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     isLoading = false,
-                    permissionRequiredMessage = "READ_PHONE_STATE permission is required to load emergency numbers.",
+                    permissionRequiredMessage = ErrorKeys.NO_PERMISSION_ERROR,
                     emergencyContacts = emptyList(),
-                    errorMessage = null
+                    errorKey = null
                 )
             }
             return
@@ -67,18 +71,21 @@ class EmergencyNumbersViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 isLoading = true,
-                                errorMessage = null,
+                                errorKey = null,
+                                errorDetails = null,
                                 permissionRequiredMessage = null,
                                 detectedCountry = null
                             )
                         }
                     }
                     .catch { exception ->
-                        Log.e(TAG, "Error collectif emergency contacts from repository", exception)
+                        Log.e(TAG, "Error collecting emergency contacts from repository", exception)
+                        val exceptionMessage = exception.localizedMessage ?: ""
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                errorMessage = "Failed to load numbers: ${exception.localizedMessage ?: "Unknown error"}",
+                                errorKey = ErrorKeys.LOAD_FAILED_ERROR,
+                                errorDetails = exceptionMessage,
                                 detectedCountry = _uiState.value.detectedCountry
                             )
                         }
@@ -93,21 +100,21 @@ class EmergencyNumbersViewModel @Inject constructor(
                             if (contacts.isNotEmpty()) "Using general fallback numbers" else null
                         }
 
-                        val finalErrorMessage = if (
+                        val finalErrorKey = if (
                             contacts.isEmpty() &&
-                            _uiState.value.errorMessage == null &&
+                            _uiState.value.errorKey == null &&
                             _uiState.value.permissionRequiredMessage == null
                         ) {
-                            "No emergency numbers found for your region."
+                            ErrorKeys.NO_CONTACTS_FOUND_FOR_COUNTRY_ERROR
                         } else {
-                            _uiState.value.errorMessage
+                            _uiState.value.errorKey
                         }
 
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
                                 emergencyContacts = contacts,
-                                errorMessage = finalErrorMessage,
+                                errorKey = finalErrorKey,
                                 detectedCountry = displayCountryName,
                                 detectedCountryIso = currentCountryIso
                             )
@@ -118,8 +125,8 @@ class EmergencyNumbersViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        permissionRequiredMessage = "Permission wa denied or revoked",
-                        errorMessage = null,
+                        permissionRequiredMessage = ErrorKeys.PERMISSION_DENIED_ERROR,
+                        errorKey = null,
                         emergencyContacts = emptyList(),
                         detectedCountry = null
                     )
@@ -130,8 +137,11 @@ class EmergencyNumbersViewModel @Inject constructor(
 
     private fun mapIsoToDisplayName(isoCode: String): String {
         return try {
-            Locale("", isoCode).displayCountry
+            val userLocale = Locale.getDefault()
+            val countryOnlyLocale = Locale.Builder().setRegion(isoCode.uppercase(Locale.ROOT)).build()
+            countryOnlyLocale.getDisplayCountry(userLocale)
         } catch (e: Exception) {
+            Log.e(TAG, "Error mapping ISO code '$isoCode' to display name: ${e.message}")
             isoCode
         }
     }

@@ -1,3 +1,41 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">HelpAbroad</string>
+
+    <!-- Emergency Screen Titles -->
+    <string name="emergency_screen_title_default">Emergency Numbers</string>
+    <string name="emergency_screen_title_loading">Loading…</string>
+
+    <!-- Permissions -->
+    <string name="permission_required_title">Permission Required</string>
+    <string name="permission_read_phone_state_message">To detect your current region and show relevant emergency numbers, please grant the phone state permission.</string>
+    <string name="grant_permission_button">Grant Permission</string>
+
+    <!-- Errors -->
+    <string name="error_generic">An error occurred. Please try again.</string>
+    <string name="error_unknown">An unknown error occurred.</string>
+    <string name="error_no_network">Please check your network connection.</string>
+    <string name="error_no_contacts_for_country">No emergency numbers found for your region.</string>
+    <string name="error_no_permission">Permission is required to display emergency numbers.</string>
+    <string name="error_permission_denied">Permission was denied or revoked.</string>
+    <string name="error_load_failed">Failed to load numbers. Please try again later.</string>
+
+    <!-- Emergency Contact Item -->
+    <string name="call_action_description">Call %s</string>
+
+    <!-- Emergency Categories -->
+    <string name="category_unspecified">Emergency (Unspecified)</string>
+    <string name="category_general">General</string>
+    <string name="category_police">Police</string>
+    <string name="category_ambulance">Ambulance</string>
+    <string name="category_fire_dept">Fire Dept</string>
+    <string name="category_miec">eCall (MIeC)</string>
+    <string name="category_aiec">eCall (AIeC)</string>
+
+    <string name="category_europe_general">Emergency (Europe)</string>
+    <string name="category_na_general">Emergency (North America)</string>
+    <string name="category_uk_general">Emergency (UK)</string>
+    <string name="category_australia_general">Emergency (Australia)</string>
+
+    <string name="category_unknown">Emergency (Category: %s)</string>
 </resources>
