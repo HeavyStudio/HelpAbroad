@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.heavystudio.helpabroad.ui.screen.EmergencyScreen
+import androidx.compose.ui.tooling.preview.Preview
 import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,9 +23,25 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    EmergencyScreen()
+                    Greeting("Android")
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = Modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    HelpAbroadTheme {
+        Greeting("Android")
     }
 }
