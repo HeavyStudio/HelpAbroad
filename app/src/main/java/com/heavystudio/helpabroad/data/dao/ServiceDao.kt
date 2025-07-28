@@ -38,7 +38,7 @@ interface ServiceDao {
      *
      * @return A Flow that emits a list of [ServiceEntity] objects.
      */
-    @Query("SELECT * FROM sen_services ORDER BY sen_name_res_id ASC")
+    @Query("SELECT * FROM sen_services ORDER BY sen_name_res_key ASC")
     fun getAllServices(): Flow<List<ServiceEntity>>
 
     /**

@@ -39,7 +39,7 @@ interface CategoryDao {
      *
      * @return A [Flow] emitting a list of [CategoryEntity] objects.
      */
-    @Query("SELECT * FROM cat_categories ORDER BY cat_is_predefined DESC, cat_name_res_id ASC, cat_custom_name ASC")
+    @Query("SELECT * FROM cat_categories ORDER BY cat_is_predefined DESC, cat_name_res_key ASC, cat_custom_name ASC")
     fun getAllCategories(): Flow<List<CategoryEntity>>
 
     /**
@@ -49,7 +49,7 @@ interface CategoryDao {
      * @return A [Flow] emitting a list of [CategoryEntity] objects representing the predefined categories.
      *         The list is ordered alphabetically by the string resource ID of the category name.
      */
-    @Query("SELECT * FROM cat_categories WHERE cat_is_predefined = 1 ORDER BY cat_name_res_id ASC")
+    @Query("SELECT * FROM cat_categories WHERE cat_is_predefined = 1 ORDER BY cat_name_res_key ASC")
     fun getPredefinedCategories(): Flow<List<CategoryEntity>>
 
     /**
