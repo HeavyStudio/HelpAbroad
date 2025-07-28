@@ -66,6 +66,15 @@ interface LocalEmergencyNumberDao {
     suspend fun deleteNumbersForService(serviceId: Int)
 
     /**
+     * Deletes all local emergency numbers for a specific country and service.
+     *
+     * @param countryIsoCode The ISO code of the country.
+     * @param serviceId The ID of the emergency service.
+     */
+    @Query("DELETE FROM len_local_emergency_numbers WHERE len_country_iso_code = :countryIsoCode AND len_service_id = :serviceId")
+    suspend fun deleteNumbersForCountryAndService(countryIsoCode: String, serviceId: Int)
+
+    /**
      * Deletes all local emergency numbers from the database.
      */
     @Query("DELETE FROM len_local_emergency_numbers")
