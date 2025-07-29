@@ -17,9 +17,9 @@ object LogMessageUtils {
         return "Successfully $operation $entityType$idPart. $details".trim()
     }
 
-    fun failure(operation: String, entityType: String, entityId: Any?, details: String, reason: String): String {
+    fun failure(operation: String, entityType: String, entityId: Any?, details: String = "", reason: String = ""): String {
         val idPart = entityId?.let { " with ID: $it" } ?: ""
-        return "Failed to $operation $entityType$idPart. Reason: $reason".trim()
+        return "Failed to $operation $entityType$idPart. Reason: $reason. Details: $details".trim()
     }
 
     fun attempting(operation: String, entityType: String, entityId: Any? = null, additionalInfo: String = ""): String {

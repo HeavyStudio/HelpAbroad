@@ -26,11 +26,8 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE id = :id")
     fun getCategoryById(id: Int): Flow<CategoryEntity?>
 
-    @Query("SELECT * FROM categories WHERE can_be_deleted = 0 ORDER BY name_res_key ASC")
-    fun getPredefinedCategories(): Flow<List<CategoryEntity>>
-
-    @Query("SELECT * FROM categories WHERE can_be_deleted = 1 ORDER BY name_res_key ASC")
-    fun getCustomCategories(): Flow<List<CategoryEntity>>
+    @Query("SELECT * FROM categories WHERE can_be_deleted = :canBeDeleted ORDER BY name_res_key ASC")
+    fun getCategoriesByDeletableStatus(canBeDeleted: Boolean): Flow<List<CategoryEntity>>
 
     @Query("SELECT * FROM categories ORDER BY name_res_key ASC")
     fun getAllCategories(): Flow<List<CategoryEntity>>
