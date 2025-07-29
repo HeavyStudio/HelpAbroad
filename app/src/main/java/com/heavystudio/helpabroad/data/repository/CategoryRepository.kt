@@ -1,68 +1,54 @@
 package com.heavystudio.helpabroad.data.repository
 
+import android.database.sqlite.SQLiteConstraintException
+import android.util.Log
+import com.heavystudio.helpabroad.data.dao.CategoryDao
 import com.heavystudio.helpabroad.data.database.CategoryEntity
-import kotlinx.coroutines.flow.Flow
+import com.heavystudio.helpabroad.utils.LogMessageUtils
+import javax.inject.Inject
+import javax.inject.Singleton
 
-interface CategoryRepository {
-
-    /**
-     * Inserts a new category into the database.
-     *
-     * @param category The category to be inserted.
-     * @return The ID of the newly inserted category.
-     */
-    suspend fun insertCategory(category: CategoryEntity): Long
+@Singleton
+class CategoryRepository @Inject constructor(private val categoryDao: CategoryDao) {
 
     /**
-     * Retrieves all categories from the repository.
+     * Creates a new category in the database.
      *
-     * @return A Flow emitting a list of [CategoryEntity] objects.
+     * This function attempts to insert the provided [CategoryEntity] into the database. It logs
+     * debug information before the insertion attempt. If the insertion is successful, it returns a
+     * [Result] containing the new row ID. If the DAO returns an invalid ID (<= 0), it returns a
+     * [Result.failure] with a generic exception. If an [SQLiteConstraintException] occurs (e.g.,
+     * due to a unique constraint violation), it logs an error with details of the category being
+     * inserted and returns a [Result.failure] with the original exception. For any other [Exception],
+     * it logs an error with details of the category and returns a [Result.failure] with the original
+     * exception.
+     *
+     * @param category The [CategoryEntity] object to be inserted into the database.
+     * @return A [Result] object which is either [Result.success] containing the new row ID (Long)
+     *         if the insertion was successful, or [Result.failure] containing an [Exception] if an
+     *         error occurred.
      */
-    fun getAllCategories(): Flow<List<CategoryEntity>>
-
-    /**
-     * Retrieves a flow of lists containing predefined category entities.
-     *
-     * Predefined categories are those that are built into the application
-     * and are not created by the user.
-     *
-     * @return A [Flow] that emits a list of [CategoryEntity] objects representing predefined categories.
-     */
-    fun getPredefinedCategories(): Flow<List<CategoryEntity>>
-
-    /**
-     * Retrieves a flow of all custom categories.
-     *
-     * Custom categories are those created by the user.
-     *
-     * @return A Flow emitting a list of [CategoryEntity] objects representing custom categories.
-     */
-    fun getCustomCategories(): Flow<List<CategoryEntity>>
-
-    /**
-     * Updates an existing category in the database.
-     *
-     * @param category The category entity to be updated. The entity should have its ID set to the ID of the category to update.
-     */
-    suspend fun updateCategory(category: CategoryEntity)
-
-    /**
-     * Deletes a category from the database.
-     *
-     * @param category The category to be deleted.
-     */
-    suspend fun deleteCategory(category: CategoryEntity)
-
-    /**
-     * Deletes a category from the database by its ID.
-     *
-     * @param catId The ID of the category to be deleted.
-     * @return The number of rows affected by the delete operation.
-     */
-    suspend fun deleteCategoryById(catId: Int): Int
-
-    /**
-     * Deletes all categories from the database.
-     */
-    suspend fun deleteAllCategories()
+    suspend fun createCategory(category: CategoryEntity): Result<Long> {
+        val entityType = "Category"
+        val categoryDetails = category.toString()
+        return try {
+            Log.d("CategoryRepository", LogMessageUtils.attempting(
+                "insert", entityType, category.id, categoryDetails)
+            )
+            val newId = categoryDao.insertCategory(category)
+            if (newId > 0) {
+                Result.success(newId)
+            } else {
+                Result.failure(Exception("Failed to insert category, DAO returned invalid ID"))
+            }
+        } catch (e: SQLiteConstraintException) {
+            Log.e("CategoryRepository", LogMessageUtils.constraintViolation(
+                "insert", entityType, categoryDetails), e)
+            Result.failure(e)
+        } catch (e: Exception) {
+            Log.e("CategoryRepository", LogMessageUtils.unknownError(
+                "insert", entityType, categoryDetails), e)
+            Result.failure(e)
+        }
+    }
 }

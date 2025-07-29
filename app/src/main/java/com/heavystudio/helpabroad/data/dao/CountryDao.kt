@@ -12,46 +12,32 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CountryDao {
 
+    // --- Convenience Methods ---
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCountry(country: CountryEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCountries(countries: List<CountryEntity>)
+    suspend fun insertCountries(vararg countries: CountryEntity)
 
     @Update
-    suspend fun updateCountry(country: CountryEntity)
+    suspend fun updateCountry(country: CountryEntity): Int
 
     @Delete
-    suspend fun deleteCountry(country: CountryEntity)
+    suspend fun deleteCountry(country: CountryEntity): Int
 
-    /**
-     * Retrieves a country from the database by its ISO code.
-     *
-     * @param countryIsoCode The ISO code of the country to retrieve.
-     * @return The [CountryEntity] if found, or null otherwise.
-     */
-    @Query("SELECT * FROM cnt_countries WHERE cnt_iso_code = :countryIsoCode")
-    suspend fun getCountryByIsoCode(countryIsoCode: String): CountryEntity?
+    // --- Queries ---
+    @Query("SELECT * FROM countries WHERE iso_code = :isoCode")
+    fun getCountryByIsoCode(isoCode: String): Flow<CountryEntity?>
 
-    /**
-     * Retrieves all countries from the database, ordered alphabetically by name.
-     *
-     * @return A Flow emitting a list of [CountryEntity] objects.
-     */
-    @Query("SELECT * FROM cnt_countries ORDER BY cnt_name ASC")
+    @Query("SELECT * FROM countries WHERE member_112 = 1 ORDER BY iso_code ASC")
+    fun get112Countries(): Flow<List<CountryEntity>>
+
+    @Query("SELECT * FROM countries WHERE member_911 = 1 ORDER BY iso_code ASC")
+    fun get911Countries(): Flow<List<CountryEntity>>
+
+    @Query("SELECT * FROM countries ORDER BY iso_code ASC")
     fun getAllCountries(): Flow<List<CountryEntity>>
 
-    /**
-     * Deletes a country from the database by its ISO code.
-     *
-     * @param countryIsoCode The ISO code of the country to delete.
-     */
-    @Query("DELETE FROM cnt_countries WHERE cnt_iso_code = :countryIsoCode")
-    suspend fun deleteCountryByIsoCode(countryIsoCode: String)
-
-    /**
-     * Deletes all countries from the cnt_countries table.
-     */
-    @Query("DELETE FROM cnt_countries")
-    suspend fun deleteAllCountries()
+    @Query("DELETE FROM countries WHERE iso_code = :isoCode")
+    suspend fun deleteCountryByIsoCode(isoCode: String): Int
 }
