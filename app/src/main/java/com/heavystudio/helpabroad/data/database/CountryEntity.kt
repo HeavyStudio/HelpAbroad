@@ -30,4 +30,18 @@ data class CountryEntity(
 
     @ColumnInfo(name = "country_code")
     val countryCode: String
-)
+) {
+
+    override fun toString(): String {
+        return """
+            ISO Code: $isoCode; 
+            Name: $name; 
+            ${flagEmoji?.let { "Flag Emoji: $it" } ?: ""}
+            ISO Numeric: $isoNumeric; 
+            Region: $regionResKey; 
+            Member 112: $member112; 
+            Member 911: $member911; 
+            Country Code: $countryCode
+        """.trimIndent()
+    }
+}

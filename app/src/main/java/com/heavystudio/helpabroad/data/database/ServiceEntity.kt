@@ -37,4 +37,16 @@ data class ServiceEntity(
 
     @ColumnInfo(name = "can_be_deleted")
     val canBeDeleted: Boolean
-)
+) {
+
+    override fun toString(): String {
+        return """
+            ID: $id; 
+            Name: $nameResKey; 
+            ${icon?.let { "Icon: $it;" } ?: ""}
+            ${categoryId?.let { "Category ID: $it;" } ?: ""}
+            ${notesResKey?.let { "Notes: $it;" } ?: ""}
+            Can be deleted: $canBeDeleted
+        """.trimIndent()
+    }
+}

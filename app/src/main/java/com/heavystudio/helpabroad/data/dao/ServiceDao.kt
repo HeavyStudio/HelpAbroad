@@ -35,6 +35,9 @@ interface ServiceDao {
     @Query("SELECT * FROM services WHERE category_id = :categoryId ORDER BY name_res_key ASC")
     fun getServicesByCategoryId(categoryId: Int): Flow<List<ServiceEntity>>
 
+    @Query("SELECT * FROM services WHERE can_be_deleted = :canBeDeleted ORDER BY name_res_key ASC")
+    fun getServicesByDeletableStatus(canBeDeleted: Boolean): Flow<List<ServiceEntity>>
+
     @Query("DELETE FROM services WHERE id = :id AND can_be_deleted = 1")
     suspend fun deleteServiceById(id: Int): Int
 
