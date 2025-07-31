@@ -2,51 +2,197 @@
     <!-- App Name -->
     <string name="app_name" translatable="false">HelpAbroad</string>
 
-    <!-- Predefined Category Names -->
-    <string name="category_security">Security</string>
-    <string name="category_medical">Medical</string>
-    <string name="category_fire_rescue">Fire &amp; Rescue</string>
-    <string name="category_dispatch_general">General Emergency Dispatch</string>
+    <!-- Country Names -->
+    <string name="country_fr">France</string>
+    <string name="country_pt">Portugal</string>
+    <string name="country_pl">Poland</string>
+    <string name="country_gb">United Kingdom</string>
+    <string name="country_ca">Canada</string>
+    
+    <!-- Category Names -->
+    <string name="category_general_emergency_name">General Emergencies</string>
+    <string name="category_medical_name">Medical</string>
+    <string name="category_security_name">Security</string>
+    <string name="category_fire_name">Fire &amp; Rescue</string>
 
+    <!-- Category Descriptions -->
+    <string name="category_general_emergency_desc">For urgent situations requiring immediate,
+        all-purpose emergency assistance.</string>
+    <string name="category_medical_desc">For health crises, injuries, or urgent medical attention.
+        Connects to ambulance services and medical emergency lines.</string>
+    <string name="category_security_desc">For situations involving crime, threats to personal
+        safety, or need for police assistance.</string>
+    <string name="category_fire_desc">For incidents involving fire, smoke, or situations requiring
+        specialized rescue operations.</string>
+
+    
     <!-- Service Names -->
-    <string name="service_police">Police</string>
-    <string name="service_ambulance">Ambulance</string>
-    <string name="service_fire_department">Fire Department</string>
-    <string name="service_all_services">All Services</string>
+    <string name="service_112_emergency_name">112 Emergency</string>
+    <string name="service_911_emergency_name">911 Emergency</string>
+    <string name="service_general_dispatch">Emergencies Dispatch</string>
+    <string name="service_ambulance_name">Ambulance</string>
+    <string name="service_samu_name">SAMU</string>
+    <string name="service_police_name">Police</string>
+    <string name="service_fire_department_name">Fire Department</string>
+
+    <!-- Services Notes -->
+    <string name="service_112_emergency_notes">European-wide emergency number. Connects to police,
+        fire, or medical services.</string>
+    <string name="service_911_emergency_notes">Used in the US, Canada, and other regions. Connects
+        to police, fire, or medical services.</string>
+    <string name="service_general_dispatch_notes">General emergency dispatch center. Routes your
+        call to the appropriate service (police, fire, or medical).</string>
+    <string name="service_ambulance_notes">For medical emergencies requiring urgent attention
+        and transportation to a hospital.</string>
+    <string name="service_samu_notes">French emergency medical service (SAMU). Provides medical
+        advice and dispatches ambulances or doctors if needed.</string>
+    <string name="service_police_notes">For crimes, threats to personal safety, or situations
+        requiring law enforcement assistance.</string>
+    <string name="service_fire_notes">For fires, accidents, or rescue situations involving fire
+        hazards or trapped individuals.</string>
 
     <!-- Labels -->
-    <string name="label_emergency_numbers">Emergency Numbers</string>
-    <string name="label_personal_contacts">Personal Contacts</string>
-    <string name="label_uncategorized_contacts">Uncategorized</string>
-    <string name="label_favorite_contacts">Favorite</string>
+        <!-- Headlines -->
+    <string name="label_settings">Settings</string>
+    <string name="label_search">Search</string>
+    <string name="label_details">Details</string>
+    <string name="label_location">Location</string>
+    <string name="label_notes">Notes</string>
+    <string name="label_phone_number">Phone Number</string>
 
-    <string name="label_contact_name">Name</string>
-    <string name="label_contact_phone_number">Phone Number</string>
-    <string name="label_contact_relationship">Relationship</string>
-    <string name="label_contact_country">Country</string>
-    <string name="label_contact_category">Category</string>
-    <string name="label_contact_notes">Notes</string>
-    <string name="label_contact_favorite">Favorite</string>
-    <string name="label_select_emoji_optional">Select Emoji (Optional)</string>
+        <!-- Buttons -->
+    <string name="label_btn_call">Call</string>
+    <string name="label_btn_edit">Edit</string>
+    <string name="label_btn_delete">Delete</string>
+    <string name="label_btn_share">Share</string>
+    <string name="label_btn_close">Close</string>
+    <string name="label_btn_yes">Yes</string>
+    <string name="label_btn_no">No</string>
 
-    <!-- Buttons -->
-    <string name="button_add_contact">Add Contact</string>
-    <string name="button_add_category">Add Category</string>
-    <string name="button_save">Save</string>
-    <string name="button_cancel">Cancel</string>
+        <!-- Forms -->
+    <string name="label_form_add_new">Add New</string>
+    <string name="label_form_save_changes">Save Changes</string>
+    <string name="label_form_cancel">Cancel</string>
+    <string name="label_form_reset">Reset</string>
+    <string name="label_form_required_field">Required field</string>
 
-    <!-- Placeholders -->
-    <string name="placeholder_enter_contact_name">Enter contact name</string>
-    <string name="placeholder_enter_phone_number">Enter phone number</string>
-    <string name="placeholder_enter_category_name">Enter category name</string>
+        <!-- Create / Edit Contacts -->
+    <string name="label_form_contact_title_new">Create a Contact</string>
+    <string name="label_form_contact_title_upd">Edit %s</string>
+    <string name="label_form_contact_name">Name</string>
+    <string name="label_form_phone_number">Phone Number</string>
+    <string name="label_form_country">Country</string>
+    <string name="label_form_favorite">Favorite</string>
+    <string name="label_form_contact_name_hint">Enter the contact\'s name</string>
+    <string name="label_form_phone_number_hint">Enter the contact\'s phone number</string>
 
-    <!-- Errors -->
-    <string name="error_field_required">This field is required</string>
-    <string name="error_invalid_phone_number">Invalid phone number</string>
-    <string name="message_contact_saved">Contact saved</string>
-    <string name="message_category_created">Category created</string>
-    <string name="dialog_title_confirm_delete">Confirm Delete</string>
-    <string name="dialog_message_confirm_delete_contact">Are you sure you want to delete this contact?</string>
-    <string name="dialog_message_confirm_delete_category">Are you sure you want to delete this custom category?</string>
-    <string name="dialog_message_contacts_uncategorized">Its contacts will become uncategorized.</string>
+        <!-- Create / Edit Categories -->
+    <string name="label_form_category_title_new">Create a Category</string>
+    <string name="label_form_category_title_upd">Edit %s</string>
+    <string name="label_form_category_name">Name</string>
+    <string name="label_form_category_desc">Description</string>
+    <string name="label_form_category_name_hint">Enter the category\'s name</string>
+    <string name="label_form_category_desc_hint">Enter the category\s description (optional)</string>
+
+        <!-- Create / Edit Services -->
+    <string name="label_form_service_title_new">Create a Service</string>
+    <string name="label_form_service_title_upd">Edit %s</string>
+    <string name="label_form_service_name">Name</string>
+    <string name="label_form_service_category">Category</string>
+    <string name="label_form_service_notes">Notes</string>
+    <string name="label_form_service_name_hint">Enter the service\'s name</string>
+    <string name="label_form_service_notes_hint">Enter the service\'s notes (optional)</string>
+
+    <!-- Permissions -->
+        <!-- General -->
+    <string name="label_permission_btn_allow">Allow</string>
+    <string name="label_permission_btn_deny">Deny</string>
+    <string name="label_permission_btn_settings">Go to Settings</string>
+    <string name="label_permission_unavailable_title">Feature Unavailable</string>
+    <string name="label_permission_unavailable_message">This feature requires a permission that has
+        been denied. Please grant the permission in settings to use this feature.</string>
+
+        <!-- Geolocation -->
+    <string name="permission_geolocation_title">Location Access Needed</string>
+    <string name="permission_geolocation_rationale">HelpAbroad needs access to your location to show
+        relevant emergency services for your current region and, if you choose, to help you share
+        your location during an emergency.</string>
+    <string name="permission_geolocation_rationale_short">Allow access to your location to show
+        relevant emergency services.</string>
+
+        <!-- Call -->
+    <string name="permission_call_title">Make Calls Permission</string>
+    <string name="permission_call_rationale">To allow you to quickly call emergency services from
+        the app, HelpAbroad needs permission to make phone calls.</string>
+    <string name="permission_call_rationale_settings">HelpAbroad needs permission to make phone calls
+        so you can directly contact emergency services. Please enable this in settings.</string>
+
+        <!-- SMS -->
+    <string name="permission_sms_title">Send SMS Permission</string>
+    <string name="permission_sms_rationale">HelpAbroad needs permission to send SMS messages so you
+        can quickly alert your emergency contacts or send crucial information, like your location,
+        via text message in an emergency.</string>
+    <string name="permission_sms_rationale_settings">To enable sending emergency SMS alerts, please
+        grant SMS permission to HelpAbroad in your device settings.</string>
+
+    <!-- Error / Success Messages -->
+        <!-- Permission Errors -->
+    <string name="error_permission_location_denied_title">Location Access Required</string>
+    <string name="error_permission_location_denied_message">Cannot show local services or share your
+        location without location permission. Please grant access in app settings.</string>
+    <string name="error_permission_call_denied_title">Call Permission Required</string>
+    <string name="error_permission_call_denied_message">Cannot make direct calls without phone
+        permission. You can still use your phone\'s dialer. To enable direct calls, please grant
+        access in app settings.</string>
+    <string name="error_permission_sms_denied_title">SMS Permission Required</string>
+    <string name="error_permission_sms_denied_message">Cannot send emergency SMS without SMS
+        permission. Please grant access in app settings.</string>
+
+        <!-- Network Errors -->
+    <string name="error_network_unavailable_title">No Network Connection</string>
+    <string name="error_network_unavailable_message">Cannot update service information or perform
+        some actions. Please check your internet connection.</string>
+
+        <!-- Geolocation Errors -->
+    <string name="error_geolocation_services_disabled_title">Location Services Disabled</string>
+    <string name="error_geolocation_services_disabled_message">Please enable location services on
+        your device to use location-dependant features.</string>
+    <string name="error_geolocation_not_found_title">Location Unavailable</string>
+    <string name="error_geolocation_not_found_message">Could not determine your current location.
+        Please try again or use the manual country selection.</string>
+    <string name="error_geolocation_geocoder_unavailable">Cannot find address for location. Service
+        may be temporarily unavailable.</string>
+
+        <!-- Call / SMS Errors -->
+    <string name="error_call_failed_title">Call Failed</string>
+    <string name="error_call_failed_message">The call could not be initiated. Please try again or
+        use your phone's dialer. Error could be due to no SIM, airplane mode…</string>
+    <string name="error_sms_failed_title">SMS Failed</string>
+    <string name="error_sms_failed_message">The SMS could not be sent. Please check your network
+        service and try again.</string>
+    <string name="error_no_dialer_app_title">No Dialer App</string>
+    <string name="error_no_dialer_app_message">No application found to handle phone calls.</string>
+    <string name="error_no_sms_app_title">No SMS App</string>
+    <string name="error_no_sms_app_message">No application found to handle SMS messages.</string>
+
+        <!-- Input Validation Errors -->
+    <string name="error_form_empty_name">Name cannot be empty.</string>
+    <string name="error_form_invalid_phone">Please enter a valid phone number.</string>
+    <string name="error_form_country_not_selected">Please select a country.</string>
+    <string name="error_form_generic_validation">Please correct the highlighted fields.</string>
+
+        <!-- General / Unknown Errors -->
+    <string name="error_unknown_title">An Error Occurred</string>
+    <string name="error_unknown_message">An unexpected error occurred. Please try again or
+        restart the app.</string>
+
+        <!-- Success -->
+    <string name="success_contact_saved">Contact saved successfully.</string>
+    <string name="success_category_saved">Category saved successfully.</string>
+    <string name="success_service_saved">Service saved successfully.</string>
+    <string name="success_contact_deleted">Contact deleted.</string>
+    <string name="success_category_deleted">Category deleted.</string>
+    <string name="success_service_deleted">Service deleted.</string>
+    <string name="success_location_shared">Location shared successfully.</string>
+    <string name="success_sms_sent">Emergency SMS sent.</string>
 </resources>

@@ -41,12 +41,14 @@ data class ServiceEntity(
 
     override fun toString(): String {
         return """
-            ID: $id; 
-            Name: $nameResKey; 
-            ${icon?.let { "Icon: $it;" } ?: ""}
-            ${categoryId?.let { "Category ID: $it;" } ?: ""}
-            ${notesResKey?.let { "Notes: $it;" } ?: ""}
-            Can be deleted: $canBeDeleted
+            ServiceEntity(
+                id=$id,
+                nameResKey='$nameResKey',
+                icon=$icon,
+                categoryId=$categoryId,
+                notesResKey=$notesResKey,
+                canBeDeleted=$canBeDeleted
+            )
         """.trimIndent()
     }
 }

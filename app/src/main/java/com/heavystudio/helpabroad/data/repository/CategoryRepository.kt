@@ -229,4 +229,41 @@ class CategoryRepository @Inject constructor(private val categoryDao: CategoryDa
             Result.failure(e)
         }
     }
+
+    /**
+     * Deletes all custom categories from the database.
+     *
+     * This function attempts to delete all categories that are marked as deletable (custom categories)
+     * from the database. It logs information before and after the deletion attempt.
+     * If the deletion is successful and at least one row is deleted, it returns a [Result.success]
+     * containing the number of rows deleted. If the DAO indicates that no rows were deleted (e.g.,
+     * there were no custom categories to delete, or an issue occurred), it logs a warning and
+     * returns a [Result.failure] with a specific exception. If any other [Exception] occurs during
+     * the process, it logs an error and returns a [Result.failure] with the original exception.
+     *
+     * @return A [Result] object which is either [Result.success] containing the number of rows
+     *         deleted (Int) if the deletion was successful and rows were affected, or
+     *         [Result.failure] containing an [Exception] if an error occurred or no rows were deleted.
+     */
+    suspend fun deleteAllCustomCategories(): Result<Int> {
+        return try {
+            val attempt = LogMessageUtils.attempting("delete", entityType)
+            Log.i(tag, attempt)
+            val rowsDeleted = categoryDao.deleteAllCategories()
+            if (rowsDeleted > 0) {
+                val success = LogMessageUtils.success("delete", entityType, "")
+                Log.i(tag, success)
+                Result.success(rowsDeleted)
+            } else {
+                val failure = LogMessageUtils.failure("delete", entityType, "")
+                val exception = Exception("Failed to delete all categories, DAO returned invalid result")
+                Log.w(tag, failure)
+                Result.failure(exception)
+            }
+        } catch (e: Exception) {
+            val unknownEM = LogMessageUtils.unknownError("delete", entityType, "")
+            Log.e(tag, unknownEM, e)
+            Result.failure(e)
+        }
+    }
 }

@@ -1,0 +1,266 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "3ef53c4fe57e57ed4c34a6e68cf4982a",
+    "entities": [
+      {
+        "tableName": "categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name_res_key` TEXT NOT NULL, `description_res_key` TEXT, `custom_description` TEXT, `can_be_deleted` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameResKey",
+            "columnName": "name_res_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descriptionResKey",
+            "columnName": "description_res_key",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "customDescription",
+            "columnName": "custom_description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "canBeDeleted",
+            "columnName": "can_be_deleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "countries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`iso_code` TEXT NOT NULL, `name_res_key` TEXT NOT NULL, `flag_emoji` TEXT, `iso_numeric` TEXT NOT NULL, `region_res_key` TEXT NOT NULL, `member_112` INTEGER NOT NULL, `member_911` INTEGER NOT NULL, `country_code` TEXT NOT NULL, PRIMARY KEY(`iso_code`))",
+        "fields": [
+          {
+            "fieldPath": "isoCode",
+            "columnName": "iso_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameResKey",
+            "columnName": "name_res_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "flagEmoji",
+            "columnName": "flag_emoji",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isoNumeric",
+            "columnName": "iso_numeric",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "regionResKey",
+            "columnName": "region_res_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "member112",
+            "columnName": "member_112",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "member911",
+            "columnName": "member_911",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countryCode",
+            "columnName": "country_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "iso_code"
+          ]
+        }
+      },
+      {
+        "tableName": "emergency_numbers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`country_iso_code` TEXT NOT NULL, `emergency_number` TEXT NOT NULL, `service_id` INTEGER, `notes_res_key` TEXT, `can_be_deleted` INTEGER NOT NULL, PRIMARY KEY(`country_iso_code`, `emergency_number`), FOREIGN KEY(`country_iso_code`) REFERENCES `countries`(`iso_code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`service_id`) REFERENCES `services`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "countryIsoCode",
+            "columnName": "country_iso_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emergencyNumber",
+            "columnName": "emergency_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serviceId",
+            "columnName": "service_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "notesResKey",
+            "columnName": "notes_res_key",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "canBeDeleted",
+            "columnName": "can_be_deleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "country_iso_code",
+            "emergency_number"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_emergency_numbers_country_iso_code",
+            "unique": false,
+            "columnNames": [
+              "country_iso_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_emergency_numbers_country_iso_code` ON `${TABLE_NAME}` (`country_iso_code`)"
+          },
+          {
+            "name": "index_emergency_numbers_service_id",
+            "unique": false,
+            "columnNames": [
+              "service_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_emergency_numbers_service_id` ON `${TABLE_NAME}` (`service_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "countries",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "country_iso_code"
+            ],
+            "referencedColumns": [
+              "iso_code"
+            ]
+          },
+          {
+            "table": "services",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "service_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "services",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name_res_key` TEXT NOT NULL, `icon` TEXT, `category_id` INTEGER, `notes_res_key` TEXT, `can_be_deleted` INTEGER NOT NULL, FOREIGN KEY(`category_id`) REFERENCES `categories`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameResKey",
+            "columnName": "name_res_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "notesResKey",
+            "columnName": "notes_res_key",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "canBeDeleted",
+            "columnName": "can_be_deleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_services_category_id",
+            "unique": false,
+            "columnNames": [
+              "category_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_services_category_id` ON `${TABLE_NAME}` (`category_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "categories",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "category_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3ef53c4fe57e57ed4c34a6e68cf4982a')"
+    ]
+  }
+}

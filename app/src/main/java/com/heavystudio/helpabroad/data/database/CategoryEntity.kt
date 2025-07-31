@@ -25,10 +25,13 @@ data class CategoryEntity(
 
     override fun toString(): String {
         return """
-            ID: $id;
-            Name: $nameResKey
-            ${descriptionResKey?.let { "Description: $it" } ?: ""};
-            ${customDescription?.let { "Description: $it" } ?: ""}
+            CategoryEntity(
+                id=$id,
+                nameResKey='$nameResKey',
+                descriptionResKey=$descriptionResKey,
+                customDescription=$customDescription,
+                canBeDeleted=$canBeDeleted
+            )
         """.trimIndent()
     }
 }

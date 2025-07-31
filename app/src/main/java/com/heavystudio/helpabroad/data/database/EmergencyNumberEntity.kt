@@ -23,7 +23,10 @@ import androidx.room.Index
             onDelete = ForeignKey.SET_NULL
         )
     ],
-    indices = [Index(value = ["country_iso_code", "service_id"])]
+    indices = [
+        Index(value = ["country_iso_code"]),
+        Index(value = ["service_id"])
+    ]
 )
 data class EmergencyNumberEntity(
 
@@ -41,4 +44,17 @@ data class EmergencyNumberEntity(
 
     @ColumnInfo(name = "can_be_deleted")
     val canBeDeleted: Boolean
-)
+) {
+
+    override fun toString(): String {
+        return """
+            EmergencyNumberEntity(
+                countryIsoCode='$countryIsoCode',
+                emergencyNumber='$emergencyNumber',
+                serviceId=$serviceId,
+                notesResKey=$notesResKey,
+                canBeDeleted=$canBeDeleted
+            )
+        """.trimIndent()
+    }
+}
