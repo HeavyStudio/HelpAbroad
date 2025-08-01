@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.material.icons)
     implementation(libs.material.icons.extended)
+    implementation(libs.play.services.location)
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

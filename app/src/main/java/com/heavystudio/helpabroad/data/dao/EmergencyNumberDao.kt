@@ -50,13 +50,13 @@ interface EmergencyNumberDao {
 
     @Query(
         "DELETE FROM emergency_numbers " +
-                "WHERE country_iso_code = :isoCode AND can_be_deleted = 1"
+                "WHERE country_iso_code = :isoCode"
     )
     suspend fun deleteEmergencyNumbersByCountry(isoCode: String): Int
 
-    @Query("DELETE FROM emergency_numbers WHERE service_id = :serviceId AND can_be_deleted = 1")
+    @Query("DELETE FROM emergency_numbers WHERE service_id = :serviceId")
     suspend fun deleteEmergencyNumbersByService(serviceId: Int): Int
 
-    @Query("DELETE FROM emergency_numbers WHERE can_be_deleted = 1")
+    @Query("DELETE FROM emergency_numbers")
     suspend fun deleteAllEmergencyNumbers(): Int
 }

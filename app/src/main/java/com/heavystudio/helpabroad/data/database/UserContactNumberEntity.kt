@@ -1,14 +1,13 @@
 package com.heavystudio.helpabroad.data.database
 
-import android.R
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "emergency_numbers",
-    primaryKeys = ["country_iso_code", "emergency_number"],
+    tableName = "user_contact_numbers",
     foreignKeys = [
         ForeignKey(
             entity = CountryEntity::class,
@@ -28,29 +27,24 @@ import androidx.room.Index
         Index(value = ["service_id"])
     ]
 )
-data class EmergencyNumberEntity(
+data class UserContactNumberEntity(
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int = 0,
 
     @ColumnInfo(name = "country_iso_code")
     val countryIsoCode: String,
 
-    @ColumnInfo(name = "emergency_number")
-    val emergencyNumber: String,
+    @ColumnInfo(name = "contact_name")
+    val contactName: String,
+
+    @ColumnInfo(name = "contact_number")
+    val contactNumber: String,
 
     @ColumnInfo(name = "service_id")
     val serviceId: Int?,
 
-    @ColumnInfo(name = "notes_res_key")
-    val notesResKey: String?
-) {
-
-    override fun toString(): String {
-        return """
-            EmergencyNumberEntity(
-                countryIsoCode='$countryIsoCode',
-                emergencyNumber='$emergencyNumber',
-                serviceId=$serviceId,
-                notesResKey=$notesResKey
-            )
-        """.trimIndent()
-    }
-}
+    @ColumnInfo(name = "notes")
+    val notes: String?
+)

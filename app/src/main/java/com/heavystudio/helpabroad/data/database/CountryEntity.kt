@@ -10,8 +10,8 @@ data class CountryEntity(
     @ColumnInfo(name = "iso_code")
     val isoCode: String,
 
-    @ColumnInfo(name = "name_res_key")
-    val nameResKey: String,
+    @ColumnInfo(name = "name")
+    val name: String,
 
     @ColumnInfo(name = "flag_emoji")
     val flagEmoji: String?,
@@ -36,7 +36,7 @@ data class CountryEntity(
         return """
             CountryEntity(
                 isoCode='$isoCode',
-                nameResKey='$nameResKey',
+                name='$name',
                 flagEmoji=$flagEmoji,
                 isoNumeric='$isoNumeric',
                 regionResKey='$regionResKey',

@@ -24,7 +24,10 @@ data class ServiceEntity(
     val id: Int,
 
     @ColumnInfo(name = "name_res_key")
-    val nameResKey: String,
+    val nameResKey: String?,
+
+    @ColumnInfo(name = "custom_name")
+    val customName: String?,
 
     @ColumnInfo(name = "icon")
     val icon: String?,
@@ -35,6 +38,9 @@ data class ServiceEntity(
     @ColumnInfo(name = "notes_res_key")
     val notesResKey: String?,
 
+    @ColumnInfo(name = "custom_notes")
+    val customNotes: String?,
+
     @ColumnInfo(name = "can_be_deleted")
     val canBeDeleted: Boolean
 ) {
@@ -43,12 +49,13 @@ data class ServiceEntity(
         return """
             ServiceEntity(
                 id=$id,
-                nameResKey='$nameResKey',
+                nameResKey=$nameResKey,
+                customName=$customName,
                 icon=$icon,
                 categoryId=$categoryId,
                 notesResKey=$notesResKey,
-                canBeDeleted=$canBeDeleted
-            )
+                customNotes=$customNotes,
+                
         """.trimIndent()
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.heavystudio.helpabroad.ui.screen.CountriesScreen
 import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Heavy")
+//                    Greeting("Heavy")
+                    CountriesScreen()
                 }
             }
         }

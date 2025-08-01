@@ -16,6 +16,9 @@ data class CategoryEntity(
     @ColumnInfo(name = "description_res_key")
     val descriptionResKey: String?,
 
+    @ColumnInfo(name = "custom_name")
+    val customName: String?,
+
     @ColumnInfo(name = "custom_description")
     val customDescription: String?,
 

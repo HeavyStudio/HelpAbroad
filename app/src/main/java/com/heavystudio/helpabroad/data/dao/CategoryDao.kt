@@ -29,7 +29,14 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE can_be_deleted = :canBeDeleted ORDER BY name_res_key ASC")
     fun getCategoriesByDeletableStatus(canBeDeleted: Boolean): Flow<List<CategoryEntity>>
 
-    @Query("SELECT * FROM categories ORDER BY name_res_key ASC")
+    @Query("""
+        SELECT * 
+        FROM categories 
+        ORDER BY 
+            CASE WHEN name_res_key IS NULL THEN 1 ELSE 0 END ASC, 
+            name_res_key ASC,
+            custom_name ASC
+    """)
     fun getAllCategories(): Flow<List<CategoryEntity>>
 
     @Query("DELETE FROM categories WHERE id = :id AND can_be_deleted = 1")
