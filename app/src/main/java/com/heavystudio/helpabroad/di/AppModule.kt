@@ -6,6 +6,7 @@ import com.heavystudio.helpabroad.data.dao.CategoryDao
 import com.heavystudio.helpabroad.data.dao.CountryDao
 import com.heavystudio.helpabroad.data.dao.EmergencyNumberDao
 import com.heavystudio.helpabroad.data.dao.ServiceDao
+import com.heavystudio.helpabroad.data.dao.UserContactNumberDao
 import com.heavystudio.helpabroad.data.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -42,4 +43,7 @@ object AppModule {
 
     @Provides
     fun provideServiceDao(appDatabase: AppDatabase): ServiceDao = appDatabase.serviceDao()
+
+    @Provides
+    fun provideUserContactNumberDao(appDatabase: AppDatabase): UserContactNumberDao = appDatabase.userContactNumberDao()
 }
