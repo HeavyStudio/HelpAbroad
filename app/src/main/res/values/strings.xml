@@ -2,28 +2,27 @@
     <!-- App Name -->
     <string name="app_name" translatable="false">HelpAbroad</string>
 
-    <!-- Headlines -->
-    <string name="select_country">Select Country</string>
-    <string name="loading_countries">Loading Countries</string>
-    <string name="country">Country</string>
-    <string name="no_countries_available">No Countries Available</string>
-    <string name="no_countries_found">No Countries Found</string>
-    <string name="emergency_numbers_for_country">Emergency Numbers for %1$s</string>
-    <string name="loading_numbers">Loading Numbers</string>
-    <string name="no_emergency_numbers_found">No Emergency Numbers Found.</string>
-    <string name="police_label">Police</string>
-    <string name="ambulance_label">Ambulance</string>
-    <string name="samu_label" translatable="false">SAMU</string>
-    <string name="fire_label">Pompier</string>
-    <string name="general_emergency_label">General Emergency</string> <!-- Or a more specific label -->
-    <string name="member_112_label">112 Member (European Emergency)</string>
-    <string name="member_911_label">911 Member (NA Emergency)</string>
-    <string name="not_available_short">N/D</string>
-    <string name="other_numbers_label">Other Numbers</string>
-    <string name="additional_emergency_service_label">Additional Emergency Service</string>
+    <string name="onboarding_title_permissions">App Permissions</string>
+    <string name="onboarding_permissions_intro">To provide the best experience and ensure all features work correctly, Help Abroad needs the following permissions:</string>
+    <string name="onboarding_button_continue">Continue</string>
+    <string name="onboarding_button_open_settings">Open App Settings</string>
 
-    <string name="search_country_placeholder">Search a Country</string>
-    <string name="search_country_label">Country Name or ISO Code</string>
-    <string name="search_icon_description">Search</string>
-    <string name="clear_search_icon_description">Clear Search</string>
+    <string name="permission_location_title">Location</string>
+    <string name="permission_location_rationale">Allows the app to automatically detect your current country. This helps in quickly showing relevant emergency numbers and local information.</string>
+    <string name="permission_location_consequence">If denied, you will need to manually search for your country each time to see specific information.</string>
+
+    <string name="permission_call_title">Phone Calls</string>
+    <string name="permission_call_rationale">Allows the app to directly initiate calls to emergency numbers when you tap on them. This ensures a faster response in critical situations.</string>
+    <string name="permission_call_consequence">If denied, the app will open your phone\'s dialer with the emergency number pre-filled, but you will need to manually press the call button.</string>
+
+    <string name="permission_sms_title">SMS Messages</string>
+    <string name="permission_sms_rationale">Allows the app to send an SOS message, potentially including your current location, to pre-configured emergency contacts (this feature is planned for future updates).</string>
+    <string name="permission_sms_consequence">If denied, the SOS SMS message feature will not be available. You would need to use other means to send such messages.</string>
+
+    <string name="permission_button_grant">Grant Permission</string>
+    <string name="permission_button_retry_grant">Try Again</string>
+    <string name="permission_status_requesting">Requesting...</string>
+    <string name="permission_status_granted">Status: Granted</string>
+    <string name="permission_status_denied">Status: Denied</string>
+    <string name="permission_status_not_requested">Status: Not Requested</string>
 </resources>

@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Headlines -->
-    <string name="select_country">Sélectionnez un pays</string>
-    <string name="loading_countries">Chargement des pays</string>
-    <string name="country">Pays</string>
-    <string name="no_countries_available">Aucun pays disponible</string>
-    <string name="no_countries_found">Aucun pays trouvé</string>
-    <string name="emergency_numbers_for_country">Numéros d\'urgence pour %1$s</string>
-    <string name="loading_numbers">Chargement des numéros...</string>
-    <string name="no_emergency_numbers_found">Aucun numéro d\'urgence trouvé.</string>
-    <string name="police_label">Police</string>
-    <string name="ambulance_label">Ambulance</string>
-    <string name="fire_label">Pompier</string>
-    <string name="general_emergency_label">Urgence générale</string> <!-- Or a more specific label -->
-    <string name="member_112_label">Membre 112 (Urgence Européenne)</string>
-    <string name="member_911_label">Membre 911 (Urgence Nord-Américaine)</string>
-    <string name="not_available_short">N/D</string>
-    <string name="other_numbers_label">Autres numéros</string>
-    <string name="additional_emergency_service_label">Service d\'urgence additionnel</string>
+    <string name="onboarding_title_permissions">Permissions de l\'application</string>
+    <string name="onboarding_permissions_intro">Pour offrir la meilleure expérience et assurer le bon fonctionnement de toutes les fonctionnalités, Help Abroad a besoin des autorisations suivantes :</string>
+    <string name="onboarding_button_continue">Continuer</string>
+    <string name="onboarding_button_open_settings">Ouvrir les paramètres</string>
 
-    <string name="search_country_placeholder">Rechercher un pays</string>
-    <string name="search_country_label">Nom du pays ou code ISO</string>
-    <string name="search_icon_description">Rechercher</string>
-    <string name="clear_search_icon_description">Réinitialiser</string>
+    <string name="permission_location_title">Localisation</string>
+    <string name="permission_location_rationale">Permet à l\'application de détecter automatiquement votre pays actuel. Cela aide à afficher rapidement les numéros d\'urgence pertinents et les informations locales.</string>
+    <string name="permission_location_consequence">Si refusé, vous devrez rechercher manuellement votre pays à chaque fois pour voir les informations spécifiques.</string>
+
+    <string name="permission_call_title">Appels téléphoniques</string>
+    <string name="permission_call_rationale">Permet à l\'application de lancer directement des appels vers les numéros d\'urgence lorsque vous appuyez dessus. Cela garantit une réponse plus rapide dans les situations critiques.</string>
+    <string name="permission_call_consequence">Si refusé, l\'application ouvrira le composeur de votre téléphone avec le numéro pré-rempli, mais vous devrez appuyer manuellement sur le bouton d\'appel.</string>
+
+    <string name="permission_sms_title">Messages SMS</string>
+    <string name="permission_sms_rationale">Permet à l\'application d\'envoyer un message SOS, pouvant inclure votre position actuelle, à des contacts d\'urgence préconfigurés (cette fonctionnalité est prévue pour de futures mises à jour).</string>
+    <string name="permission_sms_consequence">Si refusé, la fonction d\'envoi de SMS SOS ne sera pas disponible. Vous devrez utiliser d\'autres moyens pour envoyer de tels messages.</string>
+
+    <string name="permission_button_grant">Accorder la permission</string>
+    <string name="permission_button_retry_grant">Réessayer</string>
+    <string name="permission_status_requesting">Demande en cours</string>
+    <string name="permission_status_granted">Statut : Accordé</string>
+    <string name="permission_status_denied">Statut : Refusé</string>
+    <string name="permission_status_not_requested">Statut : Non demandé</string>
+
 </resources>
