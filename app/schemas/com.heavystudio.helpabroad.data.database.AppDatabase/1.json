@@ -2,31 +2,42 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b1632b8625525fce53d57cd17a8fa586",
+    "identityHash": "39b7f95d8855d77d5595de6b22bc543d",
     "entities": [
       {
-        "tableName": "cat_categories",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cat_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cat_name_res_id` INTEGER, `cat_custom_name` TEXT, `cat_is_predefined` INTEGER NOT NULL)",
+        "tableName": "categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name_res_key` TEXT NOT NULL, `description_res_key` TEXT, `custom_name` TEXT, `custom_description` TEXT, `can_be_deleted` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "cat_id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "nameResId",
-            "columnName": "cat_name_res_id",
-            "affinity": "INTEGER"
+            "fieldPath": "nameResKey",
+            "columnName": "name_res_key",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
-            "fieldPath": "customName",
-            "columnName": "cat_custom_name",
+            "fieldPath": "descriptionResKey",
+            "columnName": "description_res_key",
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "isPredefined",
-            "columnName": "cat_is_predefined",
+            "fieldPath": "customName",
+            "columnName": "custom_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "customDescription",
+            "columnName": "custom_description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "canBeDeleted",
+            "columnName": "can_be_deleted",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -34,74 +45,191 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "cat_id"
+            "id"
           ]
         }
       },
       {
-        "tableName": "cnt_countries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cnt_iso_code` TEXT NOT NULL, `cnt_name` TEXT NOT NULL, `cnt_flag_emoji` TEXT, `cnt_dial_code` TEXT, `cnt_regional_dispatch` TEXT, PRIMARY KEY(`cnt_iso_code`))",
+        "tableName": "countries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`iso_code` TEXT NOT NULL, `name` TEXT NOT NULL, `flag_emoji` TEXT, `iso_numeric` TEXT NOT NULL, `region_res_key` TEXT NOT NULL, `member_112` INTEGER NOT NULL, `member_911` INTEGER NOT NULL, `country_code` TEXT NOT NULL, PRIMARY KEY(`iso_code`))",
+        "fields": [
+          {
+            "fieldPath": "isoCode",
+            "columnName": "iso_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "flagEmoji",
+            "columnName": "flag_emoji",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isoNumeric",
+            "columnName": "iso_numeric",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "regionResKey",
+            "columnName": "region_res_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "member112",
+            "columnName": "member_112",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "member911",
+            "columnName": "member_911",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countryCode",
+            "columnName": "country_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "iso_code"
+          ]
+        }
+      },
+      {
+        "tableName": "emergency_numbers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`country_iso_code` TEXT NOT NULL, `emergency_number` TEXT NOT NULL, `service_id` INTEGER, `notes_res_key` TEXT, PRIMARY KEY(`country_iso_code`, `emergency_number`), FOREIGN KEY(`country_iso_code`) REFERENCES `countries`(`iso_code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`service_id`) REFERENCES `services`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "countryIsoCode",
-            "columnName": "cnt_iso_code",
+            "columnName": "country_iso_code",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "countryName",
-            "columnName": "cnt_name",
+            "fieldPath": "emergencyNumber",
+            "columnName": "emergency_number",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "countryFlagEmoji",
-            "columnName": "cnt_flag_emoji",
-            "affinity": "TEXT"
+            "fieldPath": "serviceId",
+            "columnName": "service_id",
+            "affinity": "INTEGER"
           },
           {
-            "fieldPath": "countryDialCode",
-            "columnName": "cnt_dial_code",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "countryRegionalDispatch",
-            "columnName": "cnt_regional_dispatch",
+            "fieldPath": "notesResKey",
+            "columnName": "notes_res_key",
             "affinity": "TEXT"
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "cnt_iso_code"
+            "country_iso_code",
+            "emergency_number"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_emergency_numbers_country_iso_code",
+            "unique": false,
+            "columnNames": [
+              "country_iso_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_emergency_numbers_country_iso_code` ON `${TABLE_NAME}` (`country_iso_code`)"
+          },
+          {
+            "name": "index_emergency_numbers_service_id",
+            "unique": false,
+            "columnNames": [
+              "service_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_emergency_numbers_service_id` ON `${TABLE_NAME}` (`service_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "countries",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "country_iso_code"
+            ],
+            "referencedColumns": [
+              "iso_code"
+            ]
+          },
+          {
+            "table": "services",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "service_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
-        "tableName": "len_local_emergency_numbers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`len_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `len_country_iso_code` TEXT NOT NULL, `len_number` TEXT NOT NULL, `len_service_id` INTEGER NOT NULL, FOREIGN KEY(`len_country_iso_code`) REFERENCES `cnt_countries`(`cnt_iso_code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`len_service_id`) REFERENCES `sen_services`(`sen_id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "tableName": "services",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name_res_key` TEXT, `custom_name` TEXT, `icon` TEXT, `category_id` INTEGER, `notes_res_key` TEXT, `custom_notes` TEXT, `can_be_deleted` INTEGER NOT NULL, FOREIGN KEY(`category_id`) REFERENCES `categories`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "len_id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "countryIsoCode",
-            "columnName": "len_country_iso_code",
-            "affinity": "TEXT",
-            "notNull": true
+            "fieldPath": "nameResKey",
+            "columnName": "name_res_key",
+            "affinity": "TEXT"
           },
           {
-            "fieldPath": "number",
-            "columnName": "len_number",
-            "affinity": "TEXT",
-            "notNull": true
+            "fieldPath": "customName",
+            "columnName": "custom_name",
+            "affinity": "TEXT"
           },
           {
-            "fieldPath": "serviceResId",
-            "columnName": "len_service_id",
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "notesResKey",
+            "columnName": "notes_res_key",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "customNotes",
+            "columnName": "custom_notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "canBeDeleted",
+            "columnName": "can_be_deleted",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -109,226 +237,120 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "len_id"
+            "id"
           ]
         },
         "indices": [
           {
-            "name": "idx_len_country_iso_code",
+            "name": "index_services_category_id",
             "unique": false,
             "columnNames": [
-              "len_country_iso_code"
+              "category_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `idx_len_country_iso_code` ON `${TABLE_NAME}` (`len_country_iso_code`)"
-          },
-          {
-            "name": "idx_len_service_id",
-            "unique": false,
-            "columnNames": [
-              "len_service_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `idx_len_service_id` ON `${TABLE_NAME}` (`len_service_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_services_category_id` ON `${TABLE_NAME}` (`category_id`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "cnt_countries",
-            "onDelete": "CASCADE",
+            "table": "categories",
+            "onDelete": "SET NULL",
             "onUpdate": "NO ACTION",
             "columns": [
-              "len_country_iso_code"
+              "category_id"
             ],
             "referencedColumns": [
-              "cnt_iso_code"
-            ]
-          },
-          {
-            "table": "sen_services",
-            "onDelete": "RESTRICT",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "len_service_id"
-            ],
-            "referencedColumns": [
-              "sen_id"
+              "id"
             ]
           }
         ]
       },
       {
-        "tableName": "pen_personal_emergency_numbers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pen_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `pen_contact_name` TEXT NOT NULL, `pen_phone_number` TEXT NOT NULL, `pen_relationship_description` TEXT, `pen_country_iso_code` TEXT NOT NULL, `pen_creation_timestamp` INTEGER NOT NULL, `pen_category_id` INTEGER, `pen_notes` TEXT, `pen_is_favorite` INTEGER NOT NULL DEFAULT 0, FOREIGN KEY(`pen_country_iso_code`) REFERENCES `cnt_countries`(`cnt_iso_code`) ON UPDATE NO ACTION ON DELETE SET NULL , FOREIGN KEY(`pen_category_id`) REFERENCES `cat_categories`(`cat_id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "tableName": "user_contact_numbers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `country_iso_code` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `contact_number` TEXT NOT NULL, `service_id` INTEGER, `notes` TEXT, FOREIGN KEY(`country_iso_code`) REFERENCES `countries`(`iso_code`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`service_id`) REFERENCES `services`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "pen_id",
+            "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countryIsoCode",
+            "columnName": "country_iso_code",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "contactName",
-            "columnName": "pen_contact_name",
+            "columnName": "contact_name",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "phoneNumber",
-            "columnName": "pen_phone_number",
+            "fieldPath": "contactNumber",
+            "columnName": "contact_number",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "relationshipDescription",
-            "columnName": "pen_relationship_description",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "countryIsoCode",
-            "columnName": "pen_country_iso_code",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "creationTimestamp",
-            "columnName": "pen_creation_timestamp",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "categoryId",
-            "columnName": "pen_category_id",
+            "fieldPath": "serviceId",
+            "columnName": "service_id",
             "affinity": "INTEGER"
           },
           {
             "fieldPath": "notes",
-            "columnName": "pen_notes",
+            "columnName": "notes",
             "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "isFavorite",
-            "columnName": "pen_is_favorite",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
           }
         ],
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "pen_id"
+            "id"
           ]
         },
         "indices": [
           {
-            "name": "idx_pen_country_iso_code",
+            "name": "index_user_contact_numbers_country_iso_code",
             "unique": false,
             "columnNames": [
-              "pen_country_iso_code"
+              "country_iso_code"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `idx_pen_country_iso_code` ON `${TABLE_NAME}` (`pen_country_iso_code`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_contact_numbers_country_iso_code` ON `${TABLE_NAME}` (`country_iso_code`)"
           },
           {
-            "name": "idx_pen_category_id",
+            "name": "index_user_contact_numbers_service_id",
             "unique": false,
             "columnNames": [
-              "pen_category_id"
+              "service_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `idx_pen_category_id` ON `${TABLE_NAME}` (`pen_category_id`)"
-          },
-          {
-            "name": "idx_pen_is_favorite",
-            "unique": false,
-            "columnNames": [
-              "pen_is_favorite"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `idx_pen_is_favorite` ON `${TABLE_NAME}` (`pen_is_favorite`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_contact_numbers_service_id` ON `${TABLE_NAME}` (`service_id`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "cnt_countries",
-            "onDelete": "SET NULL",
+            "table": "countries",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "pen_country_iso_code"
+              "country_iso_code"
             ],
             "referencedColumns": [
-              "cnt_iso_code"
+              "iso_code"
             ]
           },
           {
-            "table": "cat_categories",
+            "table": "services",
             "onDelete": "SET NULL",
             "onUpdate": "NO ACTION",
             "columns": [
-              "pen_category_id"
+              "service_id"
             ],
             "referencedColumns": [
-              "cat_id"
-            ]
-          }
-        ]
-      },
-      {
-        "tableName": "sen_services",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sen_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sen_name_res_id` INTEGER NOT NULL, `sen_emoji` TEXT, `sen_category_id` INTEGER NOT NULL, FOREIGN KEY(`sen_category_id`) REFERENCES `cat_categories`(`cat_id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "sen_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "serviceNameResId",
-            "columnName": "sen_name_res_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "serviceEmoji",
-            "columnName": "sen_emoji",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "categoryId",
-            "columnName": "sen_category_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "sen_id"
-          ]
-        },
-        "indices": [
-          {
-            "name": "idx_sen_category_id",
-            "unique": false,
-            "columnNames": [
-              "sen_category_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `idx_sen_category_id` ON `${TABLE_NAME}` (`sen_category_id`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "cat_categories",
-            "onDelete": "RESTRICT",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "sen_category_id"
-            ],
-            "referencedColumns": [
-              "cat_id"
+              "id"
             ]
           }
         ]
@@ -336,7 +358,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b1632b8625525fce53d57cd17a8fa586')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '39b7f95d8855d77d5595de6b22bc543d')"
     ]
   }
 }

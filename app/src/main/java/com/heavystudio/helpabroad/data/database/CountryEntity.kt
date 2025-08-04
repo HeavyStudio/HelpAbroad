@@ -4,21 +4,46 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cnt_countries")
+@Entity(tableName = "countries")
 data class CountryEntity(
-    @PrimaryKey
-    @ColumnInfo(name = "cnt_iso_code")
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "iso_code")
     val isoCode: String,
 
-    @ColumnInfo(name = "cnt_name")
+    @ColumnInfo(name = "name")
     val name: String,
 
-    @ColumnInfo(name = "cnt_flag_emoji")
+    @ColumnInfo(name = "flag_emoji")
     val flagEmoji: String?,
 
-    @ColumnInfo(name = "cnt_dial_code")
-    val dialCode: String?,
+    @ColumnInfo(name = "iso_numeric")
+    val isoNumeric: String,
 
-    @ColumnInfo(name = "cnt_regional_dispatch")
-    val regionalDispatch: String?,
-)
+    @ColumnInfo(name = "region_res_key")
+    val regionResKey: String,
+
+    @ColumnInfo(name = "member_112")
+    val member112: Boolean,
+
+    @ColumnInfo(name = "member_911")
+    val member911: Boolean,
+
+    @ColumnInfo(name = "country_code")
+    val countryCode: String
+) {
+
+    override fun toString(): String {
+        return """
+            CountryEntity(
+                isoCode='$isoCode',
+                name='$name',
+                flagEmoji=$flagEmoji,
+                isoNumeric='$isoNumeric',
+                regionResKey='$regionResKey',
+                member112=$member112,
+                member911=$member911,
+                countryCode='$countryCode'
+            )
+        """.trimIndent()
+    }
+}

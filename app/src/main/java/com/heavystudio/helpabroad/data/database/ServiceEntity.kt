@@ -7,30 +7,55 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "sen_services",
+    tableName = "services",
     foreignKeys = [
         ForeignKey(
             entity = CategoryEntity::class,
-            parentColumns = ["cat_id"],
-            childColumns = ["sen_category_id"],
-            onDelete = ForeignKey.NO_ACTION
+            parentColumns = ["id"],
+            childColumns = ["category_id"],
+            onDelete = ForeignKey.SET_NULL
         )
     ],
-    indices = [
-        Index(value = ["sen_category_id"], name = "idx_sen_category_id")
-    ]
+    indices = [Index(value = ["category_id"])]
 )
 data class ServiceEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "sen_id")
-    val id: Int = 0,
+    @ColumnInfo(name = "id")
+    val id: Int,
 
-    @ColumnInfo(name = "sen_name_res_key")
-    val serviceNameResKey: String,
+    @ColumnInfo(name = "name_res_key")
+    val nameResKey: String?,
 
-    @ColumnInfo(name = "sen_emoji")
-    val serviceEmoji: String?,
+    @ColumnInfo(name = "custom_name")
+    val customName: String?,
 
-    @ColumnInfo(name = "sen_category_id")
-    val categoryId: Int
-)
+    @ColumnInfo(name = "icon")
+    val icon: String?,
+
+    @ColumnInfo(name = "category_id")
+    val categoryId: Int?,
+
+    @ColumnInfo(name = "notes_res_key")
+    val notesResKey: String?,
+
+    @ColumnInfo(name = "custom_notes")
+    val customNotes: String?,
+
+    @ColumnInfo(name = "can_be_deleted")
+    val canBeDeleted: Boolean
+) {
+
+    override fun toString(): String {
+        return """
+            ServiceEntity(
+                id=$id,
+                nameResKey=$nameResKey,
+                customName=$customName,
+                icon=$icon,
+                categoryId=$categoryId,
+                notesResKey=$notesResKey,
+                customNotes=$customNotes,
+                
+        """.trimIndent()
+    }
+}

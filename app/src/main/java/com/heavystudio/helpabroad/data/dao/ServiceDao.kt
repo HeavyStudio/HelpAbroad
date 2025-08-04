@@ -12,47 +12,38 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ServiceDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // --- Convenience Methods ---
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertService(service: ServiceEntity): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertServices(services: List<ServiceEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertServices(vararg services: ServiceEntity)
 
     @Update
-    suspend fun updateService(service: ServiceEntity)
+    suspend fun updateService(service: ServiceEntity): Int
 
     @Delete
-    suspend fun deleteService(service: ServiceEntity)
+    suspend fun deleteService(service: ServiceEntity): Int
 
-    /**
-     * Retrieves a service entity from the database by its ID.
-     *
-     * @param senId The ID of the service to retrieve.
-     * @return The [ServiceEntity] with the given ID, or null if no such service exists.
-     */
-    @Query("SELECT * FROM sen_services WHERE sen_id = :senId")
-    suspend fun getServiceById(senId: Int): ServiceEntity?
+    // --- Queries ---
+    @Query("SELECT * FROM services WHERE id = :id")
+    fun getServiceById(id: Int): Flow<ServiceEntity?>
 
-    /**
-     * Retrieves all services from the database, ordered by their name resource ID in ascending order.
-     *
-     * @return A Flow that emits a list of [ServiceEntity] objects.
-     */
-    @Query("SELECT * FROM sen_services ORDER BY sen_name_res_key ASC")
+    @Query("SELECT * FROM services ORDER BY name_res_key ASC")
     fun getAllServices(): Flow<List<ServiceEntity>>
 
-    /**
-     * Deletes a service from the database by its ID.
-     *
-     * @param senId The ID of the service to delete.
-     */
-    @Query("DELETE FROM sen_services WHERE sen_id = :senId")
-    suspend fun deleteServiceById(senId: Int)
+    @Query("SELECT * FROM services WHERE category_id = :categoryId ORDER BY name_res_key ASC")
+    fun getServicesByCategoryId(categoryId: Int): Flow<List<ServiceEntity>>
 
-    /**
-     * Deletes all services from the `sen_services` table.
-     */
-    @Query("DELETE FROM sen_services")
-    suspend fun deleteAllServices()
+    @Query("SELECT * FROM services WHERE can_be_deleted = :canBeDeleted ORDER BY name_res_key ASC")
+    fun getServicesByDeletableStatus(canBeDeleted: Boolean): Flow<List<ServiceEntity>>
 
+    @Query("DELETE FROM services WHERE id = :id AND can_be_deleted = 1")
+    suspend fun deleteServiceById(id: Int): Int
+
+    @Query("DELETE FROM services WHERE category_id = :categoryId AND can_be_deleted = 1")
+    suspend fun deleteServicesByCategory(categoryId: Int): Int
+
+    @Query("DELETE FROM services WHERE can_be_deleted = 1")
+    suspend fun deleteAllServices(): Int
 }

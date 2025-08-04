@@ -4,18 +4,37 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cat_categories")
+@Entity(tableName = "categories")
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "cat_id")
+    @ColumnInfo(name = "id")
     val id: Int = 0,
 
-    @ColumnInfo(name = "cat_name_res_key")
-    val nameResKey: String?,
+    @ColumnInfo(name = "name_res_key")
+    val nameResKey: String,
 
-    @ColumnInfo(name = "cat_custom_name")
-    val customName: String? = null,
+    @ColumnInfo(name = "description_res_key")
+    val descriptionResKey: String?,
 
-    @ColumnInfo(name = "cat_is_predefined")
-    val isPredefined: Boolean
-)
+    @ColumnInfo(name = "custom_name")
+    val customName: String?,
+
+    @ColumnInfo(name = "custom_description")
+    val customDescription: String?,
+
+    @ColumnInfo(name = "can_be_deleted")
+    val canBeDeleted: Boolean
+) {
+
+    override fun toString(): String {
+        return """
+            CategoryEntity(
+                id=$id,
+                nameResKey='$nameResKey',
+                descriptionResKey=$descriptionResKey,
+                customDescription=$customDescription,
+                canBeDeleted=$canBeDeleted
+            )
+        """.trimIndent()
+    }
+}
