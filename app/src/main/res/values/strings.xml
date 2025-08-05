@@ -1,6 +1,6 @@
 <resources>
     <!-- App Name -->
-    <string name="app_name" translatable="false">HelpAbroad</string>
+    <string name="app_name" translatable="false">Help Abroad</string>
 
     <string name="onboarding_title_permissions">App Permissions</string>
     <string name="onboarding_permissions_intro">To provide the best experience and ensure all features work correctly, Help Abroad needs the following permissions:</string>
