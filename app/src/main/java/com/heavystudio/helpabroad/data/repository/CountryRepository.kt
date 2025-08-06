@@ -11,7 +11,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CountryRepository @Inject constructor(private val countryDao: CountryDao) {
+class CountryRepository @Inject constructor(
+    private val countryDao: CountryDao
+) {
 
     private val entityType = "Country"
     private val tag = "CountryRepository"

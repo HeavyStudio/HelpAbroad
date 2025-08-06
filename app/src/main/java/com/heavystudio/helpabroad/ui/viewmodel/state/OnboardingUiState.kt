@@ -1,4 +1,4 @@
-package com.heavystudio.helpabroad.ui.viewmodel
+package com.heavystudio.helpabroad.ui.viewmodel.state
 
 sealed class PermissionStatus {
     object NotRequested : PermissionStatus()

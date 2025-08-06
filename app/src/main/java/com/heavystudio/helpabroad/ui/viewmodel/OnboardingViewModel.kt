@@ -3,6 +3,8 @@ package com.heavystudio.helpabroad.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.data.repository.OnboardingInterface
+import com.heavystudio.helpabroad.ui.viewmodel.state.OnboardingUiState
+import com.heavystudio.helpabroad.ui.viewmodel.state.PermissionStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
