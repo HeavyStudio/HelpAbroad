@@ -15,15 +15,6 @@ data class CategoryEntity(
 
     @ColumnInfo(name = "description_res_key")
     val descriptionResKey: String?,
-
-    @ColumnInfo(name = "custom_name")
-    val customName: String?,
-
-    @ColumnInfo(name = "custom_description")
-    val customDescription: String?,
-
-    @ColumnInfo(name = "can_be_deleted")
-    val canBeDeleted: Boolean
 ) {
 
     override fun toString(): String {
@@ -31,9 +22,7 @@ data class CategoryEntity(
             CategoryEntity(
                 id=$id,
                 nameResKey='$nameResKey',
-                descriptionResKey=$descriptionResKey,
-                customDescription=$customDescription,
-                canBeDeleted=$canBeDeleted
+                descriptionResKey=$descriptionResKey
             )
         """.trimIndent()
     }
