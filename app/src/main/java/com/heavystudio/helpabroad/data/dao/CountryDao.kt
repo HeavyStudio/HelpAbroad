@@ -12,9 +12,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CountryDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCountries(vararg countries: CountryEntity)
+    // --- Convenience Methods ---
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertCountry(country: CountryEntity): Long
 
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertCountries(vararg countries: CountryEntity): List<Long>
+
+    @Update
+    suspend fun updateCountry(country: CountryEntity): Int
+
+    @Delete
+    suspend fun deleteCountry(country: CountryEntity): Int
+
+    // --- Queries ---
     @Query("SELECT * FROM countries WHERE iso_code = :isoCode")
     fun getCountryByIsoCode(isoCode: String): Flow<CountryEntity?>
 

@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
             entity = CategoryEntity::class,
             parentColumns = ["id"],
             childColumns = ["category_id"],
-            onDelete = ForeignKey.SET_NULL
+            onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [Index(value = ["category_id"])]
@@ -26,23 +26,14 @@ data class ServiceEntity(
     @ColumnInfo(name = "name_res_key")
     val nameResKey: String?,
 
-    @ColumnInfo(name = "custom_name")
-    val customName: String?,
-
     @ColumnInfo(name = "icon")
     val icon: String?,
 
     @ColumnInfo(name = "category_id")
-    val categoryId: Int?,
+    val categoryId: Int,
 
     @ColumnInfo(name = "notes_res_key")
     val notesResKey: String?,
-
-    @ColumnInfo(name = "custom_notes")
-    val customNotes: String?,
-
-    @ColumnInfo(name = "can_be_deleted")
-    val canBeDeleted: Boolean
 ) {
 
     override fun toString(): String {
@@ -50,11 +41,9 @@ data class ServiceEntity(
             ServiceEntity(
                 id=$id,
                 nameResKey=$nameResKey,
-                customName=$customName,
                 icon=$icon,
                 categoryId=$categoryId,
                 notesResKey=$notesResKey,
-                customNotes=$customNotes,
                 
         """.trimIndent()
     }

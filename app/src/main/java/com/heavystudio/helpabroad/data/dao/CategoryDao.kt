@@ -12,6 +12,21 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CategoryDao {
 
+    // --- Convenience Methods ---
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertCategory(category: CategoryEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertCategories(vararg categories: CategoryEntity): List<Long>
+
+    @Update
+    suspend fun updateCategory(category: CategoryEntity): Int
+
+    @Delete
+    suspend fun deleteCategory(category: CategoryEntity): Int
+
+    // --- Queries ---
+
     @Query("SELECT * FROM categories WHERE id = :id")
     fun getCategoryById(id: Int): Flow<CategoryEntity?>
 

@@ -49,14 +49,9 @@ interface EmergencyNumberDao {
             Flow<List<EmergencyNumberEntity>>
 
     @Query(
-        "DELETE FROM emergency_numbers " +
-                "WHERE country_iso_code = :isoCode"
+        "SELECT * FROM emergency_numbers " +
+                "WHERE country_iso_code = :isoCode AND supports_sms = 1 " +
+                "ORDER BY emergency_number ASC"
     )
-    suspend fun deleteEmergencyNumbersByCountry(isoCode: String): Int
-
-    @Query("DELETE FROM emergency_numbers WHERE service_id = :serviceId")
-    suspend fun deleteEmergencyNumbersByService(serviceId: Int): Int
-
-    @Query("DELETE FROM emergency_numbers")
-    suspend fun deleteAllEmergencyNumbers(): Int
+    fun getSmsSupportedEmergencyNumbersByCountry(isoCode: String): Flow<List<EmergencyNumberEntity>>
 }

@@ -40,7 +40,10 @@ data class EmergencyNumberEntity(
     val serviceId: Int?,
 
     @ColumnInfo(name = "notes_res_key")
-    val notesResKey: String?
+    val notesResKey: String?,
+
+    @ColumnInfo(name = "supports_sms")
+    val supportsSms: Boolean
 ) {
 
     override fun toString(): String {
