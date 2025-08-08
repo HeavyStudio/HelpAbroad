@@ -13,7 +13,7 @@ import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-suspend fun getStreetNameFromCoordinates(
+suspend fun getFullAddressLine(
     context: Context,
     latitude: Double,
     longitude: Double
@@ -29,11 +29,11 @@ suspend fun getStreetNameFromCoordinates(
         val addresses = getAddressesHelper(geocoder, latitude, longitude)
         if (!addresses.isNullOrEmpty()) {
             val address = addresses[0]
-            Log.d(
-                "GeocoderUtils",
-                "Full Address: ${address.getAddressLine(0)}, Street: ${address.thoroughfare}"
-            )
-            address.thoroughfare
+            Log.d("GeocoderUtils", "Full Address Line 0: ${address.getAddressLine(0)}")
+            Log.d("GeocoderUtils", "Street (Thoroughfare): ${address.thoroughfare}")
+            Log.d("GeocoderUtils", "Locality (City): ${address.locality}")
+            Log.d("GeocoderUtils", "Postal Code: ${address.postalCode}")
+            address.getAddressLine(0)
         } else {
             Log.w("GeocoderUtils", "No address found for the given coordinates.")
             null

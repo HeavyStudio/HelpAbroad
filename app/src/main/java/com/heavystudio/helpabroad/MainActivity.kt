@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -26,24 +27,31 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.heavystudio.helpabroad.ui.screen.MainScreen
-import com.heavystudio.helpabroad.ui.screen.OnboardingScreen
+import com.heavystudio.helpabroad.ui.screen.PermissionsScreen
 import com.heavystudio.helpabroad.ui.screen.WelcomeScreen
 import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
-import com.heavystudio.helpabroad.ui.viewmodel.OnboardingViewModel
+import com.heavystudio.helpabroad.ui.viewmodel.PermissionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 // TODO: Move to a util file
-fun areallRequiredPermissionsGranted(context: Context): Boolean {
-    val permissions = listOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.CALL_PHONE,
-        Manifest.permission.SEND_SMS
-    )
-    return permissions.all {
-        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-    }
+fun areAllRequiredPermissionsGranted(context: Context): Boolean {
+    val fineLocationGranted = ContextCompat.checkSelfPermission(
+        context, Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+    val coarseLocationGranted = ContextCompat.checkSelfPermission(
+        context, Manifest.permission.ACCESS_COARSE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+    val callPhoneGranted = ContextCompat.checkSelfPermission(
+        context, Manifest.permission.CALL_PHONE
+    ) == PackageManager.PERMISSION_GRANTED
+    val sendSmsGranted = ContextCompat.checkSelfPermission(
+        context, Manifest.permission.SEND_SMS
+    ) == PackageManager.PERMISSION_GRANTED
+
+    return (fineLocationGranted || coarseLocationGranted) && callPhoneGranted && sendSmsGranted
 }
+
 object AppDestinations {
     const val WELCOME_ROUTE = "welcome"
     const val PERMISSIONS_ROUTE = "permissions"
@@ -67,25 +75,56 @@ class MainActivity : ComponentActivity() {
 fun HelpAbroadAppNavigation() {
     val navController = rememberNavController()
     val context = LocalContext.current
-    val onboardingViewModel: OnboardingViewModel = hiltViewModel()
+    val permissionsViewModel: PermissionsViewModel = hiltViewModel()
 
     var startDestination by remember { mutableStateOf<String?>(null)}
     var isLoadingStates by remember { mutableStateOf(true) }
 
-    LaunchedEffect(key1 = onboardingViewModel.isOnboardingComplete) {
-        val onboardingComplete = onboardingViewModel.isOnboardingComplete.value
-        val allPermissionsGranted = areallRequiredPermissionsGranted(context)
+    Log.d("MAIN_ACTIVITY_NAV", "HelpAbroadAppNavigation Composable recomposed/initialized.")
+    Log.d("MAIN_ACTIVITY_NAV", "PermissionsViewModel instance: $permissionsViewModel")
 
-        startDestination = if (!allPermissionsGranted) {
-            AppDestinations.WELCOME_ROUTE
-        } else {
-            if (onboardingComplete) {
-                AppDestinations.MAIN_APP_ROUTE
+    LaunchedEffect(key1 = permissionsViewModel.isOnboardingComplete) {
+        Log.e("MAIN_ACTIVITY_NAV", "--> LAUNCHED_EFFECT_STARTED_VERY_FIRST_LINE")
+//        val onboardingComplete = permissionsViewModel.isOnboardingComplete.value
+//        val allSufficientPermissionsGrantedAtStart = areAllRequiredPermissionsGranted(context)
+//
+//        startDestination = if (!allSufficientPermissionsGrantedAtStart) {
+//            AppDestinations.WELCOME_ROUTE
+//        } else {
+//            if (onboardingComplete) {
+//                AppDestinations.MAIN_APP_ROUTE
+//            } else {
+//                AppDestinations.PERMISSIONS_ROUTE
+//            }
+//        }
+//        isLoadingStates = false
+
+        permissionsViewModel.isOnboardingComplete.collect { onboardingCompleteValue ->
+            Log.d("PERMISSIONS_VM_MAINACTIVITY", "  L_EFFECT: Collected isOnboardingComplete.value: $onboardingCompleteValue")
+            val allSufficientPermissionsGrantedAtStart = areAllRequiredPermissionsGranted(context)
+            Log.d("PERMISSIONS_VM_MAINACTIVITY", "  L_EFFECT: All Permissions Granted at Start: $allSufficientPermissionsGrantedAtStart")
+
+            val newDestination = if (!allSufficientPermissionsGrantedAtStart) {
+                AppDestinations.WELCOME_ROUTE
             } else {
-                AppDestinations.ONBOARDING_ROUTE
+                if (onboardingCompleteValue) {
+                    AppDestinations.MAIN_APP_ROUTE
+                } else {
+                    AppDestinations.PERMISSIONS_ROUTE
+                }
+            }
+
+            if (startDestination != newDestination) {
+                startDestination = newDestination
+                Log.e("PERMISSIONS_VM_MAINACTIVITY", "  L_EFFECT: ---> Determined and SET startDestination to: $startDestination")
+            }
+
+            if (isLoadingStates) {
+                isLoadingStates = false
+                Log.d("PERMISSIONS_VM_MAINACTIVITY", "  L_EFFECT: isLoadingStates set to false.")
             }
         }
-        isLoadingStates = false
+
     }
 
     Surface(
@@ -111,16 +150,29 @@ fun HelpAbroadAppNavigation() {
                     )
                 }
 
-                // TODO: Replace ONBOARDING_ROUTE with PERMISSIONS_ROUTE
-                composable(AppDestinations.ONBOARDING_ROUTE) {
-                    OnboardingScreen(
-                        TODO(),
-                        onNavigateNext = TODO()
+                composable(AppDestinations.PERMISSIONS_ROUTE) {
+                    PermissionsScreen(
+                        onNavigateToMain = {
+                            navController.navigate(AppDestinations.MAIN_APP_ROUTE) {
+                                popUpTo(AppDestinations.WELCOME_ROUTE) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        },
+                        onNavigateBack = {
+                            navController.popBackStack(AppDestinations.WELCOME_ROUTE, inclusive = false)
+                        }
                     )
                 }
 
                 composable(AppDestinations.MAIN_APP_ROUTE) {
-                    MainScreen()
+                    MainScreen(
+                        onNavigateToWelcome = {
+                            navController.navigate(AppDestinations.WELCOME_ROUTE) {
+                                popUpTo(AppDestinations.WELCOME_ROUTE) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        }
+                    )
                 }
             }
         }

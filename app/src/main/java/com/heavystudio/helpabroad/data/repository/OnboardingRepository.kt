@@ -1,5 +1,6 @@
 package com.heavystudio.helpabroad.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
@@ -8,6 +9,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,6 +29,7 @@ class OnboardingRepository @Inject constructor(
 ) : OnboardingInterface {
 
     override fun isOnboardingComplete(): Flow<Boolean> {
+        Log.d("ONBOARDING_REPO", "isOnboardingComplete() Flow accessed")
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -36,13 +39,23 @@ class OnboardingRepository @Inject constructor(
                 }
             }
             .map { preferences ->
-                preferences[PreferenceKeys.ONBOARDING_COMPLETE] ?: false
+                val completed = preferences[PreferenceKeys.ONBOARDING_COMPLETE] ?: false
+                Log.d("PERMISSIONS_VM_REPO", "DataStore: Read ONBOARDING_COMPLETE as: $completed")
+                completed
             }
+            .distinctUntilChanged()
     }
 
     override suspend fun setOnboardingComplete(isComplete: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PreferenceKeys.ONBOARDING_COMPLETE] = isComplete
+        Log.d("PERMISSIONS_VM_REPO", "setOnboardingComplete($isComplete) CALLED") // Step 2 Log
+        try {
+            dataStore.edit { settings ->
+                settings[PreferenceKeys.ONBOARDING_COMPLETE] = isComplete
+                Log.d("PERMISSIONS_VM_REPO", "DataStore: Set ONBOARDING_COMPLETE to $isComplete") // Step 2 Log
+            }
+            Log.d("PERMISSIONS_VM_REPO", "DataStore edit successful for $isComplete") // Step 2 Log
+        } catch (e: Exception) {
+            Log.e("PERMISSIONS_VM_REPO", "DataStore edit FAILED for $isComplete", e) // Step 2 Log for errors
         }
     }
 

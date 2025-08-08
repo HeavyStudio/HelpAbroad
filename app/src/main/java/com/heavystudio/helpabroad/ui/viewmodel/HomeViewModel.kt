@@ -9,7 +9,7 @@ import com.heavystudio.helpabroad.data.location.LocationResultWrapper
 import com.heavystudio.helpabroad.data.repository.CountryRepository
 import com.heavystudio.helpabroad.ui.viewmodel.state.LocationActionRequired
 import com.heavystudio.helpabroad.ui.viewmodel.state.LocationUiState
-import com.heavystudio.helpabroad.utils.getStreetNameFromCoordinates
+import com.heavystudio.helpabroad.utils.getFullAddressLine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(
                     var countryName: String? = null
                     var flagEmoji: String? = null
 
-                    val street = getStreetNameFromCoordinates(
+                    val fullAddressLine = getFullAddressLine(
                         appContext,
                         location.latitude,
                         location.longitude
@@ -63,7 +63,9 @@ class HomeViewModel @Inject constructor(
 
                     if (countryCode != null && countryCode.length == 2) {
                         val deviceLocale = Locale.getDefault()
-                        val countryLocale = Locale("", countryCode.uppercase())
+                        val countryLocale = Locale.Builder()
+                            .setRegion(countryCode.uppercase())
+                            .build()
                         countryName = countryLocale.getDisplayCountry(deviceLocale)
 
                         val countryEntityFromDb = countryRepository
@@ -97,7 +99,7 @@ class HomeViewModel @Inject constructor(
                         countryCode = countryCode,
                         countryName = countryName,
                         countryFlagEmoji = flagEmoji,
-                        street = street
+                        fullAddress = fullAddressLine
                     )
                 }
                 is LocationResultWrapper.NoPermission -> {

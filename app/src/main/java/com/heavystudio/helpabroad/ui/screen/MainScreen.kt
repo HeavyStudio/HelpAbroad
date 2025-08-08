@@ -1,47 +1,63 @@
 package com.heavystudio.helpabroad.ui.screen
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.ui.components.HaTopAppBar
-import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 import com.heavystudio.helpabroad.ui.viewmodel.HomeViewModel
-import com.heavystudio.helpabroad.ui.viewmodel.OnboardingViewModel
+import com.heavystudio.helpabroad.ui.viewmodel.PermissionsViewModel
+//import com.heavystudio.helpabroad.ui.viewmodel.OnboardingViewModel
 import com.heavystudio.helpabroad.ui.viewmodel.state.LocationActionRequired
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    onboardingViewModel: OnboardingViewModel = hiltViewModel(),
-    homeViewModel: HomeViewModel = hiltViewModel()
+    permissionsViewModel: PermissionsViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToWelcome: () -> Unit
 ) {
     val context = LocalContext.current
     val locationState by homeViewModel.locationUiState.collectAsState()
+    var showCoucouDialog by remember { mutableStateOf(false) }
 
     // Handle LocationActionRequired
     LaunchedEffect(locationState.requiresAction) {
@@ -72,10 +88,67 @@ fun MainScreen(
         topBar = {
             HaTopAppBar(
                 appName = stringResource(R.string.app_name),
-                gradientColors = listOf(Color.Cyan, Color.Magenta)
+                gradientColors = listOf(Color.Cyan, Color.Magenta),
+                actionContent = {
+                    when {
+                        locationState.isLoading -> {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(end = 16.dp),
+                                strokeWidth = 2.dp
+                            )
+                        }
+                        locationState.countryFlagEmoji != null -> {
+                            locationState.countryFlagEmoji?.let { emoji ->
+                                Text(
+                                    text = emoji,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier.padding(horizontal = 12.dp)
+                                )
+                            }
+                        }
+                        locationState.errorMessage != null && locationState.countryFlagEmoji == null -> {
+                            IconButton(onClick = { showCoucouDialog = true }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Map,
+                                    contentDescription = "Map"
+                                )
+                            }
+                        }
+                        else -> {
+                            IconButton(onClick = { showCoucouDialog = true }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Map,
+                                    contentDescription = "Map"
+                                )
+                            }
+                        }
+                    }
+                }
             )
         }
     ) { paddingValues ->
+        if (showCoucouDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showCoucouDialog = false
+                },
+                title = {
+                    Text(text = "Menu Action")
+                },
+                text = {
+                    Text(text = "Coucou")
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showCoucouDialog = false
+                        }
+                    ) { Text("OK") }
+                }
+            )
+        }
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -105,7 +178,8 @@ fun MainScreen(
                 )
                 HorizontalDivider()
                 Text(
-                    text = "Street: ${locationState.street}"
+                    text = "${locationState.fullAddress}",
+                    style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Latitude: ${"%.4f".format(locationState.latitude)}")
@@ -131,24 +205,29 @@ fun MainScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-                onboardingViewModel.resetOnboardingStatus()
-                Toast.makeText(
-                    context,
-                    "Onboarding reset. Please restart the app.",
-                    Toast.LENGTH_LONG
-                ).show()
-            }) {
-                Text("DEV - Reset Onboarding")
-            }
+            GoToAppSettingsButton(permissionsViewModel)
+
+            Button(
+                onClick = {
+                    onNavigateToWelcome()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Go back to Welcome Screen")}
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainScreenPreview() {
-    HelpAbroadTheme {
-        MainScreen()
-    }
+fun GoToAppSettingsButton(
+    permissionsViewModel: PermissionsViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    Button(onClick = {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", context.packageName, null)
+        intent.data = uri
+        context.startActivity(intent)
+        permissionsViewModel.resetOnboardingStatus()
+    }) { Text("Go to App Permission Settings and Reset Onboarding") }
 }
+

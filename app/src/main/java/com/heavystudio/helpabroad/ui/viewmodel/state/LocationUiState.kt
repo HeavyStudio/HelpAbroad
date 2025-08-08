@@ -6,7 +6,7 @@ data class LocationUiState(
     val countryCode: String? = null,
     val countryName: String? = null,
     val countryFlagEmoji: String? = null,
-    val street: String? = null,
+    val fullAddress: String? = null,
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val requiresAction: LocationActionRequired? = null
