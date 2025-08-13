@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_title_permissions">Permissions de l\'application</string>
-    <string name="onboarding_permissions_intro">Pour offrir la meilleure expérience et assurer le bon fonctionnement de toutes les fonctionnalités, Help Abroad a besoin des autorisations suivantes :</string>
-    <string name="onboarding_button_continue">Continuer</string>
-    <string name="onboarding_button_open_settings">Ouvrir les paramètres</string>
 
-    <string name="permission_location_title">Localisation</string>
-    <string name="permission_location_rationale">Permet à l\'application de détecter automatiquement votre pays actuel. Cela aide à afficher rapidement les numéros d\'urgence pertinents et les informations locales.</string>
-    <string name="permission_location_consequence">Si refusé, vous devrez rechercher manuellement votre pays à chaque fois pour voir les informations spécifiques.</string>
+    <!-- Labels -->
+        <!-- Titles -->
+    <string name="title_welcome">Bienvenue sur %1s!</string>
+    <string name="title_permissions_needed">Permissions requises</string>
+    <string name="title_location">Localisation</string>
+    <string name="title_call_phone">Appels</string>
+    <string name="title_send_sms">SMS</string>
 
-    <string name="permission_call_title">Appels téléphoniques</string>
-    <string name="permission_call_rationale">Permet à l\'application de lancer directement des appels vers les numéros d\'urgence lorsque vous appuyez dessus. Cela garantit une réponse plus rapide dans les situations critiques.</string>
-    <string name="permission_call_consequence">Si refusé, l\'application ouvrira le composeur de votre téléphone avec le numéro pré-rempli, mais vous devrez appuyer manuellement sur le bouton d\'appel.</string>
+        <!-- Descriptions -->
+    <string name="desc_welcome">
+        Help Abroad est conçu pour vous mettre rapidement en relation avec les services d\'urgence
+        lorsque vous voyagez. Pour vous fournir la meilleure assistance possible, nous avons besoin
+        de quelques autorisations.
+    </string>
+    <string name="desc_ic_logo">Icône logo</string>
+    <string name="desc_ic_location">Icône localisation</string>
+    <string name="desc_ic_call_phone">Icône appel</string>
+    <string name="desc_ic_send_sms">Icône SMS</string>
 
-    <string name="permission_sms_title">Messages SMS</string>
-    <string name="permission_sms_rationale">Permet à l\'application d\'envoyer un message SOS, pouvant inclure votre position actuelle, à des contacts d\'urgence préconfigurés (cette fonctionnalité est prévue pour de futures mises à jour).</string>
-    <string name="permission_sms_consequence">Si refusé, la fonction d\'envoi de SMS SOS ne sera pas disponible. Vous devrez utiliser d\'autres moyens pour envoyer de tels messages.</string>
-
-    <string name="permission_button_grant">Accorder la permission</string>
-    <string name="permission_button_retry_grant">Réessayer</string>
-    <string name="permission_status_requesting">Demande en cours</string>
-    <string name="permission_status_granted">Statut : Accordé</string>
-    <string name="permission_status_denied">Statut : Refusé</string>
-    <string name="permission_status_not_requested">Statut : Non demandé</string>
+        <!-- Buttons -->
+    <string name="btn_continue">Continuer</string>
+    <string name="btn_accept_all">Tout accepter</string>
 
 </resources>

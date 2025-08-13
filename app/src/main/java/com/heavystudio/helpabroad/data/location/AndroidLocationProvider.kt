@@ -4,8 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
@@ -22,6 +24,8 @@ import kotlin.coroutines.resume
 class AndroidLocationProvider(
     private val context: Context
 ) : LocationManager {
+
+    private val tag = "AndroidLocationProvider"
 
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(context)
@@ -50,8 +54,9 @@ class AndroidLocationProvider(
             return LocationResultWrapper.NoPermission
         }
 
-        val locationRequest = LocationRequest.Builder(5000L)
-            .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_BALANCED_POWER_ACCURACY,5000L
+        )
             .setWaitForAccurateLocation(true)
             .setMaxUpdateDelayMillis(10000L)
             .setMaxUpdates(1)
@@ -105,9 +110,13 @@ class AndroidLocationProvider(
                     Looper.getMainLooper()
                 )
             } catch (securityException: SecurityException) {
-                if (continuation.isActive) continuation.resume(LocationResultWrapper.NoPermission)
+                if (continuation.isActive) {
+                    continuation.resume(LocationResultWrapper.NoPermission)
+                }
             } catch (exception: Exception) {
-                if (continuation.isActive) continuation.resume(LocationResultWrapper.Error(exception))
+                if (continuation.isActive) {
+                    continuation.resume(LocationResultWrapper.Error(exception))
+                }
             }
 
             continuation.invokeOnCancellation {
@@ -117,19 +126,54 @@ class AndroidLocationProvider(
     }
 
     override suspend fun getCountryCodeFromLocation(location: Location): String? {
-        if (!Geocoder.isPresent()) return null
+        if (!Geocoder.isPresent()) {
+            return null
+        }
+
         val geocoder = Geocoder(context, Locale.getDefault())
         return try {
             withContext(Dispatchers.IO) {
-                @Suppress("DEPRECATION")
-                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                addresses?.firstOrNull()?.countryCode
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    suspendCancellableCoroutine { continuation ->
+                        geocoder.getFromLocation(
+                            location.latitude,
+                            location.longitude,
+                            1,
+                            object : Geocoder.GeocodeListener {
+                                override fun onGeocode(addresses: MutableList<Address>) {
+                                    if (continuation.isActive) {
+                                        continuation.resume(addresses.firstOrNull()?.countryCode)
+                                    }
+                                }
+
+                                override fun onError(errorMessage: String?) {
+                                    super.onError(errorMessage)
+                                    if (continuation.isActive) {
+                                        Log.e(tag, "Geocoder (API33+) error: $errorMessage")
+                                        continuation.resume(null)
+                                    }
+                                }
+                            }
+                        )
+                        continuation.invokeOnCancellation {  }
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    val addresses = geocoder.getFromLocation(
+                        location.latitude,
+                        location.longitude,
+                        1
+                    )
+                    addresses?.firstOrNull()?.countryCode
+                }
             }
         } catch (ioException: IOException) {
-            Log.e("AndroidLocationProvider", "IO Exception: $ioException", ioException)
+            Log.e(tag, "IO Exception: $ioException", ioException)
             null
         } catch (illegalArgumentException: IllegalArgumentException) {
-            Log.e("AndroidLocationProvider", "Illegal Argument Exception: $illegalArgumentException", illegalArgumentException)
+            Log.e(tag,
+                "Illegal Argument Exception: $illegalArgumentException",
+                illegalArgumentException)
             null
         }
     }

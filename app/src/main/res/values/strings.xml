@@ -2,27 +2,25 @@
     <!-- App Name -->
     <string name="app_name" translatable="false">Help Abroad</string>
 
-    <string name="onboarding_title_permissions">App Permissions</string>
-    <string name="onboarding_permissions_intro">To provide the best experience and ensure all features work correctly, Help Abroad needs the following permissions:</string>
-    <string name="onboarding_button_continue">Continue</string>
-    <string name="onboarding_button_open_settings">Open App Settings</string>
+    <!-- Labels -->
+        <!-- Titles -->
+    <string name="title_welcome">Welcome to %1s!</string>
+    <string name="title_permissions_needed">Permissions Needed</string>
+    <string name="title_location">Location</string>
+    <string name="title_call_phone">Call</string>
+    <string name="title_send_sms">SMS</string>
 
-    <string name="permission_location_title">Location</string>
-    <string name="permission_location_rationale">Allows the app to automatically detect your current country. This helps in quickly showing relevant emergency numbers and local information.</string>
-    <string name="permission_location_consequence">If denied, you will need to manually search for your country each time to see specific information.</string>
+        <!-- Descriptions -->
+    <string name="desc_welcome">
+        Help Abroad is designed to quickly connect you with emergency services when you\'re travelling.
+        To provide you with the best assistance, we need a few permissions.
+    </string>
+    <string name="desc_ic_logo">Logo Icon</string>
+    <string name="desc_ic_location">Location Icon</string>
+    <string name="desc_ic_call_phone">Call Phone Icon</string>
+    <string name="desc_ic_send_sms">Send SMS Icon</string>
 
-    <string name="permission_call_title">Phone Calls</string>
-    <string name="permission_call_rationale">Allows the app to directly initiate calls to emergency numbers when you tap on them. This ensures a faster response in critical situations.</string>
-    <string name="permission_call_consequence">If denied, the app will open your phone\'s dialer with the emergency number pre-filled, but you will need to manually press the call button.</string>
-
-    <string name="permission_sms_title">SMS Messages</string>
-    <string name="permission_sms_rationale">Allows the app to send an SOS message, potentially including your current location, to pre-configured emergency contacts (this feature is planned for future updates).</string>
-    <string name="permission_sms_consequence">If denied, the SOS SMS message feature will not be available. You would need to use other means to send such messages.</string>
-
-    <string name="permission_button_grant">Grant Permission</string>
-    <string name="permission_button_retry_grant">Try Again</string>
-    <string name="permission_status_requesting">Requesting...</string>
-    <string name="permission_status_granted">Status: Granted</string>
-    <string name="permission_status_denied">Status: Denied</string>
-    <string name="permission_status_not_requested">Status: Not Requested</string>
+        <!-- Buttons -->
+    <string name="btn_continue">Continue</string>
+    <string name="btn_accept_all">Accept All</string>
 </resources>

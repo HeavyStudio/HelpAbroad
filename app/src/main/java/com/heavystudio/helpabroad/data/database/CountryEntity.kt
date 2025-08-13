@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "countries")
 data class CountryEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     @ColumnInfo(name = "iso_code")
     val isoCode: String,
 
@@ -16,20 +16,11 @@ data class CountryEntity(
     @ColumnInfo(name = "flag_emoji")
     val flagEmoji: String?,
 
-    @ColumnInfo(name = "iso_numeric")
-    val isoNumeric: String,
-
-    @ColumnInfo(name = "region_res_key")
-    val regionResKey: String,
-
     @ColumnInfo(name = "member_112")
     val member112: Boolean,
 
     @ColumnInfo(name = "member_911")
-    val member911: Boolean,
-
-    @ColumnInfo(name = "country_code")
-    val countryCode: String
+    val member911: Boolean
 ) {
 
     override fun toString(): String {
@@ -38,11 +29,8 @@ data class CountryEntity(
                 isoCode='$isoCode',
                 name='$name',
                 flagEmoji=$flagEmoji,
-                isoNumeric='$isoNumeric',
-                regionResKey='$regionResKey',
                 member112=$member112,
-                member911=$member911,
-                countryCode='$countryCode'
+                member911=$member911
             )
         """.trimIndent()
     }

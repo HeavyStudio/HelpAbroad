@@ -2,17 +2,16 @@ package com.heavystudio.helpabroad.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.heavystudio.helpabroad.data.dao.CategoryDao
 import com.heavystudio.helpabroad.data.dao.CountryDao
 import com.heavystudio.helpabroad.data.dao.EmergencyNumberDao
 import com.heavystudio.helpabroad.data.dao.ServiceDao
-import com.heavystudio.helpabroad.data.dao.UserContactNumberDao
 import com.heavystudio.helpabroad.data.database.AppDatabase
-import com.heavystudio.helpabroad.data.repository.OnboardingInterface
-import com.heavystudio.helpabroad.data.repository.OnboardingRepository
+import com.heavystudio.helpabroad.data.repository.UserPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,18 +41,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-        return context.dataStore
+    fun provideUserPreferencesRepository(@ApplicationContext context: Context): UserPreferencesRepository {
+        return UserPreferencesRepository(context)
     }
-
-    @Provides
-    @Singleton
-    fun provideOnboardingRepository(dataStore: DataStore<Preferences>): OnboardingInterface {
-        return OnboardingRepository(dataStore)
-    }
-
-    @Provides
-    fun provideCategoryDao(appDatabase: AppDatabase): CategoryDao = appDatabase.categoryDao()
 
     @Provides
     fun provideCountryDao(appDatabase: AppDatabase): CountryDao = appDatabase.countryDao()
@@ -63,7 +53,4 @@ object AppModule {
 
     @Provides
     fun provideServiceDao(appDatabase: AppDatabase): ServiceDao = appDatabase.serviceDao()
-
-    @Provides
-    fun provideUserContactNumberDao(appDatabase: AppDatabase): UserContactNumberDao = appDatabase.userContactNumberDao()
 }

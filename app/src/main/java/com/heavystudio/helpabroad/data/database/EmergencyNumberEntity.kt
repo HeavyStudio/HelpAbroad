@@ -1,14 +1,13 @@
 package com.heavystudio.helpabroad.data.database
 
-import android.R
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "emergency_numbers",
-    primaryKeys = ["country_iso_code", "emergency_number"],
     foreignKeys = [
         ForeignKey(
             entity = CountryEntity::class,
@@ -29,6 +28,10 @@ import androidx.room.Index
     ]
 )
 data class EmergencyNumberEntity(
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int = 0,
 
     @ColumnInfo(name = "country_iso_code")
     val countryIsoCode: String,

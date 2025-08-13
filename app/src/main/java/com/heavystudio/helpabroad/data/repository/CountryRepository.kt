@@ -12,7 +12,6 @@ class CountryRepository @Inject constructor(
     private val countryDao: CountryDao
 ) {
 
-    private val entityType = "Country"
     private val tag = "CountryRepository"
 
     fun getCountryByIsoCode(isoCode: String): Flow<CountryEntity?> {
