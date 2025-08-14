@@ -1,21 +1,22 @@
 package com.heavystudio.helpabroad.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Public
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.heavystudio.helpabroad.ui.navigation.BottomNavItem
+import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,24 +25,25 @@ fun AppBottomBar(
     modifier: Modifier = Modifier
 ) {
     val items = listOf(
-        BottomNavItem("Home", "home", Icons.Filled.Home),
-        BottomNavItem("Country", "country_selection", Icons.Filled.Public),
-        BottomNavItem("Settings", "settings", Icons.Filled.Settings)
+        BottomNavItem.Home,
+        BottomNavItem.CountrySelection,
+        BottomNavItem.Settings
     )
 
-    NavigationBar(modifier = modifier) {
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination?.route
+        val currentRoute = navBackStackEntry?.destination?.route
 
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
-                label = { Text(item.label) },
-                selected = currentDestination == item.route,
+                selected = currentRoute == item.route,
                 onClick = {
-                    if (currentDestination != item.route) {
+                    if (currentRoute != item.route) {
                         navController.navigate(item.route) {
-                            // Avoid building up a huge backstack
                             popUpTo(navController.graph.startDestinationId) {
                                 saveState = true
                             }
@@ -49,15 +51,33 @@ fun AppBottomBar(
                             restoreState = true
                         }
                     }
-                }
+                },
+                icon = {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = stringResource(item.labelResId)
+                    )
+                },
+                label = { Text(stringResource(item.labelResId)) },
+                alwaysShowLabel = true,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    indicatorColor = MaterialTheme.colorScheme.surface
+                )
             )
         }
     }
 }
 
-@Immutable
-data class BottomNavItem(
-    val label: String,
-    val route: String,
-    val icon: ImageVector
-)
+// --- Preview ---
+@Preview(showBackground = true, name = "AppBottomBar - Preview")
+@Composable
+fun AppBottomBarPreview() {
+    HelpAbroadTheme {
+        val navController = rememberNavController()
+        AppBottomBar(navController = navController)
+    }
+}

@@ -10,6 +10,11 @@
     <string name="title_call_phone">Call</string>
     <string name="title_send_sms">SMS</string>
 
+        <!-- Labels -->
+    <string name="label_home">Home</string>
+    <string name="label_country_selection">Countries</string>
+    <string name="label_settings">Settings</string>
+
         <!-- Descriptions -->
     <string name="desc_welcome">
         Help Abroad is designed to quickly connect you with emergency services when you\'re travelling.

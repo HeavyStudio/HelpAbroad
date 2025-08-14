@@ -9,6 +9,11 @@
     <string name="title_call_phone">Appels</string>
     <string name="title_send_sms">SMS</string>
 
+        <!-- Labels -->
+    <string name="label_home">Accueil</string>
+    <string name="label_country_selection">Pays</string>
+    <string name="label_settings">Paramètres</string>
+
         <!-- Descriptions -->
     <string name="desc_welcome">
         Help Abroad est conçu pour vous mettre rapidement en relation avec les services d\'urgence
