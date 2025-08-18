@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.core.ktx)
+    implementation(libs.google.accompanist.permissions)
     implementation(libs.hilt.android.lib)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.material.icons)

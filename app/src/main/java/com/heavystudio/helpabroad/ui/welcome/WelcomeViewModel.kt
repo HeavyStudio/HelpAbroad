@@ -1,4 +1,4 @@
-package com.heavystudio.helpabroad.ui.viewmodel
+package com.heavystudio.helpabroad.ui.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +19,7 @@ class WelcomeViewModel @Inject constructor(
     val isFirstLaunch: StateFlow<Boolean> = userPreferencesRepository.isFirstLaunch
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Companion.WhileSubscribed(5000),
             initialValue = true
         )
 

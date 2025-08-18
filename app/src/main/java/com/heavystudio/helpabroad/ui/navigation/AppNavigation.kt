@@ -3,7 +3,6 @@ package com.heavystudio.helpabroad.ui.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,9 +12,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.heavystudio.helpabroad.ui.screen.WelcomeScreen
-import com.heavystudio.helpabroad.ui.viewmodel.MainViewModel
-import com.heavystudio.helpabroad.ui.viewmodel.WelcomeViewModel
+import com.heavystudio.helpabroad.ui.welcome.WelcomeScreen
+import com.heavystudio.helpabroad.ui.MainViewModel
+import com.heavystudio.helpabroad.ui.permissions.PermissionsScreen
+import com.heavystudio.helpabroad.ui.permissions.PermissionsViewModel
+import com.heavystudio.helpabroad.ui.welcome.WelcomeViewModel
 
 @Composable
 fun AppNavigation() {
@@ -27,34 +28,46 @@ fun AppNavigation() {
 
         NavHost(
             navController = navController,
-            startDestination = startDestination.route
+            startDestination = startDestination
         ) {
 
-            composable(StartDestination.Welcome.route) {
+            composable(Routes.WELCOME) {
                 val welcomeViewModel: WelcomeViewModel = hiltViewModel()
                 WelcomeScreen(
                     viewModel = welcomeViewModel,
                     onContinueClick = {
-                        navController.navigate(StartDestination.Permissions.route) {
-                            popUpTo(StartDestination.Welcome.route) { inclusive = true }
+                        navController.navigate(Routes.PERMISSIONS) {
+                            popUpTo(Routes.WELCOME) { inclusive = true }
                         }
                     }
                 )
             }
 
-            composable(StartDestination.Permissions.route) {
-                // TODO: PermissionsScreen(...) + PermissionsViewModel
+            composable(Routes.PERMISSIONS) {
+                val permissionsViewModel: PermissionsViewModel = hiltViewModel()
+                PermissionsScreen(
+                    onNavigateHome = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.PERMISSIONS) { inclusive = true }
+                        }
+                    },
+                    onNavigateCountrySelection = {
+                        navController.navigate(Routes.COUNTRY_SELECTION) {
+                            popUpTo(Routes.PERMISSIONS) { inclusive = true }
+                        }
+                    }
+                )
             }
 
-            composable(StartDestination.Home.route) {
+            composable(Routes.HOME) {
                 // TODO: HomeScreen(...) + HomeViewModel
             }
 
-            composable(StartDestination.CountrySelection.route) {
+            composable(Routes.COUNTRY_SELECTION) {
                 // TODO: CountrySelectionScreen(...) + CountrySelectionViewModel
             }
 
-            composable(StartDestination.Settings.route) {
+            composable(Routes.SETTINGS) {
                 // TODO: SettingsScreen(...) + SettingsViewModel
             }
         }

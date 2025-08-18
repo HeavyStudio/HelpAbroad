@@ -1,13 +1,13 @@
-package com.heavystudio.helpabroad.ui.viewmodel
+package com.heavystudio.helpabroad.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.data.repository.UserPreferencesRepository
-import com.heavystudio.helpabroad.ui.navigation.StartDestination
+import com.heavystudio.helpabroad.ui.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -17,12 +17,15 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     // This StateFlow will hold the start destination
-    val startDestination: StateFlow<StartDestination?> =
-        userPreferencesRepository.isFirstLaunch.map { isFirstLaunch ->
-            if (isFirstLaunch) {
-                StartDestination.Welcome
-            } else {
-                StartDestination.Permissions
+    val startDestination: StateFlow<String?> =
+        combine(
+            userPreferencesRepository.isFirstLaunch,
+            userPreferencesRepository.isPermissionsSetupCompleted
+        ) { isFirstLaunch, isPermissionsSetupCompleted ->
+            when {
+                isFirstLaunch -> Routes.WELCOME
+                !isPermissionsSetupCompleted -> Routes.PERMISSIONS
+                else -> Routes.HOME
             }
         }.stateIn(
             scope = viewModelScope,

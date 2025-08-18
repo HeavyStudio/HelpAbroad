@@ -1,4 +1,4 @@
-package com.heavystudio.helpabroad.ui.screen
+package com.heavystudio.helpabroad.ui.welcome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.heavystudio.helpabroad.R
-import com.heavystudio.helpabroad.ui.viewmodel.WelcomeViewModel
+import com.heavystudio.helpabroad.ui.welcome.WelcomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -9,7 +9,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.heavystudio.helpabroad.ui.viewmodel.state.PermissionStatus
+import com.heavystudio.helpabroad.ui.permissions.PermissionStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -21,7 +21,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 @Singleton
 class UserPreferencesRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
 
     private val tag = "UserPreferencesRepository"
@@ -31,11 +31,9 @@ class UserPreferencesRepository @Inject constructor(
         val IS_PERMISSIONS_SETUP_COMPLETED = booleanPreferencesKey("is_permissions_setup_completed")
     }
 
+    // True if this is the first app launch
     val isFirstLaunch: Flow<Boolean> = context.dataStore.data
-        .map { preferences ->
-            // Default to true if the key doesn't exist (first launch)
-            preferences[PreferencesKeys.IS_FIRST_LAUNCH] ?: true
-        }
+        .map { it[PreferencesKeys.IS_FIRST_LAUNCH] ?: true }
         .catch { exception ->
             if (exception is IOException) {
                 Log.e(tag, "Error reading preferences.", exception)
@@ -45,26 +43,24 @@ class UserPreferencesRepository @Inject constructor(
             }
         }
 
+    // True if the user completed the permissions setup
     val isPermissionsSetupCompleted: Flow<Boolean> = context.dataStore.data
-        .map { preferences ->
-            preferences[PreferencesKeys.IS_PERMISSIONS_SETUP_COMPLETED] ?: false
-        }
+        .map { it[PreferencesKeys.IS_PERMISSIONS_SETUP_COMPLETED] ?: false }
         .catch { exception ->
             if (exception is IOException) {
                 Log.e(tag, "Error reading preferences", exception)
                 emit(false)
-            } else {
-                throw exception
-            }
+            } else throw exception
         }
 
+    // Current status of a specific permission
     fun getSavedPermissionStatus(permission: String): Flow<PermissionStatus> {
-        val permissionStatusKey = stringPreferencesKey("permission_status_$permission")
+        val key = stringPreferencesKey("permission_status_$permission")
         return context.dataStore.data
             .map { preferences ->
-                when (preferences[permissionStatusKey]) {
+                when (preferences[key]) {
                     "GRANTED" -> PermissionStatus.GRANTED
-                    "DENIED_PERMANENTLY" -> PermissionStatus.DENIED_PERMANENTLY
+                    "PERMANENTLY_DENIED" -> PermissionStatus.PERMANENTLY_DENIED
                     else -> PermissionStatus.UNKNOWN
                 }
             }
@@ -72,12 +68,11 @@ class UserPreferencesRepository @Inject constructor(
                 if (exception is IOException) {
                     Log.e(tag, "Error reading preferences", exception)
                     emit(PermissionStatus.UNKNOWN)
-                } else {
-                    throw exception
-                }
+                } else throw exception
             }
     }
 
+    // Update first launch flag
     suspend fun updateIsFirstLaunch(isFirstLaunch: Boolean) {
         try {
             context.dataStore.edit { preferences ->
@@ -90,6 +85,7 @@ class UserPreferencesRepository @Inject constructor(
         }
     }
 
+    // Update permissions setup flag
     suspend fun updateIsPermissionsSetupCompleted(isPermissionsSetupComplete: Boolean) {
         try {
             context.dataStore.edit { preferences ->
@@ -102,10 +98,11 @@ class UserPreferencesRepository @Inject constructor(
         }
     }
 
+    // Update the status of a specific permission
     suspend fun updatePermissionStatus(permission: String, status: PermissionStatus) {
         val statusToStore = when (status) {
             PermissionStatus.GRANTED -> "GRANTED"
-            PermissionStatus.DENIED_PERMANENTLY -> "DENIED_PERMANENTLY"
+            PermissionStatus.PERMANENTLY_DENIED -> "PERMANENTLY_DENIED"
             else -> null
         }
 

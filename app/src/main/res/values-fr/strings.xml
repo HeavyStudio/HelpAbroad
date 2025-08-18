@@ -1,32 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Labels -->
-        <!-- Titles -->
-    <string name="title_welcome">Bienvenue sur %1s!</string>
-    <string name="title_permissions_needed">Permissions requises</string>
-    <string name="title_location">Localisation</string>
-    <string name="title_call_phone">Appels</string>
-    <string name="title_send_sms">SMS</string>
+    <!-- General -->
+    <string name="desc_ic_logo">Logo</string>
 
-        <!-- Labels -->
+    <!-- Buttons -->
+    <string name="btn_continue">Continue</string>
+    <string name="btn_allow">Autoriser</string>
+    <string name="btn_settings">Paramètres</string>
+
+    <!-- Navigation -->
     <string name="label_home">Accueil</string>
     <string name="label_country_selection">Pays</string>
-    <string name="label_settings">Paramètres</string>
+    <string name="label_settings">Réglages</string>
 
-        <!-- Descriptions -->
-    <string name="desc_welcome">
-        Help Abroad est conçu pour vous mettre rapidement en relation avec les services d\'urgence
-        lorsque vous voyagez. Pour vous fournir la meilleure assistance possible, nous avons besoin
-        de quelques autorisations.
-    </string>
-    <string name="desc_ic_logo">Icône logo</string>
+    <!-- Welcome -->
+    <string name="title_welcome">Welcome to %1s!</string>
+    <string name="desc_welcome">Help Abroad is designed to quickly connect you with emergency
+        services when you\'re travelling. To provide you with the best assistance, we need a few
+        permissions.</string>
+
+    <!-- Permissions -->
+    <string name="permission_allowed">Autorisée</string>
+    <string name="permission_denied">Refusée</string>
+    <string name="permission_permanently_denied">Refusée définitivement</string>
+
+        <!-- Location Permission -->
+    <string name="title_location">Accès à la localisation</string>
     <string name="desc_ic_location">Icône localisation</string>
-    <string name="desc_ic_call_phone">Icône appel</string>
+    <string name="desc_location">Pour vous aider à trouver rapidement les numéros d\'urgence locaux
+        et fournir votre position aux services si nécessaire, veuillez accorder l\'accès à la
+        localisation.</string>
+    <string name="rationale_location">Accorder l\'accès à la localisation permet à Help Abroad
+        d\'identifier le pays dans lequel vous vous trouvez pour les numéros d\'urgence pertinents
+        et aide les services à vous trouver plus rapidement en cas d\'urgence. Votre position n'est
+        utilisée que lorsque vous utilisez activement l\'application à ces fins.</string>
+
+        <!-- Call Phone Permission -->
+    <string name="title_call_phone">Passer des appels</string>
+    <string name="desc_ic_call_phone">Icône appels</string>
+    <string name="desc_call_phone">Pour vous permettre d\'appeler directement les services
+        d\'urgence depuis l\'application, veuillez autoriser l\'application à passer des appels
+        téléphoniques.</string>
+    <string name="rationale_call_phone">Cette autorisation est nécessaire pour que vous puissiez
+        appuyer sur un numéro dans Help Abroad et lancer immédiatement un appel aux services
+        d\'urgence sans quitter l\'application. Nous ne passerons jamais d\'appels sans votre action
+        directe.</string>
+
+        <!-- Send SMS Permission -->
+    <string name="title_send_sms">Envoyer des SMS</string>
     <string name="desc_ic_send_sms">Icône SMS</string>
+    <string name="desc_send_sms">Pour vous permettre de contacter certains services d\'urgence
+        par SMS.</string>
+    <string name="rationale_send_sms">Cette autorisation permet à Help Abroad d\'envoyer directement
+        un SMS aux numéros d\'urgence officiels qui supportent la messagerie texte. Cela peut être
+        vital si un appel vocal n\'est pas possible ou adapté pour vous. Les messages ne sont envoyés
+        que lorsque vous choisissezd\'utiliser cette fonctionnalité spécifique pour contacter ces
+        services.</string>
 
-        <!-- Buttons -->
-    <string name="btn_continue">Continuer</string>
-    <string name="btn_accept_all">Tout accepter</string>
-
+        <!-- General Permission Screen UI -->
+    <string name="title_permissions_needed">Permissions Requises</string>
+    <string name="text_crucial_permission">Cette permission est cruciale pour le bon fonctionnement
+        de l\'application.</string>
+    <string name="text_permanently_denied_guidance">Cette permission est refusée définitivement.
+        Veuillez l\'activer manuellement dans les paramètres de l\'application si nécessaire.</string>
+    <string name="desc_permission_granted">Permission accordée</string>
+    <string name="desc_permission_denied_permanently">Permission refusée définitivement</string>
 </resources>
