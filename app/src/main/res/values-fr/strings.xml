@@ -14,15 +14,16 @@
     <string name="label_settings">Réglages</string>
 
     <!-- Welcome -->
-    <string name="title_welcome">Welcome to %1s!</string>
-    <string name="desc_welcome">Help Abroad is designed to quickly connect you with emergency
-        services when you\'re travelling. To provide you with the best assistance, we need a few
-        permissions.</string>
+    <string name="title_welcome">Bienvenue sur Help Abroad !</string>
+    <string name="desc_welcome">Help Abroad est conçu pour vous mettre rapidement en relation avec
+        les services d\'urgence lorsque vous voyagez. Pour vous fournir la meilleure assistance
+        possible, nous avons besoin de quelques autorisations.</string>
 
     <!-- Permissions -->
-    <string name="permission_allowed">Autorisée</string>
-    <string name="permission_denied">Refusée</string>
-    <string name="permission_permanently_denied">Refusée définitivement</string>
+    <string name="permission_allowed">Permission autorisée</string>
+    <string name="permission_denied">Permission refusée</string>
+    <string name="permission_permanently_denied">Permission refusée définitivement</string>
+    <string name="desc_ic_allowed">Icône permission autorisée</string>
 
         <!-- Location Permission -->
     <string name="title_location">Accès à la localisation</string>
@@ -32,7 +33,7 @@
         localisation.</string>
     <string name="rationale_location">Accorder l\'accès à la localisation permet à Help Abroad
         d\'identifier le pays dans lequel vous vous trouvez pour les numéros d\'urgence pertinents
-        et aide les services à vous trouver plus rapidement en cas d\'urgence. Votre position n'est
+        et aide les services à vous trouver plus rapidement en cas d\'urgence. Votre position n\'est
         utilisée que lorsque vous utilisez activement l\'application à ces fins.</string>
 
         <!-- Call Phone Permission -->

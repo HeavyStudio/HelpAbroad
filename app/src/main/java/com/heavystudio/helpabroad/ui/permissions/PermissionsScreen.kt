@@ -5,21 +5,27 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.view.Surface
+import android.widget.Space
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -29,10 +35,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -108,16 +115,26 @@ fun PermissionsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(stringResource(R.string.title_permissions_needed)) })
+            TopAppBar(title = {
+                Text(stringResource(R.string.title_permissions_needed))
+            })
         },
         bottomBar = {
-            BottomAppBar {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground
+            ) {
                 Button(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(6.dp),
                     enabled = canContinue,
-                    onClick = { viewModel.onContinue() }
+                    onClick = { viewModel.onContinue() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                        disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                    )
                 ) {
                     Text(stringResource(R.string.btn_continue))
                 }
@@ -127,10 +144,40 @@ fun PermissionsScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // TODO PermissionRow
+            PermissionRow(
+                titleRes = R.string.title_location,
+                descriptionRes = R.string.desc_location,
+                rationaleRes = R.string.rationale_location,
+                status = items[0].status,
+                onRequest = { locPermission.launchPermissionRequest() },
+                onOpenSettings = { openAppSettings(context) }
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            PermissionRow(
+                titleRes = R.string.title_call_phone,
+                descriptionRes = R.string.desc_call_phone,
+                rationaleRes = R.string.rationale_call_phone,
+                status = items[1].status,
+                onRequest = { callPermission.launchPermissionRequest() },
+                onOpenSettings = { openAppSettings(context) }
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            PermissionRow(
+                titleRes = R.string.title_send_sms,
+                descriptionRes = R.string.desc_send_sms,
+                rationaleRes = R.string.rationale_send_sms,
+                status = items[2].status,
+                onRequest = { smsPermission.launchPermissionRequest() },
+                onOpenSettings = { openAppSettings(context) }
+            )
         }
     }
 }
@@ -160,10 +207,30 @@ private fun PermissionRow(
         when (status) {
             PermissionStatus.GRANTED -> {
                 Text(
-                    text = stringResource(R.string.permission_allowed),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    text = stringResource(id = descriptionRes),
+                    style = MaterialTheme.typography.bodySmall
                 )
+                Spacer(Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(MaterialTheme.colorScheme.tertiary),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.permission_allowed),
+                        modifier = Modifier.weight(1f).padding(8.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = stringResource(R.string.desc_ic_allowed),
+                        tint = MaterialTheme.colorScheme.onTertiary,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
             }
 
             PermissionStatus.DENIED -> {
@@ -172,13 +239,17 @@ private fun PermissionRow(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(Modifier.height(8.dp))
-                Row(Modifier.fillMaxWidth()) {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = stringResource(R.string.permission_denied),
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error
                     )
-                    Button(onClick = onRequest) {
+                    Button(onClick = onRequest, shape = RoundedCornerShape(6.dp)) {
                         Text(text = stringResource(R.string.btn_allow))
                     }
                 }
@@ -192,7 +263,7 @@ private fun PermissionRow(
                         modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Button(onClick = onOpenSettings) {
+                    Button(onClick = onOpenSettings, shape = RoundedCornerShape(6.dp)) {
                         Text(text = stringResource(R.string.btn_settings))
                     }
                 }
@@ -204,7 +275,14 @@ private fun PermissionRow(
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(8.dp))
-                Button(onClick = onRequest) { Text(text = stringResource(R.string.btn_allow)) }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = onRequest, shape = RoundedCornerShape(6.dp)) {
+                        Text(text = stringResource(R.string.btn_allow))
+                    }
+                }
             }
         }
     }

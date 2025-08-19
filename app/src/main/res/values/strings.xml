@@ -17,15 +17,16 @@
 
 
     <!-- Welcome -->
-    <string name="title_welcome">Welcome to %1s!</string>
+    <string name="title_welcome">Welcome to Help Abroad!</string>
     <string name="desc_welcome">Help Abroad is designed to quickly connect you with emergency
         services when you\'re travelling. To provide you with the best assistance, we need a few
         permissions.</string>
 
     <!-- Permissions -->
-    <string name="permission_allowed">Allowed</string>
-    <string name="permission_denied">Denied</string>
-    <string name="permission_permanently_denied">Permanently Denied</string>
+    <string name="permission_allowed">Permission Allowed</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="permission_permanently_denied">Permission Permanently Denied</string>
+    <string name="desc_ic_allowed">Permission Allowed Icon</string>
 
         <!-- Location Permission -->
     <string name="title_location">Location Access</string>
