@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -115,9 +116,15 @@ fun PermissionsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(stringResource(R.string.title_permissions_needed))
-            })
+            TopAppBar(
+                title = {
+                    Text(stringResource(R.string.title_permissions_needed))
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    titleContentColor = MaterialTheme.colorScheme.onSecondary
+                )
+            )
         },
         bottomBar = {
             BottomAppBar(
@@ -153,7 +160,10 @@ fun PermissionsScreen(
                 descriptionRes = R.string.desc_location,
                 rationaleRes = R.string.rationale_location,
                 status = items[0].status,
-                onRequest = { locPermission.launchPermissionRequest() },
+                onRequest = {
+                    locRequested = true
+                    locPermission.launchPermissionRequest()
+                },
                 onOpenSettings = { openAppSettings(context) }
             )
 
@@ -164,7 +174,10 @@ fun PermissionsScreen(
                 descriptionRes = R.string.desc_call_phone,
                 rationaleRes = R.string.rationale_call_phone,
                 status = items[1].status,
-                onRequest = { callPermission.launchPermissionRequest() },
+                onRequest = {
+                    locRequested = true
+                    callPermission.launchPermissionRequest()
+                },
                 onOpenSettings = { openAppSettings(context) }
             )
 
@@ -175,7 +188,10 @@ fun PermissionsScreen(
                 descriptionRes = R.string.desc_send_sms,
                 rationaleRes = R.string.rationale_send_sms,
                 status = items[2].status,
-                onRequest = { smsPermission.launchPermissionRequest() },
+                onRequest = {
+                    locRequested = true
+                    smsPermission.launchPermissionRequest()
+                },
                 onOpenSettings = { openAppSettings(context) }
             )
         }

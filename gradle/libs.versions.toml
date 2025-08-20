@@ -3,6 +3,7 @@ accompanistPermissions = "0.37.3"
 activityCompose = "1.10.1"
 activityKtx = "1.10.1"
 agp = "8.11.1"
+androidMaterial = "1.12.0"
 composeBom = "2025.07.00"
 coreKtx = "1.16.0"
 coreKtxVersion = "1.6.1"
@@ -22,6 +23,7 @@ room = "2.7.2"
 datastorePreferencesCore = "1.1.7"
 
 [libraries]
+android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }

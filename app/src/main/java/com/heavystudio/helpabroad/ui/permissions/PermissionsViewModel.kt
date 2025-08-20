@@ -2,9 +2,9 @@ package com.heavystudio.helpabroad.ui.permissions
 
 import android.Manifest
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.test.internal.platform.content.PermissionGranter
 import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.data.location.LocationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +42,7 @@ open class PermissionsViewModel @Inject constructor(
             PermissionItemUiState(
                 titleRes = R.string.title_call_phone,
                 descriptionRes = R.string.desc_call_phone,
-                rationaleRes = R.string.rationale_send_sms
+                rationaleRes = R.string.rationale_call_phone
             ),
             PermissionItemUiState(
                 titleRes = R.string.title_send_sms,
@@ -86,20 +86,36 @@ open class PermissionsViewModel @Inject constructor(
     }
 
     fun onContinue() {
-        val locationStatus = _statusByPermission.value[Manifest.permission.ACCESS_FINE_LOCATION]
-        if (PermissionStatus.GRANTED != locationStatus) {
-            viewModelScope.launch {
-                val loc: Location? = try {
+        val locationPermissionStatus = _statusByPermission.value[Manifest.permission.ACCESS_FINE_LOCATION]
+
+        viewModelScope.launch {
+            if (locationPermissionStatus == PermissionStatus.GRANTED) {
+                // Location permission is granted
+                val location: Location? = try {
                     locationRepo.tryGetQuickLocation(timeoutMillis = 2000L)
-                } catch (_: Exception) {
+                } catch (e: SecurityException) {
+                    Log.e("PermissionsVM", "SecurityException during localization " +
+                            "despite granted status", e)
+                    null
+                } catch (e: Exception) {
+                    Log.e("PermissionsVM", "Exception during localization", e)
                     null
                 }
 
-                if (loc != null) navEventsChannel.send(PermissionsNavEvent.GoHome)
-                else navEventsChannel.send(PermissionsNavEvent.GoCountrySelection)
-            }
-        } else {
-            viewModelScope.launch {
+                if (location != null) {
+                    // Can be localized
+                    Log.d("PermissionsVM", "Location permission granted AND localized. " +
+                            "Navigating to Home")
+                    navEventsChannel.send(PermissionsNavEvent.GoHome)
+                } else {
+                    // Cannot be localized (even though permission was granted)
+                    Log.d("PermissionsVM", "Location permission granted BUT localization " +
+                            "FAILED. Navigating to country selection")
+                    navEventsChannel.send(PermissionsNavEvent.GoCountrySelection)
+                }
+            } else {
+                // Location permission is DENIED
+                Log.d("PermissionsVM", "Location permission DENIED ($locationPermissionStatus")
                 navEventsChannel.send(PermissionsNavEvent.GoCountrySelection)
             }
         }
