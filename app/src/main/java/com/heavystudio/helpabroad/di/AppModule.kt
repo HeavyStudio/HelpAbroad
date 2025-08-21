@@ -34,7 +34,7 @@ object AppModule {
             AppDatabase::class.java,
             "help_abroad_database.db"
         )
-            .createFromAsset("database/help_abroad_db_seeds.db")
+            .createFromAsset("database/db_seeds.db")
             .fallbackToDestructiveMigration(true) // Dev only TODO: Remove for prod
             .build()
     }
