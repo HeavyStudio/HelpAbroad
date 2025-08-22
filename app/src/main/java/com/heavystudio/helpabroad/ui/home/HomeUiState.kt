@@ -14,6 +14,6 @@ data class HomeUiState(
     val errorMessage: String? = null,
 
     // Emergency Numbers
-    val emergencyNumbers: List<EmergencyNumberEntity> = emptyList(),
+    val emergencyNumbers: List<DisplayableEmergencyNumber> = emptyList(),
     val areEmergencyNumbersLoading: Boolean = false
 )

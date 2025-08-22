@@ -150,7 +150,7 @@ class HomeViewModel @Inject constructor(
                 it.copy(areEmergencyNumbersLoading = true)
             }
 
-            emergencyNumberRepository.getEmergencyNumbersByCountry(isoCode)
+            emergencyNumberRepository.getDisplayableEmergencyNumbersForCountry(isoCode)
                 .catch { e ->
                     Log.e(TAG, "Error collecting emergency numbers for $isoCode: " +
                             "${e.message}")

@@ -2,6 +2,7 @@ package com.heavystudio.helpabroad.data.repository
 
 import com.heavystudio.helpabroad.data.dao.EmergencyNumberDao
 import com.heavystudio.helpabroad.data.database.EmergencyNumberEntity
+import com.heavystudio.helpabroad.ui.home.DisplayableEmergencyNumber
 import com.heavystudio.helpabroad.utils.catchAndLog
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -49,6 +50,15 @@ class EmergencyNumberRepository @Inject constructor(
             .catchAndLog(
                 tag = tag,
                 errorMessage = "Error fetching SMS supported emergency numbers by country: $isoCode",
+                defaultValue = emptyList()
+            )
+    }
+
+    fun getDisplayableEmergencyNumbersForCountry(isoCode: String): Flow<List<DisplayableEmergencyNumber>> {
+        return emergencyNumberDao.getDisplayableEmergencyNumbersForCountry(isoCode)
+            .catchAndLog(
+                tag = tag,
+                errorMessage = "Error fetching displayable emergency numbers for country: $isoCode",
                 defaultValue = emptyList()
             )
     }

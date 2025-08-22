@@ -2,6 +2,5 @@ package com.heavystudio.helpabroad.ui.home
 
 data class DisplayableEmergencyNumber(
     val serviceNameResKey: String,
-    val number: String,
-    val iconType: String
+    val number: String
 )

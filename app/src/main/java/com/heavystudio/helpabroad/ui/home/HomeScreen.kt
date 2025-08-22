@@ -2,7 +2,6 @@ package com.heavystudio.helpabroad.ui.home
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -33,8 +34,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,9 +47,10 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.heavystudio.helpabroad.R
-import com.heavystudio.helpabroad.data.database.EmergencyNumberEntity
 import com.heavystudio.helpabroad.ui.components.AppBottomBar
 import com.heavystudio.helpabroad.ui.components.AppTopBar
+import com.heavystudio.helpabroad.ui.components.CustomBottomBar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +60,7 @@ fun HomeScreen(
 ) {
     // TODO: All the logic
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -73,7 +78,7 @@ fun HomeScreen(
             )
         },
         bottomBar = {
-            AppBottomBar(
+            CustomBottomBar(
                 navController = navController,
             )
         }
@@ -211,9 +216,21 @@ fun HomeScreen(
                         )
                         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-                        uiState.emergencyNumbers.forEach { numberEntity ->
-                            TODO("Implement EmergencyNumberListItem")
+                        uiState.emergencyNumbers.forEach { displayableNumber ->
+                            EmergencyNumberListItem(
+                                displayableNumber = displayableNumber,
+                                context = context
+                            )
                         }
+                    } else if (!uiState.isLoading && !uiState.isAddressLoading) {
+                        Text(
+                            text = "No emergency numbers found", // TODO: Replace with string resource
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
                     }
 
                     Text(
@@ -228,23 +245,51 @@ fun HomeScreen(
 
 @Composable
 fun EmergencyNumberListItem(
-    numberEntity: EmergencyNumberEntity,
+    displayableNumber: DisplayableEmergencyNumber,
     context: Context,
     modifier: Modifier = Modifier
 ) {
+    val resourceId = remember(displayableNumber.serviceNameResKey, context) {
+        try {
+            context.resources.getIdentifier(
+                displayableNumber.serviceNameResKey,
+                "string",
+                context.packageName
+            )
+        } catch (e: Exception) {
+            Log.e("HomeScreen", "Exception while getting resource ID for " +
+                    "'${displayableNumber.serviceNameResKey}'")
+            0
+        }
+    }
+
+    val serviceNameDisplay = if (resourceId != 0) {
+        stringResource(id = resourceId)
+    } else {
+        Log.w("HomeScreen", "Missing or invalid string resource key: " +
+                "${displayableNumber.serviceNameResKey}. Using fallback.")
+        displayableNumber.serviceNameResKey
+            .replaceFirst("service_", "", ignoreCase = true)
+            .replace("_", " ")
+            .capitalizeWords()
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClickLabel = "Call number", numberEntity.emergencyNumber) {
-                val phoneNumber = numberEntity.emergencyNumber
+            .clickable(onClickLabel = stringResource(
+                R.string.dial_number,
+                displayableNumber.number
+            )) {
+                val phoneNumber = displayableNumber.number
                 val intent = Intent(Intent.ACTION_DIAL).apply {
                     data = "tel:$phoneNumber".toUri()
                 }
-
                 try {
                     context.startActivity(intent)
                 } catch (e: Exception) {
-                    Log.e("HomeScreen", "Could not initiate dial for $phoneNumber: ${e.message}")
+                    Log.e("HomeScreen", "Could not initiate dial for $phoneNumber: " +
+                            "${e.message}")
                 }
             }
             .padding(vertical = 12.dp),
@@ -252,16 +297,43 @@ fun EmergencyNumberListItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = numberEntity.serviceId.toString(),
+            text = serviceNameDisplay,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
         )
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            val iconToShow = when (numberEntity.supportsSms) {
-                true -> Icons.Filled.Sms
+            val iconToShow = when (displayableNumber.serviceNameResKey.lowercase()) {
+                "service_text_relay_emergency" -> Icons.Filled.Sms
                 else -> Icons.Filled.Call
             }
+
+            Icon(
+                imageVector = iconToShow,
+                contentDescription = stringResource(
+                    if (iconToShow == Icons.Filled.Sms) R.string.sms_indicator_for_service
+                    else R.string.call_indicator_for_service,
+                    serviceNameDisplay
+                ),
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = displayableNumber.number,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
+            )
         }
+    }
+}
+
+fun String.capitalizeWords(): String = split(" ").joinToString(" ") { word ->
+    if (word.isNotEmpty()) {
+        word.replaceFirstChar { char ->
+            if (char.isLowerCase()) char.titlecase(Locale.getDefault()) else char.toString()
+        }
+    } else {
+        word
     }
 }

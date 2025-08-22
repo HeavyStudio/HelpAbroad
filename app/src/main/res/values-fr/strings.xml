@@ -66,4 +66,16 @@
         Veuillez l\'activer manuellement dans les paramètres de l\'application si nécessaire.</string>
     <string name="desc_permission_granted">Permission accordée</string>
     <string name="desc_permission_denied_permanently">Permission refusée définitivement</string>
+
+
+    <!-- UC -->
+    <string name="call_indicator_for_service">Call indicator for %s</string>
+    <string name="sms_indicator_for_service">SMS indicator for %s</string>
+    <string name="dial_number">Composer %s</string>
+
+    <string name="service_police">Police</string>
+    <string name="service_ambulance">Ambulance</string>
+    <string name="service_samu">SAMU</string>
+    <string name="service_fire_department">Pompiers</string>
+    <string name="service_text_relay_emergency">Urgences SMS</string>
 </resources>

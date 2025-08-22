@@ -63,4 +63,17 @@
         enable it manually in the app settings if needed.</string>
     <string name="desc_permission_granted">Permission granted</string>
     <string name="desc_permission_denied_permanently">Permission permanently denied</string>
+    
+    
+    <!-- UC -->
+    <string name="call_indicator_for_service">Call indicator for %s</string>
+    <string name="sms_indicator_for_service">SMS indicator for %s</string>
+    <string name="dial_number">Dial %s</string>
+
+    <!-- Example Service Name Keys -->
+    <string name="service_police">Police</string>
+    <string name="service_ambulance">Ambulance</string>
+    <string name="service_samu">SAMU</string>
+    <string name="service_fire_department">Fire Department</string>
+    <string name="service_text_relay_emergency">Text Relay</string>
 </resources>

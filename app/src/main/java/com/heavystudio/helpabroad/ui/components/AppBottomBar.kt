@@ -91,7 +91,7 @@ fun AppBottomBar(
                     }
                 },
                 label = { Text(stringResource(item.labelResId)) },
-                alwaysShowLabel = true,
+                alwaysShowLabel = false,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.onPrimary,
                     unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
