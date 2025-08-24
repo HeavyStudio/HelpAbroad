@@ -6,7 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Space
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +27,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -39,6 +42,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -116,20 +123,37 @@ fun PermissionsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(stringResource(R.string.title_permissions_needed))
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    titleContentColor = MaterialTheme.colorScheme.onSecondary
+            Row(
+                modifier = Modifier
+                    .drawBehind {
+                        val borderSize = 2.dp.toPx()
+                        val start = Offset(0f, size.height)
+                        val end = Offset(size.width, size.height)
+                        drawLine(
+                            color = Color(0xFFA27B5B),
+                            start = start,
+                            end = end,
+                            strokeWidth = borderSize
+                        )
+                    }
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(stringResource(R.string.title_permissions_needed))
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        titleContentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    modifier = Modifier
+                        .shadow(4.dp, ambientColor = MaterialTheme.colorScheme.primary)
                 )
-            )
+            }
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onBackground
+                containerColor = Color.Transparent,
+//                    contentColor = MaterialTheme.colorScheme.onSurface
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
@@ -139,8 +163,8 @@ fun PermissionsScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary,
-                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                        disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                        disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f),
+                        disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                 ) {
                     Text(stringResource(R.string.btn_continue))
@@ -155,6 +179,7 @@ fun PermissionsScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+            Spacer(Modifier.height(16.dp))
             PermissionRow(
                 titleRes = R.string.title_location,
                 descriptionRes = R.string.desc_location,
@@ -231,19 +256,26 @@ private fun PermissionRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(6.dp))
-                        .background(MaterialTheme.colorScheme.tertiary),
+                        .background(Color.Transparent)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            shape = RoundedCornerShape(6.dp)
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = stringResource(R.string.permission_allowed),
-                        modifier = Modifier.weight(1f).padding(8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(8.dp),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onTertiary
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                     Icon(
                         imageVector = Icons.Filled.Check,
                         contentDescription = stringResource(R.string.desc_ic_allowed),
-                        tint = MaterialTheme.colorScheme.onTertiary,
+                        tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(8.dp)
                     )
                 }
@@ -256,16 +288,32 @@ private fun PermissionRow(
                 )
                 Spacer(Modifier.height(8.dp))
                 Row(
-                    Modifier.fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(Color.Transparent)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.error,
+                            shape = RoundedCornerShape(6.dp)
+                        ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = stringResource(R.string.permission_denied),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).padding(8.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error
                     )
-                    Button(onClick = onRequest, shape = RoundedCornerShape(6.dp)) {
+                    Button(
+                        modifier = Modifier.padding(8.dp),
+                        onClick = onRequest,
+                        shape = RoundedCornerShape(6.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        )
+                    ) {
                         Text(text = stringResource(R.string.btn_allow))
                     }
                 }
@@ -295,7 +343,18 @@ private fun PermissionRow(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    Button(onClick = onRequest, shape = RoundedCornerShape(6.dp)) {
+                    OutlinedButton(
+                        onClick = onRequest,
+                        shape = RoundedCornerShape(6.dp),
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        )
+                    ) {
                         Text(text = stringResource(R.string.btn_allow))
                     }
                 }
