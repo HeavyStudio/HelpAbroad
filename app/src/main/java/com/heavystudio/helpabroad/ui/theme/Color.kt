@@ -11,6 +11,7 @@ val tertiary = Color(0xFF139A43)
 
 val surfaceLight = Color(0xFFDCD7C9)
 val onSurfaceLight = Color(0xFF3F4E4F)
+val onSurfaceVariantLight = Color(0xFF2C3639)
 
 // Dark scheme
 val surfaceDark = Color(0xFF3F4E4F)

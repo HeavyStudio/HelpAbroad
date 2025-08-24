@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -30,6 +31,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -45,21 +49,36 @@ fun WelcomeScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxHeight(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(stringResource(R.string.title_welcome))
+            Row(
+                modifier = Modifier
+                    .drawBehind {
+                        val borderSize = 2.dp.toPx()
+                        val start = Offset(0f, size.height)
+                        val end = Offset(size.width, size.height)
+                        drawLine(
+                            color = Color(0xFFA27B5B),
+                            start = start,
+                            end = end,
+                            strokeWidth = borderSize
+                        )
                     }
-                },
-                modifier = Modifier.height(128.dp),
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Box(
+                            modifier = Modifier.fillMaxHeight(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(stringResource(R.string.title_welcome))
+                        }
+                    },
+                    modifier = Modifier.height(128.dp),
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        titleContentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 )
-            )
+            }
         },
         bottomBar = {
             Row(
@@ -76,6 +95,10 @@ fun WelcomeScreen(
                         onContinueClick()
                     },
                     shape = RoundedCornerShape(6.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

@@ -4,7 +4,7 @@
     <string name="desc_ic_logo">Logo</string>
 
     <!-- Buttons -->
-    <string name="btn_continue">Continue</string>
+    <string name="btn_continue">Continuer</string>
     <string name="btn_allow">Autoriser</string>
     <string name="btn_settings">Paramètres</string>
 

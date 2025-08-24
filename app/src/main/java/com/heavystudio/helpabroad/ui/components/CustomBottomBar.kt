@@ -44,7 +44,7 @@ fun CustomBottomBar(
     Box(
         modifier = Modifier
             .shadow(elevation = 6.dp, spotColor = Color.Black)
-            .background(Color(0xFFF3E9E6))
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth()
             .navigationBarsPadding()
     ) {
@@ -57,18 +57,19 @@ fun CustomBottomBar(
         ) {
             items.forEach { item ->
                 val selected = currentRoute == item.route
-                val circleColor = if (selected) Color(0xFFB19182) else Color.White
-                val iconColor = if (selected) Color.White else Color(0xFFB19182)
+                val circleColor = if (selected) MaterialTheme.colorScheme.background else Color.Transparent
+                val iconColor = MaterialTheme.colorScheme.onSurface
+//                    if (selected) MaterialTheme.colorScheme.onSurface else Color.White
 
                 Box(
                     modifier = Modifier
                         .size(45.dp)
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = CircleShape,
-                            clip = false,
-                            spotColor = Color.Black
-                        )
+//                        .shadow(
+//                            elevation = 4.dp,
+//                            shape = CircleShape,
+//                            clip = false,
+//                            spotColor = Color.Black
+//                        )
                         .clip(CircleShape)
                         .background(circleColor)
                         .clickable {

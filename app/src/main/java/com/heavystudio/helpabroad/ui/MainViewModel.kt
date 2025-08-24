@@ -22,8 +22,11 @@ class MainViewModel @Inject constructor(
             userPreferencesRepository.isFirstLaunch,
             userPreferencesRepository.isPermissionsSetupCompleted
         ) { isFirstLaunch, isPermissionsSetupCompleted ->
+            // TODO: DEV, remove for prod
+            val isFirstLaunchDev = true
             when {
-                isFirstLaunch -> Routes.WELCOME
+                // TODO: Replace with isFirstLaunch for prod
+                isFirstLaunchDev -> Routes.WELCOME
                 !isPermissionsSetupCompleted -> Routes.PERMISSIONS
                 else -> Routes.HOME
             }

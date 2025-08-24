@@ -1,6 +1,5 @@
 package com.heavystudio.helpabroad
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -10,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.toColorInt
 import com.heavystudio.helpabroad.ui.navigation.AppNavigation
 import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,11 +23,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(
-                scrim = Color.TRANSPARENT
+            statusBarStyle = SystemBarStyle.auto(
+                lightScrim = Color(0x40FFFFFF).toArgb(),
+                darkScrim = Color(0x66000000).toArgb()
             ),
-            navigationBarStyle = SystemBarStyle.dark(
-                scrim = Color.TRANSPARENT
+            navigationBarStyle = SystemBarStyle.auto(
+                lightScrim = Color(0x40FFFFFF).toArgb(),
+                darkScrim = Color(0x66000000).toArgb()
             )
         )
 

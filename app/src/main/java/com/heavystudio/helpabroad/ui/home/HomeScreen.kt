@@ -37,6 +37,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -64,18 +67,32 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                appName = stringResource(R.string.app_name),
-                appLogoIcon = Icons.Filled.Language,
-                actions = {
-                    IconButton(onClick = { viewModel.refreshAllData() }) {
-                        Icon(
-                            imageVector = Icons.Filled.Refresh,
-                            contentDescription = "Refresh"
-                        )
-                    }
+            Row(
+                modifier = Modifier.drawBehind {
+                    val borderSize = 2.dp.toPx()
+                    val start = Offset(0f, size.height)
+                    val end = Offset(size.width, size.height)
+                    drawLine(
+                        color = Color(0xFFA27B5B),
+                        start = start,
+                        end = end,
+                        strokeWidth = borderSize
+                    )
                 }
-            )
+            ) {
+                AppTopBar(
+                    appName = stringResource(R.string.app_name),
+                    appLogoIcon = Icons.Filled.Language,
+                    actions = {
+                        IconButton(onClick = { viewModel.refreshAllData() }) {
+                            Icon(
+                                imageVector = Icons.Filled.Refresh,
+                                contentDescription = "Refresh"
+                            )
+                        }
+                    },
+                )
+            }
         },
         bottomBar = {
             CustomBottomBar(

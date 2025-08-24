@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -151,9 +152,11 @@ fun PermissionsScreen(
             }
         },
         bottomBar = {
-            BottomAppBar(
-                containerColor = Color.Transparent,
-//                    contentColor = MaterialTheme.colorScheme.onSurface
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .navigationBarsPadding()
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
@@ -161,8 +164,8 @@ fun PermissionsScreen(
                     enabled = canContinue,
                     onClick = { viewModel.onContinue() },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                         disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f),
                         disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
@@ -343,14 +346,14 @@ private fun PermissionRow(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    OutlinedButton(
+                    Button(
                         onClick = onRequest,
                         shape = RoundedCornerShape(6.dp),
-                        border = BorderStroke(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.primary
-                        ),
-                        colors = ButtonDefaults.outlinedButtonColors(
+//                        border = BorderStroke(
+//                            width = 1.dp,
+//                            color = MaterialTheme.colorScheme.primary
+//                        ),
+                        colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.surface,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         )
