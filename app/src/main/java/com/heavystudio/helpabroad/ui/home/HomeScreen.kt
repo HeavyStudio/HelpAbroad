@@ -3,6 +3,8 @@ package com.heavystudio.helpabroad.ui.home
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
@@ -139,7 +142,9 @@ fun HomeScreen(
                         )
                     }
                 }
-                HorizontalDivider(modifier = Modifier.padding(bottom = 16.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
             }
             // --- End Welcome Title Section ---
 
@@ -192,16 +197,27 @@ fun HomeScreen(
                             CircularProgressIndicator()
                             Text(
                                 text = " ${uiState.userAddress}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(start = 8.dp)
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     } else {
                         Text(
-                            text = uiState.userAddress,
+                            text = uiState.userAddress.replace(", ", "\n"),
                             style = MaterialTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = MaterialTheme.colorScheme.surface,
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                                .padding(vertical = 8.dp)
                         )
                     }
                     // --- End Address Section ---
@@ -319,7 +335,15 @@ fun EmergencyNumberListItem(
             modifier = Modifier.weight(1f)
         )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(6.dp)
+                )
+                .padding(6.dp)
+        ) {
             val iconToShow = when (displayableNumber.serviceNameResKey.lowercase()) {
                 "service_text_relay_emergency" -> Icons.Filled.Sms
                 else -> Icons.Filled.Call
@@ -332,7 +356,7 @@ fun EmergencyNumberListItem(
                     else R.string.call_indicator_for_service,
                     serviceNameDisplay
                 ),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
