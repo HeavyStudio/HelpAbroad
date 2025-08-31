@@ -1,40 +1,39 @@
 package com.heavystudio.helpabroad.data.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import com.heavystudio.helpabroad.data.database.CountryEntity
+import androidx.room.Transaction
+import com.heavystudio.helpabroad.data.model.result.CountryWithLocalizedName
 import kotlinx.coroutines.flow.Flow
 
-@Dao
 interface CountryDao {
 
-    // --- Convenience Methods ---
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertCountry(country: CountryEntity): Long
+    @Transaction
+    @Query("""
+        SELECT 
+            c.*, 
+            ct.name AS localizedName 
+        FROM countries AS c 
+        INNER JOIN country_translations AS ct 
+        ON c.iso_code = ct.iso_code 
+        WHERE ct.language_code = :languageCode 
+        ORDER BY ct.name ASC    
+    """)
+    fun getCountriesByLanguage(languageCode: String): Flow<List<CountryWithLocalizedName>>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertCountries(vararg countries: CountryEntity): List<Long>
-
-    @Update
-    suspend fun updateCountry(country: CountryEntity): Int
-
-    @Delete
-    suspend fun deleteCountry(country: CountryEntity): Int
-
-    // --- Queries ---
-    @Query("SELECT * FROM countries WHERE iso_code = :isoCode")
-    fun getCountryByIsoCode(isoCode: String): Flow<CountryEntity?>
-
-    @Query("SELECT * FROM countries ORDER BY iso_code ASC")
-    fun getAllCountries(): Flow<List<CountryEntity>>
-
-    @Query("SELECT * FROM countries WHERE member_112 = 1 ORDER BY iso_code ASC")
-    fun get112Countries(): Flow<List<CountryEntity>>
-
-    @Query("SELECT * FROM countries WHERE member_911 = 1 ORDER BY iso_code ASC")
-    fun get911Countries(): Flow<List<CountryEntity>>
+    @Transaction
+    @Query("""
+        SELECT 
+            c.*, 
+            ct.name AS localizedName 
+        FROM countries AS c 
+        INNER JOIN country_translations AS ct
+        ON c.iso_code = ct.iso_code 
+        INNER JOIN country_translations_fts AS ct_fts 
+        ON ct.id = ct_fts.rowid 
+        WHERE ct_fts.name MATCH :query 
+        AND ct.language_code = :languageCode 
+        GROUP BY c.iso_code 
+        ORDER BY ct.name ASC
+    """)
+    fun searchCountries(query: String, languageCode: String): Flow<List<CountryWithLocalizedName>>
 }
