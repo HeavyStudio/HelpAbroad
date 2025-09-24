@@ -11,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.graphics.toColorInt
 import com.heavystudio.helpabroad.ui.navigation.AppNavigation
 import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 import dagger.hilt.android.AndroidEntryPoint

@@ -3,6 +3,7 @@
         <!-- App Name & Logo -->
     <string name="app_name" translatable="false">Help Abroad</string>
     <string name="desc_ic_logo">Logo</string>
+    <string name="desc_refresh_location">Refresh Location</string>
 
         <!-- Buttons -->
     <string name="btn_continue">Continue</string>

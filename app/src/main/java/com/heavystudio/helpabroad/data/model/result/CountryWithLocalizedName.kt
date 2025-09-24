@@ -6,5 +6,6 @@ import com.heavystudio.helpabroad.data.model.entity.CountryEntity
 data class CountryWithLocalizedName(
     @Embedded
     val country: CountryEntity,
-    val localizedName: String
+    val localizedName: String,
+    val regionName: String
 )

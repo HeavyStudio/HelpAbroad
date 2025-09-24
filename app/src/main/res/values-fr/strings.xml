@@ -2,6 +2,8 @@
 
     <!-- General -->
     <string name="desc_ic_logo">Logo</string>
+    <string name="desc_refresh_location">Rafraîchir localisation</string>
+
 
     <!-- Buttons -->
     <string name="btn_continue">Continuer</string>

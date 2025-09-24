@@ -8,7 +8,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "country_translations",
+    tableName = "emergency_numbers",
     foreignKeys = [
         ForeignKey(
             entity = CountryEntity::class,
@@ -16,11 +16,21 @@ import androidx.room.PrimaryKey
             childColumns = ["iso_code"],
             onUpdate = CASCADE,
             onDelete = CASCADE
+        ),
+        ForeignKey(
+            entity = ServiceEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["service_id"],
+            onUpdate = CASCADE,
+            onDelete = CASCADE
         )
     ],
-    indices = [Index(value = ["iso_code"])]
+    indices = [
+        Index(value = ["iso_code"]),
+        Index(value = ["service_id"])
+    ]
 )
-data class CountryTranslationEntity(
+data class EmergencyNumberEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long = 0,
@@ -28,9 +38,12 @@ data class CountryTranslationEntity(
     @ColumnInfo(name = "iso_code")
     val isoCode: String,
 
-    @ColumnInfo(name = "language_code")
-    val languageCode: String,
+    @ColumnInfo(name = "number")
+    val number: String,
 
-    @ColumnInfo(name = "name")
-    val name: String
+    @ColumnInfo(name = "service_id")
+    val serviceId: Long,
+
+    @ColumnInfo(name = "last_updated")
+    val lastUpdated: Long
 )

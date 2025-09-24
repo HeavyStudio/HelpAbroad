@@ -2,16 +2,12 @@ package com.heavystudio.helpabroad.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.DataStoreFactory
-import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.heavystudio.helpabroad.data.dao.CountryDao
 import com.heavystudio.helpabroad.data.dao.EmergencyNumberDao
-import com.heavystudio.helpabroad.data.dao.ServiceDao
 import com.heavystudio.helpabroad.data.database.AppDatabase
-import com.heavystudio.helpabroad.data.repository.UserPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +20,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = USE
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object DatabaseModule {
 
     @Provides
     @Singleton
@@ -40,17 +36,8 @@ object AppModule {
     }
 
     @Provides
-    @Singleton
-    fun provideUserPreferencesRepository(@ApplicationContext context: Context): UserPreferencesRepository {
-        return UserPreferencesRepository(context)
-    }
+    fun provideCountryDao(database: AppDatabase): CountryDao = database.countryDao()
 
     @Provides
-    fun provideCountryDao(appDatabase: AppDatabase): CountryDao = appDatabase.countryDao()
-
-    @Provides
-    fun provideEmergencyNumberDao(appDatabase: AppDatabase): EmergencyNumberDao = appDatabase.emergencyNumberDao()
-
-    @Provides
-    fun provideServiceDao(appDatabase: AppDatabase): ServiceDao = appDatabase.serviceDao()
+    fun provideEmergencyNumberDao(database: AppDatabase): EmergencyNumberDao = database.emergencyNumberDao()
 }

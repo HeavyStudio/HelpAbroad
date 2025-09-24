@@ -7,6 +7,9 @@ import androidx.room.Fts4
 @Fts4(contentEntity = CountryTranslationEntity::class)
 @Entity(tableName = "country_translations_fts")
 data class CountryTranslationFtsEntity(
+    @ColumnInfo(name = "iso_code")
+    val isoCode: String,
+
     @ColumnInfo(name = "name")
     val name: String
 )
