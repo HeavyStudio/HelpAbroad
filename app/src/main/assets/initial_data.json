@@ -1,0 +1,66 @@
+{
+  "serviceTypes": [
+    {
+      "code": "POLICE",
+      "icon": "ic_police",
+      "names": [
+        { "lang": "fr", "name": "Police / Gendarmerie" },
+        { "lang": "en", "name": "Police" }
+      ]
+    },
+    {
+      "code": "AMBULANCE",
+      "icon": "ic_ambulance",
+      "names": [
+        { "lang": "fr", "name": "Ambulance (SAMU)" },
+        { "lang": "en", "name": "Ambulance" }
+      ]
+    },
+    {
+      "code": "FIRE",
+      "icon": "ic_fire",
+      "names": [
+        { "lang": "fr", "name": "Pompiers" },
+        { "lang": "en", "name": "Fire Department" }
+      ]
+    }
+  ],
+  "countries": [
+    {
+      "isoCode": "FR",
+      "names": [
+        { "lang": "fr", "name": "France" },
+        { "lang": "en", "name": "France" }
+      ],
+      "services": [
+        { "type": "POLICE", "number": "17" },
+        { "type": "AMBULANCE", "number": "15" },
+        { "type": "FIRE", "number": "18" }
+      ]
+    },
+    {
+      "isoCode": "DE",
+      "names": [
+        { "lang": "fr", "name": "Allemagne" },
+        { "lang": "en", "name": "Germany" }
+      ],
+      "services": [
+        { "type": "POLICE", "number": "110" },
+        { "type": "AMBULANCE", "number": "112" },
+        { "type": "FIRE", "number": "112" }
+      ]
+    },
+    {
+      "isoCode": "US",
+      "names": [
+        { "lang": "fr", "name": "États-Unis" },
+        { "lang": "en", "name": "United States" }
+      ],
+      "services": [
+        { "type": "POLICE", "number": "911" },
+        { "type": "AMBULANCE", "number": "911" },
+        { "type": "FIRE", "number": "911" }
+      ]
+    }
+  ]
+}

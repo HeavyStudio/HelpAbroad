@@ -1,25 +1,26 @@
 [versions]
 accompanistPermissions = "0.37.3"
-activityCompose = "1.10.1"
-activityKtx = "1.10.1"
-agp = "8.11.1"
-androidMaterial = "1.12.0"
-composeBom = "2025.07.00"
-coreKtx = "1.16.0"
-coreKtxVersion = "1.6.1"
+activityCompose = "1.11.0"
+activityKtx = "1.11.0"
+agp = "8.13.0"
+androidMaterial = "1.13.0"
+composeBom = "2025.09.00"
+coreKtx = "1.17.0"
+coreKtxVersion = "1.7.0"
 datastorePreferences = "1.1.7"
-espressoCore = "3.6.1"
-hilt = "2.57"
-hiltNavigationCompose = "1.2.0"
+espressoCore = "3.7.0"
+hilt = "2.57.1"
+hiltNavigationCompose = "1.3.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-kotlin = "2.2.0"
+junitVersion = "1.3.0"
+kotlin = "2.2.20"
 ksp = "2.2.0-2.0.2"
-lifecycleRuntimeKtx = "2.9.2"
+lifecycleRuntimeKtx = "2.9.4"
 materialIcons = "1.7.8"
 playServicesCoroutines = "1.10.2"
 playServicesLocation = "21.3.0"
-room = "2.7.2"
+room = "2.8.0"
+kotlinx-serialization-json = "1.9.0"
 datastorePreferencesCore = "1.1.7"
 
 [libraries]
@@ -52,6 +53,7 @@ material-icons = { group = "androidx.compose.material", name = "material-icons-c
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
 play-services-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "playServicesCoroutines" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastorePreferencesCore" }
 
 [plugins]
@@ -61,4 +63,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 hilt-gradle-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 

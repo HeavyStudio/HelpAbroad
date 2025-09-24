@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.gradle.plugin)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -87,6 +88,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.kotlinx.serialization.json)
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.compiler)
     testImplementation(libs.junit)

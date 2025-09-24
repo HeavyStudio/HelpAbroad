@@ -1,80 +1,9 @@
 <resources>
     <!-- General -->
-        <!-- App Name & Logo -->
+        <!-- Home Screen -->
     <string name="app_name" translatable="false">Help Abroad</string>
-    <string name="desc_ic_logo">Logo</string>
-    <string name="desc_refresh_location">Refresh Location</string>
-
-        <!-- Buttons -->
-    <string name="btn_continue">Continue</string>
-    <string name="btn_allow">Allow</string>
-    <string name="btn_settings">Settings</string>
-
-
-        <!-- Navigation -->
-    <string name="label_home">Home</string>
-    <string name="label_country_selection">Countries</string>
-    <string name="label_settings">Settings</string>
-
-
-    <!-- Welcome -->
-    <string name="title_welcome">Welcome to Help Abroad!</string>
-    <string name="desc_welcome">Help Abroad is designed to quickly connect you with emergency
-        services when you\'re travelling. To provide you with the best assistance, we need a few
-        permissions.</string>
-
-    <!-- Permissions -->
-    <string name="permission_allowed">Permission Allowed</string>
-    <string name="permission_denied">Permission Denied</string>
-    <string name="permission_permanently_denied">Permission Permanently Denied</string>
-    <string name="desc_ic_allowed">Permission Allowed Icon</string>
-
-        <!-- Location Permission -->
-    <string name="title_location">Location Access</string>
-    <string name="desc_ic_location">Location Icon</string>
-    <string name="desc_location">To help you quickly find local emergency numbers and provide your
-        location to services if needed, please grant location access.</string>
-    <string name="rationale_location">Granting location access allows Help Abroad to identify the
-        country you are in for relevant emergency numbers and helps services find you faster in an
-        emergency. Your location is only used when you actively use the app for these purposes.</string>
-
-    <!-- Call Phone Permission -->
-    <string name="title_call_phone">Make Calls</string>
-    <string name="desc_ic_call_phone">Call Phone Icon</string>
-    <string name="desc_call_phone">To allow you to directly call emergency services from the app,
-        please grant permission to make phone calls.</string>
-    <string name="rationale_call_phone">This permission is needed so you can tap a number within
-        Help Abroad and immediately initiate a call to emergency services without leaving the app.
-        We will never make calls without your direct action.</string>
-
-    <!-- Send SMS Permission -->
-    <string name="title_send_sms">Send SMS</string>
-    <string name="desc_ic_send_sms">Send SMS Icon</string>
-    <string name="desc_send_sms">To allow you to contact specific emergency services via SMS.</string>
-    <string name="rationale_send_sms">This permission enables Help Abroad to directly send an SMS to
-        official emergency numbers that support text messaging. This can be vital if a voice call
-        isn\'t possible or suitable for you. Messages are only sent when you choose to use this
-        specific feature to contact these services.</string>
-
-    <!-- General Permission Screen UI -->
-    <string name="title_permissions_needed">Permissions Needed</string>
-    <string name="text_crucial_permission">This permission is crucial for the app to function
-        correctly.</string>
-    <string name="text_permanently_denied_guidance">This permission is permanently denied. Please
-        enable it manually in the app settings if needed.</string>
-    <string name="desc_permission_granted">Permission granted</string>
-    <string name="desc_permission_denied_permanently">Permission permanently denied</string>
-    
-    
-    <!-- UC -->
-    <string name="call_indicator_for_service">Call indicator for %s</string>
-    <string name="sms_indicator_for_service">SMS indicator for %s</string>
-    <string name="dial_number">Dial %s</string>
-
-    <!-- Example Service Name Keys -->
-    <string name="service_police">Police</string>
-    <string name="service_ambulance">Ambulance</string>
-    <string name="service_samu">SAMU</string>
-    <string name="service_fire_department">Fire Department</string>
-    <string name="service_text_relay_emergency">Text Relay</string>
+    <string name="search_country_placeholder">Search for a country</string>
+    <string name="home_prompt_message">Start by searching for a country to see its
+        emergency numbers</string>
+    <string name="no_results_found">No results found</string>
 </resources>
