@@ -6,4 +6,9 @@
     <string name="home_prompt_message">Start by searching for a country to see its
         emergency numbers</string>
     <string name="no_results_found">No results found</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_countries">Countries</string>
+    <string name="nav_settings">Settings</string>
 </resources>

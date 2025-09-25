@@ -54,9 +54,10 @@ fun CountriesScreen(
                 ListItem(
                     headlineContent = { Text(country.name) },
                     modifier = Modifier.clickable {
-                        // 1. On notifie le ViewModel du pays sélectionné
-                        viewModel.onCountrySelected(country.countryId)
-                        // 2. On revient à l'écran précédent (HomeScreen)
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("selected_country_id", country.countryId)
+
                         navController.popBackStack()
                     }
                 )

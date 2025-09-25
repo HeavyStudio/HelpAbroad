@@ -6,4 +6,9 @@
     <string name="home_prompt_message">Commencez par rechercher un pays pour afficher ses
     numéros d\'urgence</string>
     <string name="no_results_found">Aucun résultat trouvé</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_countries">Pays</string>
+    <string name="nav_settings">Réglages</string>
 </resources>

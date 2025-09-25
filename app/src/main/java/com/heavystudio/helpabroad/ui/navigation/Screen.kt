@@ -1,7 +1,19 @@
 package com.heavystudio.helpabroad.ui.navigation
 
-sealed class Screen(val route: String) {
-    object Home : Screen("home")
-    object Countries : Screen("countries")
-    object Settings : Screen("settings")
+import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.heavystudio.helpabroad.R
+
+sealed class Screen(
+    val route: String,
+    @StringRes val labelResId: Int,
+    val icon: ImageVector
+) {
+    object Home : Screen("home", R.string.nav_home, Icons.Filled.Home)
+    object Countries : Screen("countries", R.string.nav_countries, Icons.Filled.Language)
+    object Settings : Screen("settings", R.string.nav_settings, Icons.Filled.Settings)
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d0c9fc4c11f25a20da8bcf9a79a35477",
+    "identityHash": "4a012fb97c8feb1650e80eb1a60bbd2d",
     "entities": [
       {
         "tableName": "countries",
@@ -101,7 +101,7 @@
       },
       {
         "tableName": "country_names_fts",
-        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT NOT NULL, content=`country_names`)",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT NOT NULL, tokenize=unicode61 `remove_diacritics=2`, content=`country_names`)",
         "fields": [
           {
             "fieldPath": "name",
@@ -116,8 +116,10 @@
         },
         "ftsVersion": "FTS4",
         "ftsOptions": {
-          "tokenizer": "simple",
-          "tokenizerArgs": [],
+          "tokenizer": "unicode61",
+          "tokenizerArgs": [
+            "remove_diacritics=2"
+          ],
           "contentTable": "country_names",
           "languageIdColumnName": "",
           "matchInfo": "FTS4",
@@ -234,7 +236,7 @@
             "notNull": true
           },
           {
-            "fieldPath": "defautIconRef",
+            "fieldPath": "defaultIconRef",
             "columnName": "default_icon_ref",
             "affinity": "TEXT",
             "notNull": true
@@ -321,7 +323,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0c9fc4c11f25a20da8bcf9a79a35477')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a012fb97c8feb1650e80eb1a60bbd2d')"
     ]
   }
 }
