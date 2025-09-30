@@ -51,7 +51,15 @@ fun AppNavigation() {
             }
 
             composable(Screen.Settings.route) {
-                SettingsScreen()
+                SettingsScreen(navController = navController)
+            }
+
+            composable(Screen.About.route) {
+                AboutScreen(navController = navController)
+            }
+
+            composable(Screen.Disclaimer.route) {
+                DisclaimerScreen(navController = navController)
             }
         }
     }

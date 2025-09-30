@@ -34,4 +34,22 @@
     <string name="call_confirmation_message">Do you want to call %s now?</string>
     <string name="call_action">Call</string>
     <string name="cancel_action">Cancel</string>
+
+    <!-- About & Disclaimer -->
+    <string name="back_button_desc">Back button</string>
+    <string name="screen_title_about">About</string>
+    <string name="screen_title_disclaimer">Disclaimer</string>
+
+    <string name="app_version">Version %s</string>
+    <string name="about_description">This application provides emergency numbers for various
+        countries around the world. Designed for travelers and expatriates.</string>
+    <string name="developed_by">Developed by Heavy Studio</string>
+
+    <string name="disclaimer_text">The information provided in this application is for general
+        informational purposes only. All information is provided in good faith, however, we make no
+        representation or warranty of any kind, express or implied, regarding the accuracy, adequacy,
+        validity, reliability, or completeness of any information. In case of an emergency, always
+        try to contact local authorities through official and verified channels. The developer
+        assumes no liability for any consequences arising from the use of the numbers provided in
+        this app.</string>
 </resources>

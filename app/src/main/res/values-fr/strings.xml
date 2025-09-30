@@ -34,4 +34,22 @@
     <string name="call_confirmation_message">Voulez-vous appeler le %s maintenant ?</string>
     <string name="call_action">Appeler</string>
     <string name="cancel_action">Annuler</string>
+
+    <!-- About & Disclaimer -->
+    <string name="back_button_desc">Retour</string>
+    <string name="screen_title_about">À Propos</string>
+    <string name="screen_title_disclaimer">Clause de non-responsabilité</string>
+
+    <string name="app_version">Version %s</string>
+    <string name="about_description">Cette application fournit les numéros d\'urgence pour divers
+        pays à travers le monde. Conçue pour les voyageurs et les expatriés.</string>
+    <string name="developed_by">Développé par Heavy Studio</string>
+
+    <string name="disclaimer_text">Les informations fournies dans cette application le sont à titre
+        informatif uniquement. Toutes les informations sont fournies de bonne foi, cependant, nous
+        ne faisons aucune déclaration ou garantie d\'aucune sorte, expresse ou implicite, concernant
+        l\'exactitude, l\'adéquation, la validité, la fiabilité ou l\'exhaustivité des informations.
+        En cas d\'urgence, essayez toujours de contacter les autorités locales via des canaux officiels
+        et vérifiés. Le développeur n\'assume aucune responsabilité pour les conséquences découlant
+        de l\'utilisation des numéros fournis dans cette application.</string>
 </resources>
