@@ -26,13 +26,13 @@ interface CountryDao {
      * @return A [Flow] emitting a list of [CountryListItem] objects that match the search criteria.
      */
     @Query("""
-        SELECT DISTINCT c.id AS countryId, c.iso_code AS isoCode, cn_display.name AS name 
-        FROM country_names_fts AS fts 
-        JOIN country_names AS cn_match ON fts.rowid = cn_match.rowid 
-        JOIN countries AS c ON cn_match.country_id = c.id 
-        JOIN country_names AS cn_display ON c.id = cn_display.country_id 
-        WHERE fts.name MATCH :query || '*' 
-        AND cn_display.language_code = :langCode 
+        SELECT DISTINCT c.id AS countryId, c.iso_code AS isoCode, cn_display.name AS name
+        FROM country_names_fts AS fts
+        JOIN country_names AS cn_match ON fts.rowid = cn_match.rowid
+        JOIN countries AS c ON cn_match.country_id = c.id
+        JOIN country_names AS cn_display ON c.id = cn_display.country_id
+        WHERE fts.name MATCH :query || '*'
+        AND cn_display.language_code = :langCode
         ORDER BY cn_display.name ASC
     """)
     fun searchCountries(query: String, langCode: String): Flow<List<CountryListItem>>

@@ -29,9 +29,30 @@ fun AppNavigation() {
             startDestination = Screen.Home.route,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Screen.Home.route) { HomeScreen(navController) }
-            composable(Screen.Countries.route) { CountriesScreen(navController) }
-            composable(Screen.Settings.route) { SettingsScreen() }
+            composable(Screen.Home.route) { navBackStackEntry ->
+                val viewModel: MainViewModel = hiltViewModel()
+                val selectedId = navBackStackEntry.savedStateHandle.get<Int>("selected_country_id")
+
+                LaunchedEffect(selectedId) {
+                    if (selectedId != null) {
+                        viewModel.onCountrySelected(selectedId)
+                        navBackStackEntry.savedStateHandle.remove<Int>("selected_country_id")
+                    }
+                }
+
+                HomeScreen(
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
+
+            composable(Screen.Countries.route) {
+                CountriesScreen(navController = navController)
+            }
+
+            composable(Screen.Settings.route) {
+                SettingsScreen()
+            }
         }
     }
 }

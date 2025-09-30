@@ -11,4 +11,27 @@
     <string name="nav_home">Home</string>
     <string name="nav_countries">Countries</string>
     <string name="nav_settings">Settings</string>
+
+    <!-- Settings -->
+    <string name="settings_header_appearance">Appearance</string>
+    <string name="settings_theme_title">App Theme</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System Default</string>
+
+    <string name="settings_header_features">Features</string>
+    <string name="settings_direct_call_title">Direct Call</string>
+    <string name="settings_direct_call_desc">Call numbers directly instead of opening the dialer</string>
+    <string name="settings_confirm_call_title">Confirm before direct call</string>
+    <string name="settings_confirm_call_desc">Show a confirmation dialog before calling</string>
+
+    <string name="settings_header_about">About</string>
+    <string name="settings_about_title">About the app</string>
+    <string name="settings_disclaimer_title">Disclaimer</string>
+
+    <!-- Calls -->
+    <string name="call_confirmation_title">Confirm Call</string>
+    <string name="call_confirmation_message">Do you want to call %s now?</string>
+    <string name="call_action">Call</string>
+    <string name="cancel_action">Cancel</string>
 </resources>

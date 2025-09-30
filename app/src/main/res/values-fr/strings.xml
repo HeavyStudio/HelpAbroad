@@ -11,4 +11,27 @@
     <string name="nav_home">Accueil</string>
     <string name="nav_countries">Pays</string>
     <string name="nav_settings">Réglages</string>
+
+    <!-- Settings -->
+    <string name="settings_header_appearance">Apparence</string>
+    <string name="settings_theme_title">Thème de l\'application</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="theme_system">Thème du système</string>
+
+    <string name="settings_header_features">Fonctionnalités</string>
+    <string name="settings_direct_call_title">Appel direct</string>
+    <string name="settings_direct_call_desc">Appeler les numéros directement sans ouvrir le clavier</string>
+    <string name="settings_confirm_call_title">Confirmer avant l\'appel direct</string>
+    <string name="settings_confirm_call_desc">Afficher une confirmation avant d\'appeler</string>
+
+    <string name="settings_header_about">À Propos</string>
+    <string name="settings_about_title">À propos de l\'application</string>
+    <string name="settings_disclaimer_title">Clause de non-responsabilité</string>
+
+    <!-- Calls -->
+    <string name="call_confirmation_title">Confirmer l\'appel</string>
+    <string name="call_confirmation_message">Voulez-vous appeler le %s maintenant ?</string>
+    <string name="call_action">Appeler</string>
+    <string name="cancel_action">Annuler</string>
 </resources>
