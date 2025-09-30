@@ -1,0 +1,329 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4a012fb97c8feb1650e80eb1a60bbd2d",
+    "entities": [
+      {
+        "tableName": "countries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `iso_code` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isoCode",
+            "columnName": "iso_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_countries_iso_code",
+            "unique": true,
+            "columnNames": [
+              "iso_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_countries_iso_code` ON `${TABLE_NAME}` (`iso_code`)"
+          }
+        ]
+      },
+      {
+        "tableName": "country_names",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `country_id` INTEGER NOT NULL, `language_code` TEXT NOT NULL, `name` TEXT NOT NULL, FOREIGN KEY(`country_id`) REFERENCES `countries`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countryId",
+            "columnName": "country_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "languageCode",
+            "columnName": "language_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_country_names_country_id",
+            "unique": false,
+            "columnNames": [
+              "country_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_country_names_country_id` ON `${TABLE_NAME}` (`country_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "countries",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "country_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "country_names_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT NOT NULL, tokenize=unicode61 `remove_diacritics=2`, content=`country_names`)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        },
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "unicode61",
+          "tokenizerArgs": [
+            "remove_diacritics=2"
+          ],
+          "contentTable": "country_names",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_country_names_fts_BEFORE_UPDATE BEFORE UPDATE ON `country_names` BEGIN DELETE FROM `country_names_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_country_names_fts_BEFORE_DELETE BEFORE DELETE ON `country_names` BEGIN DELETE FROM `country_names_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_country_names_fts_AFTER_UPDATE AFTER UPDATE ON `country_names` BEGIN INSERT INTO `country_names_fts`(`docid`, `name`) VALUES (NEW.`rowid`, NEW.`name`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_country_names_fts_AFTER_INSERT AFTER INSERT ON `country_names` BEGIN INSERT INTO `country_names_fts`(`docid`, `name`) VALUES (NEW.`rowid`, NEW.`name`); END"
+        ]
+      },
+      {
+        "tableName": "emergency_numbers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `country_id` INTEGER NOT NULL, `service_type_id` INTEGER NOT NULL, `phone_number` TEXT NOT NULL, `description` TEXT, FOREIGN KEY(`country_id`) REFERENCES `countries`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`service_type_id`) REFERENCES `emergency_service_types`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "countryId",
+            "columnName": "country_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serviceTypeId",
+            "columnName": "service_type_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phoneNumber",
+            "columnName": "phone_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_emergency_numbers_country_id",
+            "unique": false,
+            "columnNames": [
+              "country_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_emergency_numbers_country_id` ON `${TABLE_NAME}` (`country_id`)"
+          },
+          {
+            "name": "index_emergency_numbers_service_type_id",
+            "unique": false,
+            "columnNames": [
+              "service_type_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_emergency_numbers_service_type_id` ON `${TABLE_NAME}` (`service_type_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "countries",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "country_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "emergency_service_types",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "service_type_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "emergency_service_types",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `service_code` TEXT NOT NULL, `default_icon_ref` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serviceCode",
+            "columnName": "service_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultIconRef",
+            "columnName": "default_icon_ref",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_emergency_service_types_service_code",
+            "unique": true,
+            "columnNames": [
+              "service_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_emergency_service_types_service_code` ON `${TABLE_NAME}` (`service_code`)"
+          }
+        ]
+      },
+      {
+        "tableName": "service_type_names",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `service_type_id` INTEGER NOT NULL, `language_code` TEXT NOT NULL, `name` TEXT NOT NULL, FOREIGN KEY(`service_type_id`) REFERENCES `emergency_service_types`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serviceTypeId",
+            "columnName": "service_type_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "languageCode",
+            "columnName": "language_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_service_type_names_service_type_id",
+            "unique": false,
+            "columnNames": [
+              "service_type_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_service_type_names_service_type_id` ON `${TABLE_NAME}` (`service_type_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "emergency_service_types",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "service_type_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a012fb97c8feb1650e80eb1a60bbd2d')"
+    ]
+  }
+}
