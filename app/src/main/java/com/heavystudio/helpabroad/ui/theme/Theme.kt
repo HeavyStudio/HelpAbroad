@@ -8,27 +8,29 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val LightColorScheme = lightColorScheme(
-    primary = primary,
-    onPrimary = onPrimary,
-    tertiary = tertiary,
-    surface = surfaceLight,
-    onSurface = onSurfaceLight,
-    onSurfaceVariant = onSurfaceVariantLight
+private val DarkColorScheme = darkColorScheme(
+    primary = BlueAccent,
+    background = DarkBackground,
+    surface = DarkSurface,
+    onPrimary = Color.White,
+    onBackground = DarkTextPrimary,
+    onSurface = DarkTextPrimary,
+    onSurfaceVariant = DarkTextSecondary,
+    outline = DarkBorder
 )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = primary,
-    onPrimary = onPrimary,
-    tertiary = tertiary,
-    // surface = surfaceDark,
-    // onSurface = onSurfaceDark,
-    surface = surfaceTestDark,
-    onSurface = onSurfaceTestDark,
-    surfaceVariant = surfaceVariantDark,
-    onSurfaceVariant = onSurfaceVariantDark
+private val LightColorScheme = lightColorScheme(
+    primary = BlueAccent,
+    background = LightBackground,
+    surface = LightSurface,
+    onPrimary = Color.White,
+    onBackground = LightTextPrimary,
+    onSurface = LightTextPrimary,
+    onSurfaceVariant = LightTextSecondary,
+    outline = LightBorder
 )
 
 @Composable
@@ -43,7 +45,6 @@ fun HelpAbroadTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
