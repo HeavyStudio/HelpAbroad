@@ -75,7 +75,7 @@ fun AboutScreen(navController: NavController) {
 private fun getAppVersion(context: Context): String {
     return try {
         val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-        packageInfo.versionName
+        packageInfo.versionName ?: "N/A"
     } catch (e: Exception) {
         e.printStackTrace()
         "N/A"

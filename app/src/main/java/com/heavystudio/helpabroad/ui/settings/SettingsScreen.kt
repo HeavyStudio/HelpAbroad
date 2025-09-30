@@ -35,6 +35,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.data.settings.AppTheme
+import com.heavystudio.helpabroad.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -110,11 +111,11 @@ fun SettingsScreen(
             SettingsHeader(stringResource(R.string.settings_header_about))
             SettingItem(
                 title = stringResource(R.string.settings_about_title),
-                onClick = { /* TODO: Ouvrir un écran "A propos" */ }
+                onClick = { navController.navigate(Screen.About.route) }
             )
             SettingItem(
                 title = stringResource(R.string.settings_disclaimer_title),
-                onClick = { /* TODO: Afficher une pop-up de disclaimer */ }
+                onClick = { navController.navigate(Screen.Disclaimer.route) }
             )
         }
     }

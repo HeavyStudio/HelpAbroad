@@ -32,7 +32,7 @@ fun DisclaimerScreen(navController: NavController) {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_button_desc)
+                            contentDescription = "Back"
                         )
                     }
                 }

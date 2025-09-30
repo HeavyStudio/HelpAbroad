@@ -9,8 +9,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.heavystudio.helpabroad.ui.about.AboutScreen
 import com.heavystudio.helpabroad.ui.common.AppBottomBar
 import com.heavystudio.helpabroad.ui.countries.CountriesScreen
+import com.heavystudio.helpabroad.ui.disclaimer.DisclaimerScreen
 import com.heavystudio.helpabroad.ui.home.HomeScreen
 import com.heavystudio.helpabroad.ui.main.MainViewModel
 import com.heavystudio.helpabroad.ui.settings.SettingsScreen
