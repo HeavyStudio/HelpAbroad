@@ -33,7 +33,6 @@ class MainViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
     private val _currentLangCode = Locale.getDefault().language
-    private val _isLoading = MutableStateFlow(false)
 
     init {
         viewModelScope.launch {
@@ -61,6 +60,8 @@ class MainViewModel @Inject constructor(
                 settingsRepository.directCallFlow,
                 settingsRepository.confirmBeforeCallFlow
             ) { isDirectCall, isConfirm ->
+                Pair(isDirectCall, isConfirm)
+            }.collect { (isDirectCall, isConfirm) ->
                 _uiState.update {
                     it.copy(
                         isDirectCallEnabled = isDirectCall,
@@ -71,7 +72,7 @@ class MainViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            _isLoading.value = true
+            _uiState.update { it.copy(isLoading = true) }
             repository.getAllCountries(langCode = _currentLangCode)
                 .collect { countries ->
                     _uiState.update {
@@ -107,11 +108,12 @@ class MainViewModel @Inject constructor(
                 val uiDetails = mapToUiModel(details)
                 _uiState.update {
                     it.copy(
-                        searchQuery = uiDetails.countryName,
+                        searchQuery = "",
                         selectedCountryDetails = uiDetails,
                         isLoading = false
                     )
                 }
+                _searchQuery.value = ""
             }
         }
     }
@@ -122,13 +124,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onCallConfirmed() {
-        val number = uiState.value.numberToCallForConfirmation
-        if (number != null) {
-            onCallConfirmationDismissed()
-        }
-    }
-
     fun onCallConfirmationDismissed() {
         _uiState.update { it.copy(numberToCallForConfirmation = null) }
     }
@@ -136,6 +131,7 @@ class MainViewModel @Inject constructor(
     private fun mapToUiModel(details: CountryDetails): UiCountryDetails {
         val countryName = uiState.value.allCountries
             .find { it.countryId == details.country.id }?.name ?: details.country.isoCode
+        val countryIsoCode = details.country.isoCode
 
         val services = details.services.mapNotNull { serviceDetails ->
             val serviceName = serviceDetails.names
@@ -152,6 +148,6 @@ class MainViewModel @Inject constructor(
             }
         }
 
-        return UiCountryDetails(countryName = countryName, services = services)
+        return UiCountryDetails(countryName = countryName, countryIsoCode = countryIsoCode, services = services)
     }
 }

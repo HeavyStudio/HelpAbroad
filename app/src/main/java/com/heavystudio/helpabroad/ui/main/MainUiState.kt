@@ -10,6 +10,7 @@ data class UiEmergencyService(
 
 data class UiCountryDetails(
     val countryName: String,
+    val countryIsoCode: String,
     val services: List<UiEmergencyService>
 )
 

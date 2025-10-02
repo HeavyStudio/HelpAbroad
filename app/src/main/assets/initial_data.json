@@ -23,6 +23,14 @@
         { "lang": "fr", "name": "Pompiers" },
         { "lang": "en", "name": "Fire Department" }
       ]
+    },
+    {
+      "code": "TEST",
+      "icon": "ic_test",
+      "names": [
+        { "lang":  "fr", "name":  "Numéro de test" },
+        { "lang":  "en", "name":  "Test Number" }
+      ]
     }
   ],
   "countries": [
@@ -35,7 +43,8 @@
       "services": [
         { "type": "POLICE", "number": "17" },
         { "type": "AMBULANCE", "number": "15" },
-        { "type": "FIRE", "number": "18" }
+        { "type": "FIRE", "number": "18" },
+        { "type": "TEST", "number":  "0687542013" }
       ]
     },
     {

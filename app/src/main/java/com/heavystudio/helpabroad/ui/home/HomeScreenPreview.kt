@@ -29,11 +29,12 @@ private val previewInactiveGray = Color(0xFF8A8A8E)
 @Composable
 fun HomeScreenContentPreview() {
     val fakeCountryDetails = UiCountryDetails(
-        countryName = "United States",
+        countryName = "France",
+        countryIsoCode = "fr",
         services = listOf(
-            UiEmergencyService(code = "POLICE", name = "Police", number = "911"),
-            UiEmergencyService(code = "FIRE", name = "Fire", number = "911"),
-            UiEmergencyService(code = "AMBULANCE", name = "Ambulance", number = "911"),
+            UiEmergencyService(code = "POLICE", name = "Police", number = "17"),
+            UiEmergencyService(code = "FIRE", name = "Fire", number = "18"),
+            UiEmergencyService(code = "AMBULANCE", name = "Ambulance", number = "15"),
         )
     )
 

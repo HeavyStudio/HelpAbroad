@@ -1,23 +1,30 @@
 <resources>
 
-    <!-- General -->
-        <!-- Home Screen -->
+    <!-- Home Screen -->
     <string name="search_country_placeholder">Rechercher un pays</string>
     <string name="home_prompt_message">Commencez par rechercher un pays pour afficher ses
     numéros d\'urgence</string>
     <string name="no_results_found">Aucun résultat trouvé</string>
+    <string name="search_icon_desc">Icône de recherche</string>
+    <string name="home_disclaimer_short">Numéros fournis à titre informatif. Vérifiez toujours
+        auprès des autorités locales en cas d\'urgence. Cliquez pour lire l\'avertissement
+        complet.</string>
 
     <!-- Navigation -->
     <string name="nav_home">Accueil</string>
     <string name="nav_countries">Pays</string>
     <string name="nav_settings">Réglages</string>
 
+    <!-- Countries -->
+    <string name="screen_title_countries">Pays</string>
+
     <!-- Settings -->
+    <string name="screen_title_settings">Réglages</string>
     <string name="settings_header_appearance">Apparence</string>
     <string name="settings_theme_title">Thème de l\'application</string>
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
-    <string name="theme_system">Thème du système</string>
+    <string name="theme_system">Système</string>
 
     <string name="settings_header_features">Fonctionnalités</string>
     <string name="settings_direct_call_title">Appel direct</string>

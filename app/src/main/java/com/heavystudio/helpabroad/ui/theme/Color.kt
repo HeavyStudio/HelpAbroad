@@ -2,30 +2,27 @@ package com.heavystudio.helpabroad.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Couleurs de base
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0XFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-// --- Nouvelles couleurs ---
-
-// Couleurs générales
-val BlueAccent = Color(0xFF007AFF)
-
-// Couleurs Thème Clair
-val LightBackground = Color(0xFFF2F2F7)
+// --- THÈME CLAIR (GEMINI) ---
+val GeminiBlue = Color(0xFF0B57D0)
+val LightBackground = Color(0xFFF8F9FA)
 val LightSurface = Color.White
-val LightBorder = Color(0xFFE5E5EA)
-val LightTextPrimary = Color.Black
-val LightTextSecondary = Color(0xFF8A8A8E)
+val LightOnSurface = Color(0xFF1F1F1F)
+val LightOnSurfaceVariant = Color(0xFF444746)
+val LightOutline = Color(0xFF747775)
 
-// Couleurs Thème Sombre
-val DarkBackground = Color(0xFF1C1C1E)
-val DarkSurface = Color(0xFF2C2C2E)
-val DarkBorder = Color(0xFF48484A)
-val DarkTextPrimary = Color.White
-val DarkTextSecondary = Color(0xFF8D8D93)
+
+// --- THÈME SOMBRE (GEMINI) ---
+val GeminiLightBlue = Color(0xFFA8C7FA)
+val DarkBackground = Color(0xFF131314)
+val DarkSurface = Color(0xFF1E1F20)
+val DarkOnSurface = Color(0xFFE3E3E3)
+val DarkOnSurfaceVariant = Color(0xFFC4C7C5)
+val DarkOutline = Color(0xFF8E918F)
+
+
+// --- COULEURS DES SERVICES ---
+val PoliceBlue = Color(0xFF007AFF)
+
+val AmbulanceRed = Color(0xFFFF3B30)
+val FireOrange = Color(0xFFFF9500)
+val DefaultServiceGray = Color(0xFF8E8E93)
