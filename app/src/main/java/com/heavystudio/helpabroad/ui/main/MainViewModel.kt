@@ -1,5 +1,6 @@
 package com.heavystudio.helpabroad.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.data.local.dto.CountryDetails
@@ -40,13 +41,16 @@ class MainViewModel @Inject constructor(
                 .debounce(300)
                 .flatMapLatest { query ->
                     if (query.length < 2) {
+                        Log.d("SEARCH_DEBUG", "Query too short, skipping search.")
                         flowOf(emptyList())
                     } else {
+                        Log.d("SEARCH_DEBUG", "ViewModel: Launching search for query: '$query'.")
                         repository.searchCountries(query, _currentLangCode)
                     }
                 }
                 .collect { results ->
                     _uiState.update {
+                        Log.d("SEARCH_DEBUG", "ViewModel: Received ${results.size} results from repository.")
                         it.copy(
                             searchResults = results,
                             isSearchResultsVisible = results.isNotEmpty() && _searchQuery.value.isNotBlank()
