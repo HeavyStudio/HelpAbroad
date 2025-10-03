@@ -23,6 +23,7 @@ val DarkOutline = Color(0xFF8E918F)
 // --- COULEURS DES SERVICES ---
 val PoliceBlue = Color(0xFF007AFF)
 
-val AmbulanceRed = Color(0xFFFF3B30)
-val FireOrange = Color(0xFFFF9500)
+val AmbulanceGreen = Color(0xFF34C759)
+val FireRed = Color(0xFFFF3B30)
+val DispatchOrange = Color(0xFFFF9500)
 val DefaultServiceGray = Color(0xFF8E8E93)

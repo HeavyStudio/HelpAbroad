@@ -20,33 +20,29 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
-import androidx.compose.material.icons.filled.Adb
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Sos
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -56,7 +52,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -65,16 +60,16 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.data.local.dto.CountryListItem
-import com.heavystudio.helpabroad.ui.common.AppTopBar
 import com.heavystudio.helpabroad.ui.common.isoCodeToFlagEmoji
 import com.heavystudio.helpabroad.ui.main.MainUiState
 import com.heavystudio.helpabroad.ui.main.MainViewModel
 import com.heavystudio.helpabroad.ui.main.UiCountryDetails
 import com.heavystudio.helpabroad.ui.main.UiEmergencyService
 import com.heavystudio.helpabroad.ui.navigation.Screen
-import com.heavystudio.helpabroad.ui.theme.AmbulanceRed
+import com.heavystudio.helpabroad.ui.theme.AmbulanceGreen
 import com.heavystudio.helpabroad.ui.theme.DefaultServiceGray
-import com.heavystudio.helpabroad.ui.theme.FireOrange
+import com.heavystudio.helpabroad.ui.theme.DispatchOrange
+import com.heavystudio.helpabroad.ui.theme.FireRed
 import com.heavystudio.helpabroad.ui.theme.PoliceBlue
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -297,8 +292,10 @@ private fun EmergencyServiceCard(
 ) {
     val (serviceIcon, serviceColor) = when (service.code) {
         "POLICE" -> Pair(Icons.Default.LocalPolice, PoliceBlue)
-        "AMBULANCE" -> Pair(Icons.Default.LocalHospital, AmbulanceRed)
-        "FIRE" -> Pair(Icons.Default.LocalFireDepartment, FireOrange)
+        "AMBULANCE" -> Pair(Icons.Default.LocalHospital, AmbulanceGreen)
+        "SAMU" -> Pair(Icons.Default.LocalHospital, AmbulanceGreen)
+        "FIRE" -> Pair(Icons.Default.LocalFireDepartment, FireRed)
+        "DISPATCH" -> Pair(Icons.Default.Sos, DispatchOrange)
         else -> Pair(Icons.AutoMirrored.Default.HelpOutline, DefaultServiceGray)
     }
 
