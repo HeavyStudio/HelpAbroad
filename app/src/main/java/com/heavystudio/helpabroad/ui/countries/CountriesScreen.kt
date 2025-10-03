@@ -41,7 +41,7 @@ import com.heavystudio.helpabroad.ui.main.MainViewModel
 @Composable
 fun CountriesScreen(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -57,8 +57,6 @@ fun CountriesScreen(
         }
     }
 
-    val listState: LazyListState = rememberLazyListState()
-
     Column {
         OutlinedTextField(
             value = searchQuery,
@@ -71,7 +69,7 @@ fun CountriesScreen(
             singleLine = true
         )
 
-        LazyColumn(state = listState) {
+        LazyColumn(state = viewModel.countriesListState) {
             item { Spacer(modifier = Modifier.height(24.dp)) }
             items(filteredCountries, key = { it.countryId }) { country ->
                 ListItem(

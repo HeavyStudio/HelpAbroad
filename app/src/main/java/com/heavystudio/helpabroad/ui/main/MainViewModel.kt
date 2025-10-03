@@ -1,6 +1,7 @@
 package com.heavystudio.helpabroad.ui.main
 
 import android.util.Log
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.data.local.dto.CountryDetails
@@ -28,6 +29,8 @@ class MainViewModel @Inject constructor(
     private val repository: CountryRepository,
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {
+
+    val countriesListState = LazyListState()
 
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()

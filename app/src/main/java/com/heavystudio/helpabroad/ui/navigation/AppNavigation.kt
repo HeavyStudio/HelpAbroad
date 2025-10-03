@@ -27,6 +27,7 @@ import com.heavystudio.helpabroad.ui.settings.SettingsScreen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val mainViewModel: MainViewModel = hiltViewModel()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -76,7 +77,10 @@ fun AppNavigation() {
             }
 
             composable(Screen.Countries.route) {
-                CountriesScreen(navController = navController)
+                CountriesScreen(
+                    navController = navController,
+                    viewModel = mainViewModel
+                )
             }
 
             composable(Screen.Settings.route) {
