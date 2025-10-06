@@ -4,7 +4,7 @@
 
 Help Abroad est une application Android native développée en Kotlin qui fournit les numéros d'urgence pour les pays du monde entier. Conçue pour les voyageurs et les expatriés, elle est entièrement accessible hors connexion grâce à sa base de données embarquée.
 
-![Capture d'écran de l'application Help Abroad](assets/images/home_screenshot.png)
+![Capture d'écran de l'application Help Abroad](screenshots/home_screenshot.png)
 
 ## Fonctionnalités
 
