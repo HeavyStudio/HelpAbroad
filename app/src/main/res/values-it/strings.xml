@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="search_country_placeholder">Cerca un paese</string>
+    <string name="home_prompt_message">Inizia cercando un paese per vedere i suoi numeri di emergenza</string>
+    <string name="no_results_found">Nessun risultato trovato</string>
+    <string name="search_icon_desc">Icona di ricerca</string>
+    <string name="home_disclaimer_short">I numeri sono forniti a scopo informativo. Verificare sempre con le autorità locali in caso di emergenza. Clicca per il disclaimer completo.</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_countries">Paesi</string>
+    <string name="nav_settings">Impostazioni</string>
+
+    <string name="screen_title_countries">Paesi</string>
+
+    <string name="screen_title_settings">Impostazioni</string>
+    <string name="settings_header_appearance">Aspetto</string>
+    <string name="settings_theme_title">Tema dell\'app</string>
+    <string name="theme_light">Chiaro</string>
+    <string name="theme_dark">Scuro</string>
+    <string name="theme_system">Sistema</string>
+    <string name="settings_header_features">Funzionalità</string>
+    <string name="settings_direct_call_title">Chiamata diretta</string>
+    <string name="settings_direct_call_desc">Chiama i numeri direttamente invece di aprire il tastierino</string>
+    <string name="settings_confirm_call_title">Conferma prima della chiamata diretta</string>
+    <string name="settings_confirm_call_desc">Mostra una finestra di dialogo di conferma prima di chiamare</string>
+    <string name="settings_header_about">Informazioni</string>
+    <string name="settings_about_title">Informazioni sull\'app</string>
+    <string name="settings_disclaimer_title">Disclaimer</string>
+
+    <string name="call_confirmation_title">Conferma chiamata</string>
+    <string name="call_confirmation_message">Vuoi chiamare il %s ora?</string>
+    <string name="call_action">Chiama</string>
+    <string name="cancel_action">Annulla</string>
+
+    <string name="back_button_desc">Pulsante Indietro</string>
+    <string name="screen_title_about">Informazioni</string>
+    <string name="screen_title_disclaimer">Disclaimer</string>
+    <string name="app_version">Versione %s</string>
+    <string name="about_description">Questa applicazione fornisce numeri di emergenza per vari paesi del mondo. Progettata per viaggiatori ed espatriati.</string>
+    <string name="developed_by">Sviluppato da Heavy Studio</string>
+    <string name="about_rate_app">Valuta l\'app</string>
+    <string name="about_share_app">Condividi l\'app</string>
+    <string name="share_app_text">Scopri Help Abroad, l\'app per i numeri di emergenza all\'estero: %1$s</string>
+    <string name="about_feedback">Invia feedback</string>
+    <string name="no_email_app_found">Nessuna applicazione email trovata.</string>
+    <string name="translation_disclaimer">Le traduzioni sono generate automaticamente e possono contenere errori.</string>
+    <string name="disclaimer_intro">Le informazioni fornite in questa applicazione sono solo a scopo informativo generale.</string>
+    <string name="disclaimer_accuracy_title">Accuratezza delle Informazioni</string>
+    <string name="disclaimer_accuracy_body">Tutte le informazioni sono fornite in buona fede, tuttavia non forniamo alcuna dichiarazione o garanzia di alcun tipo, esplicita o implicita, riguardo l\'accuratezza, l\'adeguatezza, la validità, l\'affidabilità o la completezza di qualsiasi informazione.</string>
+    <string name="disclaimer_emergency_title">Uso in Caso di Emergenza</string>
+    <string name="disclaimer_emergency_body">In caso di vera emergenza, cercare sempre di contattare prima le autorità locali tramite canali ufficiali e verificati.</string>
+    <string name="disclaimer_liability_title">Limitazione di Responsabilità</string>
+    <string name="disclaimer_liability_body">Lo sviluppatore non si assume alcuna responsabilità per eventuali conseguenze derivanti dall\'uso dei numeri forniti in questa app.</string>
+</resources>

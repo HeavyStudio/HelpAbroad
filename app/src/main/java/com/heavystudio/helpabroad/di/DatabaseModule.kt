@@ -25,7 +25,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "help_abroad.db"
         )
-            .createFromAsset("database/db_seeds.db")
+            .createFromAsset("database/db_seeds_2.db")
             .fallbackToDestructiveMigration(true)
             .build()
     }

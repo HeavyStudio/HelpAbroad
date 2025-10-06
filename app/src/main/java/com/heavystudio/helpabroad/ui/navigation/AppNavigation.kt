@@ -36,6 +36,8 @@ fun AppNavigation() {
         Screen.Home.route -> stringResource(id = R.string.app_name)
         Screen.Countries.route -> stringResource(id = R.string.screen_title_countries)
         Screen.Settings.route -> stringResource(id = R.string.screen_title_settings)
+        Screen.About.route -> stringResource(id = R.string.screen_title_about)
+        Screen.Disclaimer.route -> stringResource(id = R.string.settings_disclaimer_title)
         else -> ""
     }
     val canNavigateBack = navController.previousBackStackEntry != null && currentRoute != Screen.Home.route

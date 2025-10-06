@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="search_country_placeholder">Land suchen</string>
+    <string name="home_prompt_message">Suchen Sie zunächst nach einem Land, um dessen Notrufnummern anzuzeigen</string>
+    <string name="no_results_found">Keine Ergebnisse gefunden</string>
+    <string name="search_icon_desc">Suchsymbol</string>
+    <string name="home_disclaimer_short">Die Nummern dienen zu Informationszwecken. Überprüfen Sie sie im Notfall immer bei den örtlichen Behörden. Klicken Sie für den vollständigen Haftungsausschluss.</string>
+
+    <string name="nav_home">Start</string>
+    <string name="nav_countries">Länder</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <string name="screen_title_countries">Länder</string>
+
+    <string name="screen_title_settings">Einstellungen</string>
+    <string name="settings_header_appearance">Erscheinungsbild</string>
+    <string name="settings_theme_title">App-Theme</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_system">System</string>
+    <string name="settings_header_features">Funktionen</string>
+    <string name="settings_direct_call_title">Direkter Anruf</string>
+    <string name="settings_direct_call_desc">Nummern direkt anrufen, anstatt die Wähltastatur zu öffnen</string>
+    <string name="settings_confirm_call_title">Vor direktem Anruf bestätigen</string>
+    <string name="settings_confirm_call_desc">Bestätigungsdialog vor dem Anrufen anzeigen</string>
+    <string name="settings_header_about">Über</string>
+    <string name="settings_about_title">Über die App</string>
+    <string name="settings_disclaimer_title">Haftungsausschluss</string>
+
+    <string name="call_confirmation_title">Anruf bestätigen</string>
+    <string name="call_confirmation_message">Möchten Sie %s jetzt anrufen?</string>
+    <string name="call_action">Anrufen</string>
+    <string name="cancel_action">Abbrechen</string>
+
+    <string name="back_button_desc">Zurück-Taste</string>
+    <string name="screen_title_about">Über</string>
+    <string name="screen_title_disclaimer">Haftungsausschluss</string>
+    <string name="app_version">Version %s</string>
+    <string name="about_description">Diese Anwendung bietet Notrufnummern für verschiedene Länder der Welt. Entwickelt für Reisende und Expatriates.</string>
+    <string name="developed_by">Entwickelt von Heavy Studio</string>
+    <string name="about_rate_app">App bewerten</string>
+    <string name="about_share_app">App teilen</string>
+    <string name="share_app_text">Entdecken Sie Help Abroad, die App für Notrufnummern im Ausland: %1$s</string>
+    <string name="about_feedback">Feedback senden</string>
+    <string name="no_email_app_found">Keine E-Mail-Anwendung gefunden.</string>
+    <string name="translation_disclaimer">Übersetzungen werden automatisch generiert und können Fehler enthalten.</string>
+    <string name="disclaimer_intro">Die in dieser Anwendung bereitgestellten Informationen dienen nur zu allgemeinen Informationszwecken.</string>
+    <string name="disclaimer_accuracy_title">Richtigkeit der Informationen</string>
+    <string name="disclaimer_accuracy_body">Alle Informationen werden nach bestem Wissen und Gewissen zur Verfügung gestellt, jedoch geben wir keine Zusicherung oder Garantie jeglicher Art, weder ausdrücklich noch stillschweigend, hinsichtlich der Genauigkeit, Angemessenheit, Gültigkeit, Zuverlässigkeit oder Vollständigkeit der Informationen.</string>
+    <string name="disclaimer_emergency_title">Verwendung im Notfall</string>
+    <string name="disclaimer_emergency_body">Versuchen Sie im Notfall immer zuerst, die örtlichen Behörden über offizielle und verifizierte Kanäle zu kontaktieren.</string>
+    <string name="disclaimer_liability_title">Haftungsbeschränkung</string>
+    <string name="disclaimer_liability_body">Der Entwickler übernimmt keine Haftung für jegliche Konsequenzen, die sich aus der Verwendung der in dieser App bereitgestellten Nummern ergeben.</string>
+</resources>

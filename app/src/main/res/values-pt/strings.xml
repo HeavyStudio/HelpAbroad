@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="search_country_placeholder">Buscar um país</string>
+    <string name="home_prompt_message">Comece por procurar um país para ver os seus números de emergência</string>
+    <string name="no_results_found">Nenhum resultado encontrado</string>
+    <string name="search_icon_desc">Ícone de busca</string>
+    <string name="home_disclaimer_short">Os números são para fins informativos. Verifique sempre com as autoridades locais em caso de emergência. Clique para o aviso legal completo.</string>
+
+    <string name="nav_home">Início</string>
+    <string name="nav_countries">Países</string>
+    <string name="nav_settings">Configurações</string>
+
+    <string name="screen_title_countries">Países</string>
+
+    <string name="screen_title_settings">Configurações</string>
+    <string name="settings_header_appearance">Aparência</string>
+    <string name="settings_theme_title">Tema da aplicação</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_system">Sistema</string>
+    <string name="settings_header_features">Funcionalidades</string>
+    <string name="settings_direct_call_title">Chamada direta</string>
+    <string name="settings_direct_call_desc">Ligar para os números diretamente em vez de abrir o marcador</string>
+    <string name="settings_confirm_call_title">Confirmar antes da chamada direta</string>
+    <string name="settings_confirm_call_desc">Mostrar um diálogo de confirmação antes de ligar</string>
+    <string name="settings_header_about">Sobre</string>
+    <string name="settings_about_title">Sobre a aplicação</string>
+    <string name="settings_disclaimer_title">Aviso Legal</string>
+
+    <string name="call_confirmation_title">Confirmar chamada</string>
+    <string name="call_confirmation_message">Deseja ligar para %s agora?</string>
+    <string name="call_action">Ligar</string>
+    <string name="cancel_action">Cancelar</string>
+
+    <string name="back_button_desc">Botão de retroceder</string>
+    <string name="screen_title_about">Sobre</string>
+    <string name="screen_title_disclaimer">Aviso Legal</string>
+    <string name="app_version">Versão %s</string>
+    <string name="about_description">Esta aplicação fornece números de emergência para vários países do mundo. Concebida para viajantes e expatriados.</string>
+    <string name="developed_by">Desenvolvido por Heavy Studio</string>
+    <string name="about_rate_app">Avaliar a aplicação</string>
+    <string name="about_share_app">Partilhar a aplicação</string>
+    <string name="share_app_text">Descubra a Help Abroad, a app para números de emergência no estrangeiro: %1$s</string>
+    <string name="about_feedback">Enviar feedback</string>
+    <string name="no_email_app_found">Nenhuma aplicação de email encontrada.</string>
+    <string name="translation_disclaimer">As traduções são geradas automaticamente e podem conter erros.</string>
+    <string name="disclaimer_intro">As informações fornecidas nesta aplicação são apenas para fins informativos gerais.</string>
+    <string name="disclaimer_accuracy_title">Exatidão da Informação</string>
+    <string name="disclaimer_accuracy_body">Toda a informação é fornecida de boa fé, no entanto, não fazemos qualquer representação ou garantia de qualquer tipo, expressa ou implícita, relativamente à exatidão, adequação, validade, fiabilidade ou integridade de qualquer informação.</string>
+    <string name="disclaimer_emergency_title">Uso em Caso de Emergência</string>
+    <string name="disclaimer_emergency_body">Em caso de uma emergência real, tente sempre contactar primeiro as autoridades locais através de canais oficiais e verificados.</string>
+    <string name="disclaimer_liability_title">Limitação de Responsabilidade</string>
+    <string name="disclaimer_liability_body">O desenvolvedor não assume qualquer responsabilidade por quaisquer consequências decorrentes do uso dos números fornecidos nesta aplicação.</string>
+</resources>

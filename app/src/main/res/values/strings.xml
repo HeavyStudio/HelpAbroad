@@ -52,11 +52,23 @@
         countries around the world. Designed for travelers and expatriates.</string>
     <string name="developed_by">Developed by Heavy Studio</string>
 
-    <string name="disclaimer_text">The information provided in this application is for general
-        informational purposes only. All information is provided in good faith, however, we make no
-        representation or warranty of any kind, express or implied, regarding the accuracy, adequacy,
-        validity, reliability, or completeness of any information. In case of an emergency, always
-        try to contact local authorities through official and verified channels. The developer
-        assumes no liability for any consequences arising from the use of the numbers provided in
-        this app.</string>
+    <string name="about_rate_app">Rate the app</string>
+    <string name="about_share_app">Share the app</string>
+    <string name="share_app_text">Discover Help Abroad, the app for emergency numbers abroad: %1$s</string>
+    <string name="about_feedback">Send feedback</string>
+    <string name="no_email_app_found">No email application found.</string>
+    <string name="translation_disclaimer">Translations are automatically generated and may contain errors.</string>
+
+    <string name="disclaimer_intro">The information provided in this application is for general
+        informational purposes only.</string>
+    <string name="disclaimer_accuracy_title">Accuracy of Information</string>
+    <string name="disclaimer_accuracy_body">All information is provided in good faith, however, we
+        make no representation or warranty of any kind, express or implied, regarding the accuracy,
+        adequacy, validity, reliability, or completeness of any information.</string>
+    <string name="disclaimer_emergency_title">Use in Case of Emergency</string>
+    <string name="disclaimer_emergency_body">In case of a real emergency, always try to contact local
+        authorities through official and verified channels first.</string>
+    <string name="disclaimer_liability_title">Limitation of Liability</string>
+    <string name="disclaimer_liability_body">The developer assumes no liability for any consequences
+        arising from the use of the numbers provided in this app.</string>
 </resources>

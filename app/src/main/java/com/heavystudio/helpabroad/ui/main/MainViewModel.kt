@@ -37,8 +37,12 @@ class MainViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
     private val _currentLangCode = Locale.getDefault().language
+    private var _effectiveLangCode: String = "en"
 
     init {
+        val deviceLang = _currentLangCode
+        val supportedLangs = listOf("en", "fr", "es", "de", "it", "pt")
+        _effectiveLangCode = if (deviceLang in supportedLangs) deviceLang else "en"
         viewModelScope.launch {
             _searchQuery
                 .debounce(300)
@@ -48,7 +52,7 @@ class MainViewModel @Inject constructor(
                         flowOf(emptyList())
                     } else {
                         Log.d("SEARCH_DEBUG", "ViewModel: Launching search for query: '$query'.")
-                        repository.searchCountries(query, _currentLangCode)
+                        repository.searchCountries(query, _effectiveLangCode)
                     }
                 }
                 .collect { results ->
@@ -80,7 +84,8 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            repository.getAllCountries(langCode = _currentLangCode)
+            Log.i("LANG", "Effective language code: $_effectiveLangCode")
+            repository.getAllCountries(langCode = _effectiveLangCode)
                 .collect { countries ->
                     _uiState.update {
                         it.copy(
@@ -142,7 +147,7 @@ class MainViewModel @Inject constructor(
 
         val services = details.services.mapNotNull { serviceDetails ->
             val serviceName = serviceDetails.names
-                .find { it.languageCode == _currentLangCode }?.name
+                .find { it.languageCode == _effectiveLangCode }?.name
 
             if (serviceName != null) {
                 UiEmergencyService(
