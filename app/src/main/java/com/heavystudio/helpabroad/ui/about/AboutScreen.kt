@@ -108,8 +108,7 @@ fun AboutScreen(navController: NavController) {
             ActionItem(
                 title = stringResource(R.string.about_feedback),
                 onClick = {
-                    // TODO : Changer l'adresse email une fois heavystudio@gmail.com créée
-                    val recipient = "ajonathan34080@gmail.com"
+                    val recipient = "heavystudio.dev@gmail.com"
                     val subject = "Feeback pour Help Abroad v$appVersion"
 
                     val uriText = "mailto:$recipient?subject=${subject.toUri()}"
