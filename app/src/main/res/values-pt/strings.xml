@@ -52,4 +52,7 @@
     <string name="disclaimer_emergency_body">Em caso de uma emergência real, tente sempre contactar primeiro as autoridades locais através de canais oficiais e verificados.</string>
     <string name="disclaimer_liability_title">Limitação de Responsabilidade</string>
     <string name="disclaimer_liability_body">O desenvolvedor não assume qualquer responsabilidade por quaisquer consequências decorrentes do uso dos números fornecidos nesta aplicação.</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Exibe os números de emergência do seu país padrão.</string>
 </resources>
