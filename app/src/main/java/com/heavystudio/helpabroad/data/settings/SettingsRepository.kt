@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -35,6 +36,7 @@ class SettingsRepository @Inject constructor(
         val APP_THEME = stringPreferencesKey("app_theme")
         val DIRECT_CALL = booleanPreferencesKey("direct_call")
         val CONFIRM_BEFORE_CALL = booleanPreferencesKey("confirm_before_call")
+        val DEFAULT_COUNTRY_ID = intPreferencesKey("default_country_id")
     }
 
     // Exposition du Flow pour chaque préférence
@@ -48,6 +50,10 @@ class SettingsRepository @Inject constructor(
 
     val confirmBeforeCallFlow = context.dataStore.data.map { preferences ->
         preferences[Keys.CONFIRM_BEFORE_CALL] ?: true // Activé par défaut
+    }
+
+    val defaultCountryIdFlow = context.dataStore.data.map { preferences ->
+        preferences[Keys.DEFAULT_COUNTRY_ID]
     }
 
     // Modification des préférences
@@ -66,6 +72,16 @@ class SettingsRepository @Inject constructor(
     suspend fun setConfirmBeforeCall(isEnabled: Boolean) {
         context.dataStore.edit { settings ->
             settings[Keys.CONFIRM_BEFORE_CALL] = isEnabled
+        }
+    }
+
+    suspend fun setDefaultCountryId(countryId: Int?) {
+        context.dataStore.edit { settings ->
+            if (countryId == null) {
+                settings.remove(Keys.DEFAULT_COUNTRY_ID)
+            } else {
+                settings[Keys.DEFAULT_COUNTRY_ID] = countryId
+            }
         }
     }
 }

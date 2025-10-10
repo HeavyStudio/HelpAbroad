@@ -109,6 +109,9 @@ class MainViewModel @Inject constructor(
 
     fun onCountrySelected(countryId: Int) {
         viewModelScope.launch {
+            // TODO: For testing, remove for prod
+            settingsRepository.setDefaultCountryId(countryId)
+
             _uiState.update {
                 it.copy(
                     isSearchResultsVisible = false,
