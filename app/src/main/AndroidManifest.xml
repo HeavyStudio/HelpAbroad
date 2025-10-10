@@ -41,6 +41,7 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.heavystudio.helpabroad.action.UPDATE_WIDGET" />
             </intent-filter>
 
             <meta-data

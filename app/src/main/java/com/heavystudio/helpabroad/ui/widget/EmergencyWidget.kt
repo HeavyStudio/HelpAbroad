@@ -35,8 +35,8 @@ import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 
 class EmergencyWidget : GlanceAppWidget() {
-    override suspend fun provideGlance(context: Context, id: GlanceId) {
 
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
         val entryPoint = EntryPointAccessors.fromApplication(context, WidgetDataEntryPoint::class.java)
         val countryRepository = entryPoint.countryRepository()
         val settingsRepository = entryPoint.settingsRepository()
@@ -47,15 +47,35 @@ class EmergencyWidget : GlanceAppWidget() {
             val details: CountryDetails? = countryRepository.getCountryDetails(defaultCountryId).first()
             if (details != null) {
                 val countryName = details.names.find { it.languageCode == "en" }?.name ?: details.country.isoCode
-                val services = details.services.take(3).mapNotNull {
-                    val serviceName = it.names.find { n -> n.languageCode == "en" }?.name
-                    if (serviceName != null) {
+
+                // --- NOUVELLE LOGIQUE DE SÉLECTION ---
+                val servicesForWidget: List<Pair<String, String>>
+
+                // On cherche d'abord s'il y a un numéro de type DISPATCH
+                val dispatchServices = details.services.filter { it.type.serviceCode == "DISPATCH" }
+
+                if (dispatchServices.isNotEmpty()) {
+                    // CAS 1: Un ou plusieurs numéros généraux existent, on les affiche.
+                    servicesForWidget = dispatchServices.mapNotNull {
+                        val serviceName = it.names.find { n -> n.languageCode == "en" }?.name ?: "General"
                         Pair(serviceName, it.number.phoneNumber)
-                    } else {
-                        null
+                    }
+                } else {
+                    // CAS 2: Pas de numéro général, on affiche les 3 prioritaires.
+                    val servicePriority = mapOf("POLICE" to 1, "AMBULANCE" to 2, "SAMU" to 2, "FIRE" to 3)
+                    val sortedServices = details.services.sortedBy { service ->
+                        servicePriority[service.type.serviceCode] ?: 99
+                    }
+                    servicesForWidget = sortedServices.take(3).mapNotNull {
+                        val serviceName = it.names.find { n -> n.languageCode == "en" }?.name
+                        if (serviceName != null) {
+                            Pair(serviceName, it.number.phoneNumber)
+                        } else {
+                            null
+                        }
                     }
                 }
-                WidgetState(countryName = countryName, services = services)
+                WidgetState(countryName = countryName, services = servicesForWidget)
             } else {
                 null
             }
@@ -65,7 +85,7 @@ class EmergencyWidget : GlanceAppWidget() {
 
         provideContent {
             GlanceTheme {
-                if (widgetState != null) {
+                if (widgetState != null && widgetState.services.isNotEmpty()) {
                     WidgetContent(state = widgetState)
                 } else {
                     EmptyWidgetContent()

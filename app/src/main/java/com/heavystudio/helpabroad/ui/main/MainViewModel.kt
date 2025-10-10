@@ -1,13 +1,19 @@
 package com.heavystudio.helpabroad.ui.main
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.data.local.dto.CountryDetails
 import com.heavystudio.helpabroad.data.settings.SettingsRepository
 import com.heavystudio.helpabroad.domain.repository.CountryRepository
+import com.heavystudio.helpabroad.ui.widget.EmergencyWidget
+import com.heavystudio.helpabroad.ui.widget.EmergencyWidgetReceiver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: CountryRepository,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     val countriesListState = LazyListState()
@@ -111,6 +118,12 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             // TODO: For testing, remove for prod
             settingsRepository.setDefaultCountryId(countryId)
+
+            // Update the widget
+            val intent = Intent(context, EmergencyWidgetReceiver::class.java).apply {
+                action = "com.heavystudio.helpabroad.action.UPDATE_WIDGET"
+            }
+            context.sendBroadcast(intent)
 
             _uiState.update {
                 it.copy(
