@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.heavystudio.helpabroad.ui.main.UiCountryDetails
-import com.heavystudio.helpabroad.ui.main.UiEmergencyService
+import com.heavystudio.helpabroad.ui.model.UiCountryDetails
+import com.heavystudio.helpabroad.ui.model.UiEmergencyService
 import com.heavystudio.helpabroad.ui.theme.HelpAbroadTheme
 
 // CORRECTION 2: On définit des couleurs spécifiques pour la preview

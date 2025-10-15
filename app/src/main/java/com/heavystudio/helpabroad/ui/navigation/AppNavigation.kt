@@ -1,8 +1,6 @@
 package com.heavystudio.helpabroad.ui.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,13 +19,12 @@ import com.heavystudio.helpabroad.ui.common.AppTopBar
 import com.heavystudio.helpabroad.ui.countries.CountriesScreen
 import com.heavystudio.helpabroad.ui.disclaimer.DisclaimerScreen
 import com.heavystudio.helpabroad.ui.home.HomeScreen
-import com.heavystudio.helpabroad.ui.main.MainViewModel
+import com.heavystudio.helpabroad.ui.home.HomeViewModel
 import com.heavystudio.helpabroad.ui.settings.SettingsScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val mainViewModel: MainViewModel = hiltViewModel()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -61,28 +58,25 @@ fun AppNavigation() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Screen.Home.route) { navBackStackEntry ->
-                val viewModel: MainViewModel = hiltViewModel()
+                val homeViewModel: HomeViewModel = hiltViewModel()
                 val selectedId = navBackStackEntry.savedStateHandle
                     .get<Int>("selected_country_id")
 
                 LaunchedEffect(selectedId) {
                     if (selectedId != null) {
-                        viewModel.onCountrySelected(selectedId)
+                        homeViewModel.onCountrySelected(selectedId)
                         navBackStackEntry.savedStateHandle.remove<Int>("selected_country_id")
                     }
                 }
 
                 HomeScreen(
                     navController = navController,
-                    viewModel = viewModel
+                    viewModel = homeViewModel
                 )
             }
 
             composable(Screen.Countries.route) {
-                CountriesScreen(
-                    navController = navController,
-                    viewModel = mainViewModel
-                )
+                CountriesScreen(navController = navController)
             }
 
             composable(Screen.Settings.route) {

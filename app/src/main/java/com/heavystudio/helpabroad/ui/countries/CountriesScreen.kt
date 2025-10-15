@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Search
@@ -35,19 +33,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.ui.common.isoCodeToFlagEmoji
-import com.heavystudio.helpabroad.ui.main.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountriesScreen(
     navController: NavController,
-    viewModel: MainViewModel
+    viewModel: CountriesViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var searchQuery by remember { mutableStateOf("") }
 
-    // On filtre la liste complète des pays en mémoire avec la requête de recherche
     val filteredCountries = if (searchQuery.isBlank()) {
         uiState.allCountries
     } else {
@@ -69,7 +65,7 @@ fun CountriesScreen(
             singleLine = true
         )
 
-        LazyColumn(state = viewModel.countriesListState) {
+        LazyColumn(state = viewModel.listState) {
             item { Spacer(modifier = Modifier.height(24.dp)) }
             items(filteredCountries, key = { it.countryId }) { country ->
                 ListItem(

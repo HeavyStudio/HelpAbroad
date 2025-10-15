@@ -61,10 +61,8 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.heavystudio.helpabroad.R
 import com.heavystudio.helpabroad.data.local.dto.CountryListItem
 import com.heavystudio.helpabroad.ui.common.isoCodeToFlagEmoji
-import com.heavystudio.helpabroad.ui.main.MainUiState
-import com.heavystudio.helpabroad.ui.main.MainViewModel
-import com.heavystudio.helpabroad.ui.main.UiCountryDetails
-import com.heavystudio.helpabroad.ui.main.UiEmergencyService
+import com.heavystudio.helpabroad.ui.model.UiCountryDetails
+import com.heavystudio.helpabroad.ui.model.UiEmergencyService
 import com.heavystudio.helpabroad.ui.navigation.Screen
 import com.heavystudio.helpabroad.ui.theme.AmbulanceGreen
 import com.heavystudio.helpabroad.ui.theme.DefaultServiceGray
@@ -76,7 +74,7 @@ import com.heavystudio.helpabroad.ui.theme.PoliceBlue
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: MainViewModel
+    viewModel: HomeViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -207,7 +205,7 @@ private fun SearchResultsDropdown(
 private fun CountryDetailsContent(
     navController: NavController,
     details: UiCountryDetails,
-    uiState: MainUiState,
+    uiState: HomeUiState,
     callPermissionState: PermissionState,
     onEmergencyNumberClick: (String) -> Unit
 ) {

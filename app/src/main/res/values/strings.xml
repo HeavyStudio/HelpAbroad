@@ -2,6 +2,7 @@
 
     <!-- Home Screen -->
     <string name="app_name" translatable="false">Help Abroad</string>
+    <string name="app_name_debug" translatable="false">Help Abroad (debug)</string>
     <string name="search_country_placeholder">Search for a country</string>
     <string name="home_prompt_message">Start by searching for a country to see its
         emergency numbers</string>
