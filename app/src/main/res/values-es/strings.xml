@@ -16,6 +16,9 @@
     <!-- Countries -->
     <string name="screen_title_countries">Países</string>
 
+    <!-- Details -->
+    <string name="screen_title_details">Detalles</string>
+
     <!-- Settings -->
     <string name="screen_title_settings">Ajustes</string>
     <string name="settings_header_appearance">Apariencia</string>

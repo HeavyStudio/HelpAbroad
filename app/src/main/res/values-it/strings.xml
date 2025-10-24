@@ -13,6 +13,8 @@
 
     <string name="screen_title_countries">Paesi</string>
 
+    <string name="screen_title_details">Dettagli</string>
+
     <string name="screen_title_settings">Impostazioni</string>
     <string name="settings_header_appearance">Aspetto</string>
     <string name="settings_theme_title">Tema dell\'app</string>

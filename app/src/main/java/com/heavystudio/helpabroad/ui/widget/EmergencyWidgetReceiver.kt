@@ -9,6 +9,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * A [GlanceAppWidgetReceiver] for the [EmergencyWidget].
+ *
+ * This class is responsible for handling broadcasts related to the emergency widget.
+ * It specifically listens for the custom action "com.heavystudio.helpabroad.action.UPDATE_WIDGET"
+ * to trigger a manual update of all placed emergency widgets. This is useful for refreshing
+ * the widget's state from outside the standard widget update cycle, for example, after
+ * a setting has changed in the main application.
+ *
+ * @author Heavy Studio.
+ * @since WIP, coming soon!
+ */
 class EmergencyWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = EmergencyWidget()
 

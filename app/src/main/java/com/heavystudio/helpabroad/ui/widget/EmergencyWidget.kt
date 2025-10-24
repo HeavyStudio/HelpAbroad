@@ -34,6 +34,29 @@ import com.heavystudio.helpabroad.di.WidgetDataEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 
+/**
+ * A [GlanceAppWidget] that displays emergency numbers for a user-defined default country.
+ *
+ * This widget fetches the default country set in the application's settings. It then retrieves
+ * the emergency service details for that country.
+ *
+ * The logic for displaying numbers is as follows:
+ * 1. If "DISPATCH" (general emergency) numbers are available, they are displayed.
+ * 2. If no "DISPATCH" numbers exist, it displays up to three prioritized services, typically
+ *    Police, Ambulance, and Fire.
+ *
+ * If no default country is set or if the data cannot be fetched, the widget shows a message
+ * prompting the user to set a default country in the main application.
+ *
+ * Tapping on a number in the widget initiates a "dial" intent, opening the user's phone app
+ * with the selected number pre-filled.
+ *
+ * @author Heavy Studio.
+ * @since WIP, coming soon!
+ *
+ * @see GlanceAppWidget
+ * @see WidgetDataEntryPoint
+ */
 class EmergencyWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -48,20 +71,20 @@ class EmergencyWidget : GlanceAppWidget() {
             if (details != null) {
                 val countryName = details.names.find { it.languageCode == "en" }?.name ?: details.country.isoCode
 
-                // --- NOUVELLE LOGIQUE DE SÉLECTION ---
+                // --- New Selection Logic ---
                 val servicesForWidget: List<Pair<String, String>>
 
-                // On cherche d'abord s'il y a un numéro de type DISPATCH
+                // First, check if there is a DISPATCH-type number
                 val dispatchServices = details.services.filter { it.type.serviceCode == "DISPATCH" }
 
                 if (dispatchServices.isNotEmpty()) {
-                    // CAS 1: Un ou plusieurs numéros généraux existent, on les affiche.
+                    // CASE 1: One or more general numbers exist; display them
                     servicesForWidget = dispatchServices.mapNotNull {
                         val serviceName = it.names.find { n -> n.languageCode == "en" }?.name ?: "General"
                         Pair(serviceName, it.number.phoneNumber)
                     }
                 } else {
-                    // CAS 2: Pas de numéro général, on affiche les 3 prioritaires.
+                    // CASE 2: No general numbers, the 3 priority numbers are displayed
                     val servicePriority = mapOf("POLICE" to 1, "AMBULANCE" to 2, "SAMU" to 2, "FIRE" to 3)
                     val sortedServices = details.services.sortedBy { service ->
                         servicePriority[service.type.serviceCode] ?: 99

@@ -1,130 +1,105 @@
 package com.heavystudio.helpabroad.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.core.AppConfig
-import com.heavystudio.helpabroad.data.local.dto.CountryDetails
-import com.heavystudio.helpabroad.data.settings.SettingsRepository
 import com.heavystudio.helpabroad.domain.repository.CountryRepository
-import com.heavystudio.helpabroad.ui.model.UiCountryDetails
-import com.heavystudio.helpabroad.ui.model.UiEmergencyService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 import java.util.Locale
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Home screen.
+ *
+ * This ViewModel manages the UI state for the home screen, primarily handling the logic
+ * for searching countries. It exposes a [StateFlow] of [HomeUiState] which the UI can
+ * observe to react to changes in the search query and results.
+ *
+ * @param repository The repository for fetching country data.
+ *
+ * @author Heavy Studio.
+ * @since 0.2.0 Divided the MainViewModel into specific VM for each screen.
+ */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: CountryRepository,
-    private val settingsRepository: SettingsRepository
+    private val repository: CountryRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-
+    // --- State for the search query, controlled by the UI ---
     private val _searchQuery = MutableStateFlow("")
-    private val _effectiveLangCode: String
 
-    init {
+    // --- Language determination ---
+    private val effectiveLangCode: String = run {
         val deviceLang = Locale.getDefault().language
-        val supportedLanguages = AppConfig.supportedLanguages
-        _effectiveLangCode = if (deviceLang in supportedLanguages) deviceLang else "en"
+        if (deviceLang in AppConfig.supportedLanguages) deviceLang else "en"
+    }
 
-        viewModelScope.launch {
-            _searchQuery
-                .debounce(300)
-                .flatMapLatest { query ->
-                    if (query.length < 2) flowOf(emptyList())
-                    else repository.searchCountries(query, _effectiveLangCode)
-                }
-                .collect { results ->
-                    _uiState.update {
-                        it.copy(
-                            searchResults = results,
-                            isSearchResultsVisible = results.isNotEmpty() && _searchQuery.value.isNotBlank() && it.selectedCountryDetails == null
-                        )
-                    }
-                }
-        }
-
-        // Ce bloc gère UNIQUEMENT les réglages. Il est sûr.
-        viewModelScope.launch {
-            settingsRepository.directCallFlow.collect { isEnabled ->
-                _uiState.update { it.copy(isDirectCallEnabled = isEnabled) }
+    // --- Flow for search results based on the query ---
+    private val searchResultsFlow = _searchQuery
+        .debounce(300)
+        .flatMapLatest { query ->
+            Log.d("SEARCH_DEBUG", "[VM] flatMapLatest executing. Query: '$query'")
+            if (query.length < 2) {
+                flowOf(emptyList())
+            } else {
+                Log.d("SEARCH_DEBUG", "Calling repository.searchCountries...")
+                repository.searchCountries(query, effectiveLangCode)
             }
         }
-        viewModelScope.launch {
-            settingsRepository.confirmBeforeCallFlow.collect { isEnabled ->
-                _uiState.update { it.copy(isConfirmBeforeCallEnabled = isEnabled) }
-            }
-        }
-    }
 
-    fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
-        _uiState.update {
-            it.copy(
-                searchQuery = query,
-                selectedCountryDetails = null
-            )
-        }
-    }
-
-    fun onCountrySelected(countryId: Int) {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, isSearchResultsVisible = false) }
-            repository.getCountryDetails(countryId).firstOrNull()?.let { details ->
-                val uiDetails = mapToUiModel(details)
-                _uiState.update {
-                    it.copy(
-                        searchQuery = "",
-                        selectedCountryDetails = uiDetails,
-                        isLoading = false
-                    )
-                }
-            }
-        }
-    }
-
-    fun onEmergencyNumberClicked(number: String) {
-        if (uiState.value.isDirectCallEnabled && uiState.value.isConfirmBeforeCallEnabled) {
-            _uiState.update { it.copy(numberToCallForConfirmation = number) }
-        }
-    }
-
-    fun onCallConfirmationDismissed() {
-        _uiState.update { it.copy(numberToCallForConfirmation = null) }
-    }
-
-    private fun mapToUiModel(details: CountryDetails): UiCountryDetails {
-        val countryName = details.names.find { it.languageCode == _effectiveLangCode }?.name
-            ?: details.names.find { it.languageCode == "en" }?.name
-            ?: details.country.isoCode
-        val countryIsoCode = details.country.isoCode
-        val services = details.services.mapNotNull { serviceDetails ->
-            val serviceName = serviceDetails.names.find { it.languageCode == _effectiveLangCode }?.name
-                ?: serviceDetails.names.find { it.languageCode == "en" }?.name
-            if (serviceName != null) UiEmergencyService(
-                code = serviceDetails.type.serviceCode,
-                name = serviceName,
-                number = serviceDetails.number.phoneNumber
-            ) else null
-        }
-        return UiCountryDetails(
-            countryName = countryName,
-            countryIsoCode = countryIsoCode,
-            services = services
+    // --- The final UI state, comibining the query and results ---
+    val uiState: StateFlow<HomeUiState> = combine(
+        _searchQuery,
+        searchResultsFlow
+    ) { query, results ->
+        Log.d("SEARCH_DEBUG", "Combine running. Query: '$query', Results count: ${results.size}")
+        HomeUiState(
+            searchQuery = query,
+            searchResults = results,
+            isSearchResultsVisible = query.isNotBlank() && results.isNotEmpty(),
+            isLoading = false
         )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = HomeUiState()
+    )
+
+    /**
+     * Updates the search query.
+     *
+     * This function is called from the UI whenever the user types in the search bar.
+     * It updates the internal `_searchQuery` state flow, which in turn triggers
+     * the search logic to execute.
+     *
+     * @param query The new search string entered by the user.
+     */
+    fun onSearchQueryChanged(query: String) {
+        Log.d("SEARCH_DEBUG", "onSearchQueryChanged called with: '$query'")
+        _searchQuery.value = query
+    }
+
+    /**
+     * Resets the search state after a navigation event has been handled.
+     *
+     * This function should be called after the user has navigated away from the home screen
+     * to a details screen (e.g., after tapping on a search result). Its primary purpose is
+     * to clear the search query, which in turn hides the search results and resets the UI
+     * to its initial state, ready for the user's return to the home screen.
+     */
+    fun onNavigationToDetailsHandled() {
+        _searchQuery.value = ""
     }
 }

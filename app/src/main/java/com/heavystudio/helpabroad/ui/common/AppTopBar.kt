@@ -28,6 +28,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.heavystudio.helpabroad.R
 
+/**
+ * A composable function that displays a center-aligned top app bar for the application.
+ *
+ * This top bar includes a title and an optional back navigation button. A horizontal divider is
+ * displayed below the app bar.
+ *
+ * @param title The text to be displayed as the title of the app bar.
+ * @param canNavigateBack A boolean value that determines whether the back navigation button is shown.
+ * @param onNavigateUp A lambda function to be invoked when the back navigation button is clicked.
+ *                      This is only used if [canNavigateBack] is true. Defaults to an empty lambda.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the component.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(

@@ -5,6 +5,20 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+/**
+ * Represents the localized name of a country in the local database.
+ *
+ * This entity stores the translation of a country's name for a specific language.
+ * It is linked to a [CountryEntity] via a foreign key.
+ *
+ * @property id The unique identifier for this country name entry.
+ * @property countryId The ID of the country this name belongs to. This is a foreign key to [CountryEntity.id].
+ * @property languageCode The ISO 639-1 language code for this translation (e.g., "en", "es", "fr").
+ * @property name The translated name of the country.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the entity.
+ */
 @Entity(
     tableName = "country_names",
     foreignKeys = [

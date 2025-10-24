@@ -29,6 +29,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.heavystudio.helpabroad.R
 
+/**
+ * A Composable screen that displays the application's disclaimer.
+ *
+ * This screen presents important information to the user regarding the accuracy of the data,
+ * its use in emergencies, and the developers' liability. The content is structured in several
+ * sections for readability, including an introduction and specific points on accuracy,
+ * emergency use, and liability. The layout is a vertically scrollable list.
+ *
+ * @param navController The [NavController] used for navigation actions, although currently not used
+ *                      within this composable's content, it's passed for potential future use like
+ *                      a back button.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DisclaimerScreen(navController: NavController) {

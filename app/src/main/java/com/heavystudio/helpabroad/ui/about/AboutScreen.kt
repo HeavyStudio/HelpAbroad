@@ -33,6 +33,23 @@ import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.heavystudio.helpabroad.R
 
+/**
+ * A Composable function that displays the "About" screen of the application.
+ *
+ * This screen provides information about the app, such as its name, version, and a brief
+ * description. It also includes several action items that allow the user to:
+ * - Rate the app on the app store.
+ * - Share the app with others.
+ * - Send feedback via email.
+ *
+ * The bottom of the screen contains a disclaimer about translations and credits the developer.
+ *
+ * @param navController The NavController used for navigation. Although passed as a parameter,
+ *                      it is not currently used within this Composable.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(navController: NavController) {
