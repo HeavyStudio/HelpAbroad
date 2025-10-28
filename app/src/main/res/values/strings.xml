@@ -11,6 +11,9 @@
     <string name="home_disclaimer_short">Numbers are for informational purposes. Always verify with
         local authorities in case of an emergency. Click for full disclaimer.</string>
 
+    <string name="home_welcome_subtitle">Find emergency numbers anywhere in the world.</string>
+    <string name="home_recently_viewed">Recently Viewed</string>
+
     <!-- Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_countries">Countries</string>

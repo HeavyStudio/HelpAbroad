@@ -81,4 +81,27 @@ interface CountryDao {
     @Transaction
     @Query("SELECT * FROM countries WHERE id = :countryId")
     fun getCountryDetails(countryId: Int): Flow<CountryDetails?>
+
+    /**
+     * Retrieves a list of countries by their IDs, with names localized to the specified language.
+     *
+     * This function queries the database to get the ID, ISO code, and localized name for each
+     * country ID provided in the `countryIds` list. It joins the `countries` table with the
+     * `country_names` table to fetch the names based on the provided `langCode`. The results
+     * are ordered alphabetically by the country name.
+     *
+     * This is useful for fetching a specific subset of countries, for example, the user's
+     * favorite or recently visited countries.
+     *
+     * @param countryIds A list of unique identifiers for the countries to retrieve.
+     * @param langCode The language code (e.g., "en", "es") for localizing the country names.
+     * @return A [Flow] emitting a list of [CountryListItem] objects for the specified IDs.
+     */
+    @Query("""
+        SELECT c.id AS countryId, c.iso_code AS isoCode, cn.name AS name 
+        FROM countries AS c 
+        INNER JOIN country_names AS cn ON c.id = cn.country_id 
+        WHERE cn.language_code = :langCode AND c.id IN (:countryIds)
+    """)
+    fun getCountriesByIds(countryIds: List<Int>, langCode: String): Flow<List<CountryListItem>>
 }

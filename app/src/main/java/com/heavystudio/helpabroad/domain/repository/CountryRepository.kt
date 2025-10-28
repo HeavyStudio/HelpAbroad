@@ -16,4 +16,5 @@ interface CountryRepository {
     fun searchCountries(query: String, langCode: String): Flow<List<CountryListItem>>
     fun getAllCountries(langCode: String): Flow<List<CountryListItem>>
     fun getCountryDetails(countryId: Int): Flow<CountryDetails?>
+    fun getCountriesByIds(countryIds: List<Int>, langCode: String): Flow<List<CountryListItem>>
 }

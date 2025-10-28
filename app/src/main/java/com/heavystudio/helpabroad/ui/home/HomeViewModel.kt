@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heavystudio.helpabroad.core.AppConfig
+import com.heavystudio.helpabroad.data.settings.SettingsRepository
 import com.heavystudio.helpabroad.domain.repository.CountryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +27,7 @@ import javax.inject.Inject
  * for searching countries. It exposes a [StateFlow] of [HomeUiState] which the UI can
  * observe to react to changes in the search query and results.
  *
- * @param repository The repository for fetching country data.
+ * @param countryRepository The repository for fetching country data.
  *
  * @author Heavy Studio.
  * @since 0.2.0 Divided the MainViewModel into specific VM for each screen.
@@ -34,7 +35,8 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: CountryRepository
+    private val countryRepository: CountryRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     // --- State for the search query, controlled by the UI ---
@@ -55,20 +57,37 @@ class HomeViewModel @Inject constructor(
                 flowOf(emptyList())
             } else {
                 Log.d("SEARCH_DEBUG", "Calling repository.searchCountries...")
-                repository.searchCountries(query, effectiveLangCode)
+                countryRepository.searchCountries(query, effectiveLangCode)
             }
         }
 
-    // --- The final UI state, comibining the query and results ---
+    private val recentlySearchedCountriesFlow = settingsRepository.recentlySearchedCountriesFlow
+        .flatMapLatest { ids ->
+            if (ids.isEmpty()) {
+                flowOf(emptyList())
+            } else {
+                // Fetch country details for the saved IDs.
+                countryRepository.getCountriesByIds(ids, effectiveLangCode)
+            }
+        }
+        // This ensures the order is preserved from DataStore (most recent first)
+        .combine(settingsRepository.recentlySearchedCountriesFlow) { countries, ids ->
+            val countryMap = countries.associateBy { it.countryId }
+            ids.mapNotNull { id -> countryMap[id] }
+        }
+
+    // --- The final UI state, combining the query and results ---
     val uiState: StateFlow<HomeUiState> = combine(
         _searchQuery,
-        searchResultsFlow
-    ) { query, results ->
+        searchResultsFlow,
+        recentlySearchedCountriesFlow
+    ) { query, results, recent ->
         Log.d("SEARCH_DEBUG", "Combine running. Query: '$query', Results count: ${results.size}")
         HomeUiState(
             searchQuery = query,
             searchResults = results,
             isSearchResultsVisible = query.isNotBlank() && results.isNotEmpty(),
+            recentlyViewed = recent,
             isLoading = false
         )
     }.stateIn(

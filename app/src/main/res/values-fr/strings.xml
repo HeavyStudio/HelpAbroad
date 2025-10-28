@@ -10,6 +10,10 @@
         auprès des autorités locales en cas d\'urgence. Cliquez pour lire l\'avertissement
         complet.</string>
 
+    <string name="home_welcome_subtitle">Trouvez les numéros d\'urgence partout dans le monde.</string>
+    <string name="home_recently_viewed">Consultés récemment</string>
+
+
     <!-- Navigation -->
     <string name="nav_home">Accueil</string>
     <string name="nav_countries">Pays</string>
