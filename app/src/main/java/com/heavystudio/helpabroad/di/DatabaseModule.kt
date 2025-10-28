@@ -2,6 +2,7 @@ package com.heavystudio.helpabroad.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.heavystudio.helpabroad.data.local.AppDatabase
 import com.heavystudio.helpabroad.data.local.dao.CountryDao
 import dagger.Module
@@ -45,7 +46,8 @@ object DatabaseModule {
             AppDatabase::class.java,
             "help_abroad.db"
         )
-            .createFromAsset("database/db_seeds.db")
+            .createFromAsset("database/db_seeds_v2.db")
+            .addMigrations(AppDatabase.MIGRATION_1_2)
             .fallbackToDestructiveMigration(true)
             .build()
     }
