@@ -30,5 +30,6 @@ data class UiCountryDetails(
 data class UiEmergencyService(
     val code: String,
     val name: String,
-    val number: String
+    val number: String,
+    val numberType: String
 )

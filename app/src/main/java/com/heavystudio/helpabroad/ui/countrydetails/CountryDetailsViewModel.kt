@@ -139,7 +139,8 @@ class CountryDetailsViewModel @Inject constructor(
             if (serviceName != null) UiEmergencyService(
                 code = serviceDetails.type.serviceCode,
                 name = serviceName,
-                number = serviceDetails.number.phoneNumber
+                number = serviceDetails.number.phoneNumber,
+                numberType = serviceDetails.number.numberType
             ) else null
         }
 

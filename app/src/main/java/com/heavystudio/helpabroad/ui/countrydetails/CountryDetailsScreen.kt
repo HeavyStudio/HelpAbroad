@@ -20,10 +20,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Hearing
+import androidx.compose.material.icons.filled.HearingDisabled
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.LocalPolice
-import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material.icons.filled.Sos
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -58,6 +61,7 @@ import com.heavystudio.helpabroad.ui.model.UiCountryDetails
 import com.heavystudio.helpabroad.ui.model.UiEmergencyService
 import com.heavystudio.helpabroad.ui.navigation.Screen
 import com.heavystudio.helpabroad.ui.theme.AmbulanceGreen
+import com.heavystudio.helpabroad.ui.theme.DeafPurple
 import com.heavystudio.helpabroad.ui.theme.DefaultServiceGray
 import com.heavystudio.helpabroad.ui.theme.DispatchOrange
 import com.heavystudio.helpabroad.ui.theme.FireRed
@@ -165,22 +169,29 @@ private fun CountryDetailsContent(
         items(details.services) { service ->
             EmergencyServiceCard(
                 service = service,
-                onClick = { phoneNumber ->
-                    if (uiState.isDirectCallEnabled) {
+                onClick = { clickedService ->
+                    val intentAction = if (clickedService.numberType == "SMS") Intent.ACTION_SENDTO
+                    else Intent.ACTION_DIAL
+
+                    val uriScheme = if (clickedService.numberType == "SMS") "smsto"
+                    else "tel"
+
+                    val number = clickedService.number
+
+                    if (clickedService.numberType == "CALL" && uiState.isDirectCallEnabled) {
                         if (callPermissionState.status.isGranted) {
                             if (uiState.isConfirmBeforeCallEnabled) {
-                                onEmergencyNumberClick(phoneNumber)
+                                onEmergencyNumberClick(number)
                             } else {
-                                // Direct call without confirmation
-                                val intent = Intent(Intent.ACTION_CALL, "tel:$phoneNumber".toUri())
+                                val intent = Intent(Intent.ACTION_CALL, "tel:$number".toUri())
                                 context.startActivity(intent)
                             }
                         } else {
                             callPermissionState.launchPermissionRequest()
                         }
                     } else {
-                        // Open Dialer
-                        val intent = Intent(Intent.ACTION_DIAL, "tel:$phoneNumber".toUri())
+                        // Open Dialer or SMS App
+                        val intent = Intent(intentAction, "$uriScheme:$number".toUri())
                         context.startActivity(intent)
                     }
                 }
@@ -224,13 +235,14 @@ private fun CountryHeader(isoCode: String, countryName: String) {
 @Composable
 private fun EmergencyServiceCard(
     service: UiEmergencyService,
-    onClick: (String) -> Unit
+    onClick: (UiEmergencyService) -> Unit
 ) {
     val (serviceIcon, serviceColor) = when (service.code) {
         "POLICE" -> Pair(Icons.Default.LocalPolice, PoliceBlue)
         "AMBULANCE" -> Pair(Icons.Default.LocalHospital, AmbulanceGreen)
         "SAMU" -> Pair(Icons.Default.LocalHospital, AmbulanceGreen)
         "FIRE" -> Pair(Icons.Default.LocalFireDepartment, FireRed)
+        "DEAF" -> Pair(Icons.Default.HearingDisabled, DeafPurple)
         "DISPATCH" -> Pair(Icons.Default.Sos, DispatchOrange)
         else -> Pair(Icons.AutoMirrored.Filled.HelpOutline, DefaultServiceGray)
     }
@@ -238,7 +250,7 @@ private fun EmergencyServiceCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(service.number) },
+            .clickable { onClick(service) },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -268,7 +280,11 @@ private fun EmergencyServiceCard(
                 )
             }
             Icon(
-                imageVector = Icons.Default.Phone,
+                imageVector = if (service.numberType == "SMS") {
+                    Icons.Default.Sms
+                } else {
+                    Icons.Default.Call
+                },
                 contentDescription = stringResource(R.string.call_action),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -79,7 +79,6 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             SearchBar(
@@ -116,10 +115,9 @@ private fun SearchBar(
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChanged,
-        label = { Text(text = stringResource(id = R.string.search_country_placeholder)) },
-        modifier = modifier
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(8.dp)),
+        modifier = modifier.fillMaxWidth(),
         singleLine = true,
+        placeholder = { Text(text = stringResource(R.string.search_country_placeholder)) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,

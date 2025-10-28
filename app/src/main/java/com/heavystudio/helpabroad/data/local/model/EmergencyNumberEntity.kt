@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+
 /**
  * Represents a single emergency phone number entry in the local database.
  * This entity links a specific phone number to a country and a type of emergency service.
@@ -52,5 +53,8 @@ data class EmergencyNumberEntity(
     val phoneNumber: String,
 
     @ColumnInfo(name = "description")
-    val description: String? = null
+    val description: String? = null,
+
+    @ColumnInfo(name = "number_type", defaultValue = "CALL")
+    val numberType: String
 )
