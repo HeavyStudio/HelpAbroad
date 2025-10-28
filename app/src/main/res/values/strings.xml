@@ -2,6 +2,7 @@
 
     <!-- Home Screen -->
     <string name="app_name" translatable="false">Help Abroad</string>
+    <string name="app_name_debug" translatable="false">HA Debug</string>
     <string name="search_country_placeholder">Search for a country</string>
     <string name="home_prompt_message">Start by searching for a country to see its
         emergency numbers</string>
@@ -17,6 +18,9 @@
 
     <!-- Countries -->
     <string name="screen_title_countries">Countries</string>
+
+    <!-- Details -->
+    <string name="screen_title_details">Details</string>
 
     <!-- Settings -->
     <string name="screen_title_settings">Settings</string>
@@ -71,4 +75,7 @@
     <string name="disclaimer_liability_title">Limitation of Liability</string>
     <string name="disclaimer_liability_body">The developer assumes no liability for any consequences
         arising from the use of the numbers provided in this app.</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Displays the emergency numbers for your default country.</string>
 </resources>

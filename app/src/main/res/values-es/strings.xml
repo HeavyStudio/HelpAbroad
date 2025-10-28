@@ -16,6 +16,9 @@
     <!-- Countries -->
     <string name="screen_title_countries">Países</string>
 
+    <!-- Details -->
+    <string name="screen_title_details">Detalles</string>
+
     <!-- Settings -->
     <string name="screen_title_settings">Ajustes</string>
     <string name="settings_header_appearance">Apariencia</string>
@@ -58,4 +61,7 @@
     <string name="disclaimer_emergency_body">En caso de emergencia, intente siempre contactar a las autoridades locales a través de canales oficiales y verificados primero.</string>
     <string name="disclaimer_liability_title">Limitación de Responsabilidad</string>
     <string name="disclaimer_liability_body">El desarrollador no asume ninguna responsabilidad por las consecuencias que surjan del uso de los números proporcionados en esta aplicación.</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Muestra los números de emergencia de tu país predeterminado.</string>
 </resources>

@@ -28,6 +28,19 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.heavystudio.helpabroad.ui.navigation.Screen
 
+/**
+ * A composable function that displays the application's bottom navigation bar.
+ *
+ * This bar contains navigation items for top-level destinations like Home, Countries, and Settings.
+ * It observes the navigation back stack to highlight the currently selected screen and handles
+ * navigation events to switch between screens, ensuring a consistent and state-preserving
+ * user experience.
+ *
+ * @param navController The [NavController] used to handle navigation actions when an item is clicked.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the component.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBottomBar(navController: NavController) {
@@ -53,10 +66,22 @@ fun AppBottomBar(navController: NavController) {
                     screen = screen,
                     isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                     onClick = {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id)
-                            launchSingleTop = true
-                            restoreState = true
+                        if (screen == Screen.Home) {
+                            navController.navigate(Screen.Home.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                                restoreState = false
+                            }
+                        } else {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     }
                 )

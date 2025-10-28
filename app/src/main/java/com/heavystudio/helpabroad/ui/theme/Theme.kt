@@ -33,6 +33,23 @@ private val LightColorScheme = lightColorScheme(
     outline = LightOutline
 )
 
+/**
+ * A custom Material 3 theme for the Help Abroad application.
+ *
+ * This composable function applies the application's color scheme, typography, and shapes.
+ * It supports both light and dark themes, and can optionally use dynamic colors on Android 12+
+ * to match the user's system wallpaper.
+ *
+ * @param darkTheme Whether to use the dark color scheme. Defaults to the system's setting.
+ * @param dynamicColor Whether to use dynamic colors generated from the user's wallpaper.
+ *                     This is only available on Android 12 (API 31) and above. If `true` on an
+ *                     older device, it will fall back to the default `LightColorScheme` or `DarkColorScheme`.
+ *                     Defaults to `false`.
+ * @param content The composable content to which this theme will be applied.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the theme.
+ */
 @Composable
 fun HelpAbroadTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

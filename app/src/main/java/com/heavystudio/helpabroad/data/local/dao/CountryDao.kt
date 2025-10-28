@@ -7,6 +7,17 @@ import com.heavystudio.helpabroad.data.local.dto.CountryDetails
 import com.heavystudio.helpabroad.data.local.dto.CountryListItem
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object (DAO) for the country-related tables in the Room database.
+ *
+ * This interface provides methods for accessing and querying country information,
+ * such as searching for countries, retrieving a list of all countries, and fetching
+ * detailed information for a specific country. All methods return a [Flow] to allow
+ * for reactive data observation.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the interface.
+ */
 @Dao
 interface CountryDao {
 

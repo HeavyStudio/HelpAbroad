@@ -58,6 +58,26 @@ import com.heavystudio.helpabroad.data.settings.AppTheme
 import com.heavystudio.helpabroad.ui.common.AppTopBar
 import com.heavystudio.helpabroad.ui.navigation.Screen
 
+/**
+ * A Composable that displays the settings screen of the application.
+ *
+ * This screen allows users to configure various application settings, grouped into sections:
+ * - **Appearance**: Users can select the app's theme (Light, Dark, or System default).
+ * - **Features**:
+ *     - Toggle "Direct Call": Allows making calls directly from the app. This requires the `CALL_PHONE` permission.
+ *     - Toggle "Confirm Before Call": Shows a confirmation dialog before initiating a call (only enabled if "Direct Call" is on).
+ * - **About**: Provides navigation links to the "About" and "Disclaimer" screens.
+ *
+ * The screen's state is managed by [SettingsViewModel] and is collected as [SettingsUiState].
+ * It uses a `LazyColumn` to efficiently display the list of settings.
+ *
+ * @param navController The [NavController] used for navigating to other screens (e.g., About, Disclaimer).
+ * @param viewModel The [SettingsViewModel] instance that provides the UI state and handles user actions.
+ *                  It is provided by Hilt's `hiltViewModel()`.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun SettingsScreen(
@@ -66,7 +86,14 @@ fun SettingsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val callPermissionState = rememberPermissionState(
-        permission = android.Manifest.permission.CALL_PHONE
+        permission = android.Manifest.permission.CALL_PHONE,
+        onPermissionResult = { permissionWasGranted ->
+            if (permissionWasGranted) {
+                viewModel.onDirectCallToggled(true)
+            } else {
+                viewModel.onDirectCallToggled(false)
+            }
+        }
     )
 
     LazyColumn(
@@ -104,10 +131,7 @@ fun SettingsScreen(
                     checked = uiState.isDirectCallEnabled,
                     onCheckedChange = { isEnabled ->
                         if (isEnabled) {
-                            if (!callPermissionState.status.isGranted) {
-                                callPermissionState.launchPermissionRequest()
-                            }
-                            viewModel.onDirectCallToggled(callPermissionState.status.isGranted)
+                            callPermissionState.launchPermissionRequest()
                         } else {
                             viewModel.onDirectCallToggled(false)
                         }

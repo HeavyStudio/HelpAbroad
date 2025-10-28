@@ -7,6 +7,17 @@ import com.heavystudio.helpabroad.domain.repository.CountryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+/**
+ * Concrete implementation of the [CountryRepository] interface.
+ * This class is responsible for interacting with the local data source ([CountryDao])
+ * to fetch country-related data. It provides the data as reactive streams (Flow).
+ *
+ * @property countryDao The Data Access Object for countries, injected via Hilt.
+ * @constructor Creates an instance of CountryRepositoryImpl.
+ *
+ * @author Heavy Studio.
+ * @since 0.1.0 Creation of the implementation.
+ */
 class CountryRepositoryImpl @Inject constructor(
     private val countryDao: CountryDao
 ) : CountryRepository {
