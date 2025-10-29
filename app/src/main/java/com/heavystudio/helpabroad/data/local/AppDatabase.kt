@@ -35,40 +35,32 @@ import com.heavystudio.helpabroad.data.local.model.ServiceTypeNameEntity
         EmergencyServiceTypeEntity::class,
         ServiceTypeNameEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun countryDao(): CountryDao
 
     companion object {
-        // Migration from v1 to v2
+        // Migration from v1 to v2.
+        // Add SMS support and "114" number for France.
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("""
                     ALTER TABLE emergency_numbers
                     ADD COLUMN number_type TEXT NOT NULL DEFAULT 'CALL'
                 """.trimIndent())
+            }
+        }
 
+        // Migration from v2 to v3.
+        // Fix data inconsistency.
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("""
-                    INSERT INTO emergency_service_types (service_code, default_icon_ref) 
-                    VALUES ("DEAF", "ic_deaf")
-                """.trimIndent())
-
-                db.execSQL("""
-                    INSERT INTO service_type_names (service_type_id, language_code, name) 
-                    VALUES
-                        (6, "en", "SOS Deaf"),
-                        (6, "fr", "SOS Sourds"),
-                        (6, "de", "SOS Gehörlos"),
-                        (6, "es", "SOS Sordos"),
-                        (6, "pt", "SOS Surdos"),
-                        (6, "it", "SOS Sordi")
-                """.trimIndent())
-
-                db.execSQL("""
-                    INSERT INTO emergency_numbers (country_id, service_type_id, phone_number, number_type) 
-                    VALUES (16, 6, '114', 'SMS')
+                    UPDATE emergency_numbers 
+                    SET service_type_id = 6 
+                    WHERE country_id = 16 AND phone_number = '114'
                 """.trimIndent())
             }
         }

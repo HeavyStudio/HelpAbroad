@@ -58,6 +58,7 @@ class SettingsRepository @Inject constructor(
         val DIRECT_CALL = booleanPreferencesKey("direct_call")
         val CONFIRM_BEFORE_CALL = booleanPreferencesKey("confirm_before_call")
         val DEFAULT_COUNTRY_ID = intPreferencesKey("default_country_id")
+        val RECENTLY_SEARCHED_COUNTRIES = stringPreferencesKey("recently_searched_countries")
     }
 
     // Expose the Flow for each preference
@@ -75,6 +76,15 @@ class SettingsRepository @Inject constructor(
 
     val defaultCountryIdFlow = context.dataStore.data.map { preferences ->
         preferences[Keys.DEFAULT_COUNTRY_ID]
+    }
+
+    val recentlySearchedCountriesFlow = context.dataStore.data.map { preferences ->
+        val idsString = preferences[Keys.RECENTLY_SEARCHED_COUNTRIES] ?: ""
+        if (idsString.isBlank()) {
+            emptyList()
+        } else {
+            idsString.split(",").mapNotNull { it.toIntOrNull() }
+        }
     }
 
     /**
@@ -116,6 +126,34 @@ class SettingsRepository @Inject constructor(
     suspend fun setConfirmBeforeCall(isEnabled: Boolean) {
         context.dataStore.edit { settings ->
             settings[Keys.CONFIRM_BEFORE_CALL] = isEnabled
+        }
+    }
+
+    /**
+     * Adds a country's ID to the user's search history.
+     *
+     * This function is intended to store a list of recently viewed or searched countries,
+     * allowing for quick access in the future. The implementation for storing and retrieving
+     * this history is not yet defined in the provided code.
+     *
+     * @param countryId The unique identifier of the country to add to the history.
+     */
+    suspend fun addCountryToHistory(countryId: Int) {
+        context.dataStore.edit { settings ->
+            val currentIdsString = settings[Keys.RECENTLY_SEARCHED_COUNTRIES] ?: ""
+            val currentIds = currentIdsString.split(",")
+                .mapNotNull { it.toIntOrNull() }
+                .toMutableList()
+
+            // Remove the ID if it already exists to move it to the front.
+            currentIds.remove(countryId)
+
+            // Add the new ID to the beginning of the list.
+            currentIds.add(0, countryId)
+
+            // Keep only the 6 most recent IDs and convert back to a string.
+            val newIdsString = currentIds.take(6).joinToString(",")
+            settings[Keys.RECENTLY_SEARCHED_COUNTRIES] = newIdsString
         }
     }
 }

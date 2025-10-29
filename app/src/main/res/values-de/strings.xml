@@ -7,6 +7,10 @@
     <string name="search_icon_desc">Suchsymbol</string>
     <string name="home_disclaimer_short">Die Nummern dienen zu Informationszwecken. Überprüfen Sie sie im Notfall immer bei den örtlichen Behörden. Klicken Sie für den vollständigen Haftungsausschluss.</string>
 
+    <string name="home_welcome_subtitle">Finden Sie Notrufnummern überall auf der Welt.</string>
+    <string name="home_recently_viewed">Zuletzt angesehen</string>
+
+
     <string name="nav_home">Start</string>
     <string name="nav_countries">Länder</string>
     <string name="nav_settings">Einstellungen</string>

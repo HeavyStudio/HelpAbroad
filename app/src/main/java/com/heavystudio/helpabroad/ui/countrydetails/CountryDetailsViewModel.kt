@@ -17,9 +17,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
@@ -98,6 +100,16 @@ class CountryDetailsViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = CountryDetailsUiState()
     )
+
+    init {
+        // Save the country ID to history as soon as it's available.
+        viewModelScope.launch {
+            val countryId = _countryIdFlow.first() // Gets the first valid ID from the flow
+            if (countryId != -1) {
+                settingsRepository.addCountryToHistory(countryId)
+            }
+        }
+    }
 
 
     /**

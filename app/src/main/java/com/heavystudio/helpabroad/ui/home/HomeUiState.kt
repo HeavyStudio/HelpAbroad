@@ -25,6 +25,7 @@ data class HomeUiState(
     val searchQuery: String = "",
     val searchResults: List<CountryListItem> = emptyList(),
     val isSearchResultsVisible: Boolean = false,
+    val recentlyViewed: List<CountryListItem> = emptyList(),
     val selectedCountryDetails: UiCountryDetails? = null,
     val isLoading: Boolean = false
 )

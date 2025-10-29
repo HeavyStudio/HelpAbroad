@@ -8,6 +8,10 @@
     <string name="search_icon_desc">Icono de búsqueda</string>
     <string name="home_disclaimer_short">Números proporcionados con fines informativos. Verifique siempre con las autoridades locales en caso de emergencia. Haga clic para leer el descargo de responsabilidad completo.</string>
 
+    <string name="home_welcome_subtitle">Encuentra números de emergencia en cualquier parte del mundo.</string>
+    <string name="home_recently_viewed">Vistos recientemente</string>
+
+
     <!-- Navigation -->
     <string name="nav_home">Inicio</string>
     <string name="nav_countries">Países</string>

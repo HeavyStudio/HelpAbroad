@@ -33,4 +33,11 @@ class CountryRepositoryImpl @Inject constructor(
     override fun getCountryDetails(countryId: Int): Flow<CountryDetails?> {
         return countryDao.getCountryDetails(countryId)
     }
+
+    override fun getCountriesByIds(
+        countryIds: List<Int>,
+        langCode: String
+    ): Flow<List<CountryListItem>> {
+        return countryDao.getCountriesByIds(countryIds, langCode)
+    }
 }

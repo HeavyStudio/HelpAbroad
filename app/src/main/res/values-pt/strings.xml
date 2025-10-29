@@ -7,6 +7,10 @@
     <string name="search_icon_desc">Ícone de busca</string>
     <string name="home_disclaimer_short">Os números são para fins informativos. Verifique sempre com as autoridades locais em caso de emergência. Clique para o aviso legal completo.</string>
 
+    <string name="home_welcome_subtitle">Encontre números de emergência em qualquer lugar do mundo.</string>
+    <string name="home_recently_viewed">Vistos recentemente</string>
+
+
     <string name="nav_home">Início</string>
     <string name="nav_countries">Países</string>
     <string name="nav_settings">Configurações</string>
