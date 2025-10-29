@@ -151,8 +151,8 @@ class SettingsRepository @Inject constructor(
             // Add the new ID to the beginning of the list.
             currentIds.add(0, countryId)
 
-            // Keep only the 5 most recent IDs and convert back to a string.
-            val newIdsString = currentIds.take(5).joinToString(",")
+            // Keep only the 6 most recent IDs and convert back to a string.
+            val newIdsString = currentIds.take(6).joinToString(",")
             settings[Keys.RECENTLY_SEARCHED_COUNTRIES] = newIdsString
         }
     }

@@ -47,7 +47,10 @@ object DatabaseModule {
             "help_abroad.db"
         )
             .createFromAsset("database/db_seeds_v2.db")
-            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .addMigrations(
+                AppDatabase.MIGRATION_1_2,
+                AppDatabase.MIGRATION_2_3
+            )
             .fallbackToDestructiveMigration(true)
             .build()
     }
