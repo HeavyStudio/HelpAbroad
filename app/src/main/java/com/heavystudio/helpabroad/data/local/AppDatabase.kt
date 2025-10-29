@@ -57,10 +57,34 @@ abstract class AppDatabase : RoomDatabase() {
         // Fix data inconsistency.
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
+                // Ensure the "DEAF" service type exists.
                 db.execSQL("""
-                    UPDATE emergency_numbers 
-                    SET service_type_id = 6 
-                    WHERE country_id = 16 AND phone_number = '114'
+                    INSERT OR IGNORE INTO emergency_service_types (id, service_code, default_icon_ref) 
+                    VALUES (6, 'DEAF', 'ic_deaf')
+                """.trimIndent())
+
+                // Update or insert the names for the "DEAF" service in all supported languages.
+                db.execSQL("""
+                    INSERT OR REPLACE INTO service_type_names (id, service_type_id, language_code, name)
+                    VALUES 
+                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'en'), 6, 'en', 'Deaf & Hard of Hearing'),
+                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'fr'), 6, 'fr', 'Sourds et malentendants'),
+                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'de'), 6, 'de', 'Gehörlose & Schwerhörige'),
+                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'it'), 6, 'it', 'Sordi e con problemi di udito'),
+                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'es'), 6, 'es', 'Sordos y con discapacidad auditiva'),
+                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'pt'), 6, 'pt', 'Surdos e com deficiência auditiva')
+                """.trimIndent())
+
+                // Delete any previous incorrect "114" entry and insert the correct one.
+                db.execSQL("""
+                    DELETE FROM emergency_numbers 
+                    WHERE country_id = 16 
+                    AND phone_number = '114'
+                """.trimIndent())
+
+                db.execSQL("""
+                    INSERT INTO emergency_numbers (country_id, service_type_id, phone_number, number_type)
+                    VALUES (16, 6, '114', 'SMS')
                 """.trimIndent())
             }
         }
