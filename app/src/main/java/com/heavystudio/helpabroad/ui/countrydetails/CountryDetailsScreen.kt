@@ -251,7 +251,7 @@ private fun EmergencyServiceCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick(service) },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
