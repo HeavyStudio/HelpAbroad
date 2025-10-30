@@ -63,16 +63,19 @@ abstract class AppDatabase : RoomDatabase() {
                     VALUES (6, 'DEAF', 'ic_deaf')
                 """.trimIndent())
 
+                // Delete the old names if they exist.
+                db.execSQL("DELETE FROM service_type_names WHERE service_type_id = 6")
+
                 // Update or insert the names for the "DEAF" service in all supported languages.
                 db.execSQL("""
-                    INSERT OR REPLACE INTO service_type_names (id, service_type_id, language_code, name)
+                    INSERT INTO service_type_names (id, service_type_id, language_code, name)
                     VALUES 
-                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'en'), 6, 'en', 'Deaf & Hard of Hearing'),
-                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'fr'), 6, 'fr', 'Sourds et malentendants'),
-                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'de'), 6, 'de', 'Gehörlose & Schwerhörige'),
-                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'it'), 6, 'it', 'Sordi e con problemi di udito'),
-                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'es'), 6, 'es', 'Sordos y con discapacidad auditiva'),
-                        ((SELECT id FROM service_type_names WHERE service_type_id = 6 AND language_code = 'pt'), 6, 'pt', 'Surdos e com deficiência auditiva')
+                        (6, 'en', 'Deaf & Hard of Hearing'),
+                        (6, 'fr', 'Sourds et malentendants'),
+                        (6, 'de', 'Gehörlose & Schwerhörige'),
+                        (6, 'it', 'Sordi e con problemi di udito'),
+                        (6, 'es', 'Sordos y con discapacidad auditiva'),
+                        (6, 'pt', 'Surdos e com deficiência auditiva')
                 """.trimIndent())
 
                 // Delete any previous incorrect "114" entry and insert the correct one.
