@@ -68,7 +68,7 @@ abstract class AppDatabase : RoomDatabase() {
 
                 // Update or insert the names for the "DEAF" service in all supported languages.
                 db.execSQL("""
-                    INSERT INTO service_type_names (id, service_type_id, language_code, name)
+                    INSERT INTO service_type_names (service_type_id, language_code, name)
                     VALUES 
                         (6, 'en', 'Deaf & Hard of Hearing'),
                         (6, 'fr', 'Sourds et malentendants'),
